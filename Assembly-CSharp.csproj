@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Planets\PlanetaryParent.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\CameraBoom.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

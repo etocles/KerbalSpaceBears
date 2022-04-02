@@ -95,7 +95,7 @@ public class HexplanetEditor : Editor {
 		//Random region generation
 		if (GUILayout.Button ("Generate Random Regions"))
         {
-			planet.generateRandomRegions();
+			planet.GenerateRandom();
 		}
 		//Delete tiles
 		if(GUILayout.Button("Delete Tiles") && planet.tilesGenerated)
