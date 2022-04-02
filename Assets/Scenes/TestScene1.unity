@@ -203,6 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6b7bcb700511a41be92b5d231e2bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PolarBearPrefab: {fileID: 2236782185681638351, guid: 01e88ae95e03df04bb121cea936576bc, type: 3}
+  OilPrefab: {fileID: 0}
   planetDefinitions:
   - orbitalRadius: 8
     polarBearCount: 5
@@ -5238,7 +5240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActivePlanet: {fileID: 0}
-  PolarBearPrefab: {fileID: 2236782185681638351, guid: 01e88ae95e03df04bb121cea936576bc, type: 3}
   SelectedTile: {fileID: 0}
 --- !u!4 &364828104
 Transform:

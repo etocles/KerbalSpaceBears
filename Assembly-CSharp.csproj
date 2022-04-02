@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\Rotate.cs" />
     <Compile Include="Assets\Scripts\UI\RadialUIHandler.cs" />
+    <Compile Include="Assets\Scripts\PolarBearController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
