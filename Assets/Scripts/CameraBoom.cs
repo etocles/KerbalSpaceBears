@@ -35,7 +35,7 @@ using System.Collections;
 /// </summary>
 public class CameraBoom : MonoBehaviour 
 {
-
+	public static CameraBoom instance;
 	[Header("Sensitivity")]
     public float mouseSensitivityX = 5.0f;
 	public float mouseSensitivityY = 5.0f;
@@ -63,7 +63,9 @@ public class CameraBoom : MonoBehaviour
     bool isMainView = true;
     bool retrievedDistance = false; // temporary var
     float dummyDist = 0f;
-
+	float timeToSwitchPlanets = 3.5f;
+	bool switchingPlanets = false;
+	private float switchingTimer = 0.0f;
 
 	private float maxZoom;
 	private float minZoom;
@@ -128,6 +130,7 @@ public class CameraBoom : MonoBehaviour
 
 	}
 
+
 	//Resets the camera to it's default location after a peek
 	private IEnumerator ResetCam()
 	{
@@ -191,6 +194,27 @@ public class CameraBoom : MonoBehaviour
         isMainView = isMainView ? false : true;
         pauseMovement = false;
     }
+	public void SwitchPlanets(Hexsphere sphere)
+    {
+		switchingTimer = 0.0f;
+		switchingPlanets = true;
+		hexsphere = sphere;
+		transform.SetParent(hexsphere.transform);
+	}
+	public void OnPlanetSwitchCompleted()
+    {
+		
+		transform.localPosition = new Vector3(0, 0, 0);
+		switchingTimer = 0.0f;
+		zoomSensitivity *= hexsphere.planetScale;
+
+		float rad = hexsphere.GetRadius();
+		minZoom = -(rad * 6);
+		maxZoom = -0.35f - rad;
+		pivotZoom = (minZoom + maxZoom) * 0.5f; //Will maybe tweak this
+
+
+	}
 
 	private void Awake()
 	{
@@ -199,65 +223,67 @@ public class CameraBoom : MonoBehaviour
 		dummy.transform.SetParent(this.transform.parent);
 		dummy.transform.position = new Vector3(0, 0, 0);
 		defaultRot = new Vector3(0, 0, 0);
-		zoomSensitivity *= hexsphere.planetScale;
+
 		playerCamera = GetComponentInChildren<Camera>();
-		
-		float rad = hexsphere.GetRadius();
+		CamPivot = transform.GetChild(0).gameObject;
+		instance = this;
+
+		float rad = 1;
 		minZoom = -(rad * 6);
-        maxZoom = -0.35f - rad;
+		maxZoom = -0.35f - rad;
 		pivotZoom = (minZoom + maxZoom) * 0.5f; //Will maybe tweak this
-        Debug.Log(string.Format("minZoom: {0}, maxZoom: {1}, defaultZoom: {2}", minZoom,maxZoom,defaultZoom));
-        ///*
-        // set cam pivot and modify minZoom and maxZoom to nullify the offset
-        CamPivot = GameObject.Find("CamPivot");
-        CamPivot.transform.position = new Vector3(0,0,pivotZoom);
-        minZoom += -(pivotZoom);
-        maxZoom += -(pivotZoom);
-        defaultZoom = (minZoom + maxZoom) * .5f;
-        playerCamera.transform.localPosition = new Vector3(0, 0, defaultZoom);
-        Debug.Log(string.Format("minZoom: {0}, maxZoom: {1}, defaultZoom: {2}", minZoom, maxZoom,defaultZoom));
-        //*/
-    }
+		///*
+		// set cam pivot and modify minZoom and maxZoom to nullify the offset
+
+		CamPivot.transform.position = new Vector3(0, 0, pivotZoom);
+		minZoom += -(pivotZoom);
+		maxZoom += -(pivotZoom);
+		defaultZoom = (minZoom + maxZoom) * .5f;
+		playerCamera.transform.localPosition = new Vector3(0, 0, defaultZoom);
+		//*/
+
+	}
 
 	private void Update()
 	{
 		float scrollDelta = Input.mouseScrollDelta.y;
 
 		//Reset camera rotation on peek release
-		if(camPeekActive && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetMouseButtonUp(1)))
+		if (camPeekActive && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetMouseButtonUp(1)))
 		{
 			camPeekActive = false;
 			pauseMovement = true;
 			camRotX = 0.0f; camRotY = 0.0f;
 			StartCoroutine(ResetCam());
 		}
-
+		/*
 		//Pan and tilt camera in place. Clamp becomes more constrained when very close
 		else if(Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl) && !pauseMovement) {
 			camPeekActive = true;
 			float clampTolerance = 0.4f;
 			float clampVal = 25 * Mathf.Min(
 				((playerCamera.transform.localPosition.z / minZoom) + (1 - maxZoom / minZoom)) * clampTolerance, 1);
-			
+
 			camRotX += Input.GetAxis("Mouse X") * mouseSensitivityX / 2;
 			camRotY += Input.GetAxis("Mouse Y") * mouseSensitivityY / 2;
 
 			camRotX = Mathf.Clamp(camRotX, -clampVal, clampVal);
 			camRotY = Mathf.Clamp(camRotY, -clampVal, clampVal);
-            playerCamera.transform.localEulerAngles = new Vector3(-camRotY, camRotX, 0);
-            
+			playerCamera.transform.localEulerAngles = new Vector3(-camRotY, camRotX, 0);
 
-        }
 
-        // press O to rotate a bit
-        else if (Input.GetKeyDown(KeyCode.O)) {
-            playerCamera.transform.Rotate(1, 1, 0, Space.World);
-        }
+		}
+		*/
+		// press O to rotate a bit
+		else if (Input.GetKeyDown(KeyCode.O))
+		{
+			playerCamera.transform.Rotate(1, 1, 0, Space.World);
+		}
 
 		// rotation around HexSphere 
 		//Speed modified based of of current zoom and average sensitivity
-		else if (Input.GetMouseButton(1) && !pauseMovement) 
-        {
+		else if (Input.GetMouseButton(1) && !pauseMovement)
+		{
 			sensitivityTimeMod += Mathf.Pow(sensitivityGrowthRate, 1.55f);
 			sensitivityTimeMod = Mathf.Clamp01(sensitivityTimeMod);
 			//Modify rotation speed 
@@ -265,30 +291,30 @@ public class CameraBoom : MonoBehaviour
 			float absZoom = Mathf.Abs(minZoom - maxZoom);
 			float zoomDiff = Mathf.Abs(absZoom - localPos.z);
 
-			float zoomSpeedModifier = Mathf.Abs(zoomDiff / absZoom * ((mouseSensitivityX + mouseSensitivityY) /2));
-			
+			float zoomSpeedModifier = Mathf.Abs(zoomDiff / absZoom * ((mouseSensitivityX + mouseSensitivityY) / 2));
+
 			rotX += Input.GetAxis("Mouse X") * mouseSensitivityX * zoomSpeedModifier * sensitivityTimeMod;
 			rotY -= Input.GetAxis("Mouse Y") * mouseSensitivityY * zoomSpeedModifier * sensitivityTimeMod;
-            rotY = Mathf.Clamp(rotY, -89.5f, 89.5f);
-            transform.localEulerAngles = new Vector3(rotY, rotX, 0.0f);
-        }
-		
-		
+			rotY = Mathf.Clamp(rotY, -89.5f, 89.5f);
+			transform.localEulerAngles = new Vector3(rotY, rotX, 0.0f);
+		}
+
+
 		//Zoom with scroll wheel
 		//Slower when close to the globe and faster when far
-		else if(Mathf.Abs(scrollDelta) >= 0.1 && !pauseMovement)
+		else if (Mathf.Abs(scrollDelta) >= 0.1 && !pauseMovement)
 		{
 			Vector3 localPos = playerCamera.transform.localPosition;
 			float absZoom = Mathf.Abs(minZoom - maxZoom);
 			float zoomDiff = Mathf.Abs(absZoom - localPos.z);
 
-			float zoomSpeedModifier = Mathf.Abs(zoomDiff/ absZoom * zoomSensitivity); 
-            //Debug.Log(string.Format("speed: {0}, localposz: {1}, minZoom: {2}, sensitive:{3}", zoomSpeedModifier, localPos.z, minZoom, zoomSensitivity));
-            float zoom = localPos.z + scrollDelta * zoomSpeedModifier;
-            zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
+			float zoomSpeedModifier = Mathf.Abs(zoomDiff / absZoom * zoomSensitivity);
+			//Debug.Log(string.Format("speed: {0}, localposz: {1}, minZoom: {2}, sensitive:{3}", zoomSpeedModifier, localPos.z, minZoom, zoomSensitivity));
+			float zoom = localPos.z + scrollDelta * zoomSpeedModifier;
+			zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
 
-            playerCamera.transform.localPosition = new Vector3(localPos.x, localPos.y, zoom);
-			
+			playerCamera.transform.localPosition = new Vector3(localPos.x, localPos.y, zoom);
+
 		}
 
 		//Return to neutral (default) position as determined at the beginning of a turn
@@ -298,14 +324,25 @@ public class CameraBoom : MonoBehaviour
 		}
 
 		// Press S to switch view between angled cam and main cam 
-        else if (Input.GetKeyDown(KeyCode.S) && !pauseMovement)
-        {
-            StartCoroutine("SwitchView");
-        }
-		
+		else if (Input.GetKeyDown(KeyCode.S) && !pauseMovement)
+		{
+			StartCoroutine("SwitchView");
+		}
+
 		else
 		{
 			sensitivityTimeMod = 0.0f;
+		}
+
+		if(switchingPlanets)
+        {
+			switchingTimer += Time.deltaTime;
+			transform.position = Vector3.Lerp(transform.position, hexsphere.transform.position, switchingTimer / timeToSwitchPlanets);
+			if (switchingTimer > timeToSwitchPlanets)
+			{
+				switchingPlanets = false;
+				OnPlanetSwitchCompleted();
+			}
 		}
 
 	}
