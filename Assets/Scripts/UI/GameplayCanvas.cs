@@ -141,6 +141,7 @@ public class GameplayCanvas : MonoBehaviour
                 break;
             case ContextAction.RecallAllBears:
                 img.sprite = BearIcon;
+                
                 break;
         }
     }

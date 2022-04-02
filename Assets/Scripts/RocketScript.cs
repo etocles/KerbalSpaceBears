@@ -246,6 +246,7 @@ public class RocketScript : MonoBehaviour
 
         Traveling = false;
         GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
+        TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnRocketLanded);
         GameManager.instance.OnGameStart?.Invoke();
     }
     #endregion
