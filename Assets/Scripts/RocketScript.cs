@@ -26,7 +26,9 @@ public class RocketScript : MonoBehaviour
     void Update()
     {
         // for testing, do movement sequence
-        if (Input.GetKeyDown(KeyCode.Space) && !Traveling)
+        if (Input.GetKeyDown(KeyCode.Space) 
+            && !Traveling 
+            && DestinationTile.parentPlanet != CurrentTile.parentPlanet)
         {
             StartLaunch();
         }
