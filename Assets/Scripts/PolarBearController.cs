@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PolarBearController : MonoBehaviour {
 
-    public enum BearState{
-        DEFAULT, FISH, OIL, LOST
+    public enum BearState {
+        DEFAULT, FISH, OIL, LOST, SHIP
     }
 
     private Tile shipTile;
@@ -13,50 +13,81 @@ public class PolarBearController : MonoBehaviour {
     private BearState state;
     // Start is called before the first frame update
     void Start(){
-        state = DEFAULT;
+        state = BearState.DEFAULT;
         Unit = GetComponent<MobileUnit>();
-        Tile.OnTileClickedAction += OnTileClicked;
+        //Tile.OnTileClickedAction += OnTileClicked;
+    }
 
+    void ChangeState(BearState newState){
+        if(state == newState)
+            return;
+        state = newState;
+        switch(newState){
+            case FISH:
+                break;
+            case OIL:
+                break;
+            case LOST:
+                break;
+            case SHIP:
+                break;
+            default:
+                break;
+        }
     }
 
     public IEnumerator GetFish(Tile tile, Stack<Tile> fishPath){
         // tile (temp) = ship starting origin
-        state = FISH;
-        // yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+        ChangeState(BearState.FISH);
         yield return StartCoroutine(SearchForFish(fishPath));
         //if(path == null) -> lost state (?)
         yield return new WaitForSeconds(5.0f);
         ReturnToShip();
 
         yield return null;
-            
+    }
+
+    public IEnumerator GetOil(Tile tile, Stack<Tile> oilPath){
+        // tile (temp) = ship starting origin
+        ChangeState(BearState.OIL);
+        yield return StartCoroutine(SearchForOil(fishPath));
+        //if(path == null) -> lost state (?)
+        yield return new WaitForSeconds(5.0f);
+        ReturnToShip();
     }
 
     public void ReturnToShip(){
+        state = BearState.SHIP;
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
             if(Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, shipTile, out path)){
                 Unit.moveOnPath(path);
+            } else {
+                ChangeState(BearState.LOST);
             }
         }
     }
 
-    private Stack<Tile> SearchForOil(Stack<Tile> path){
+    private IEnumerator SearchForOil(Stack<Tile> path){
         if(!Unit.moving){
-            if(path != null || Hexsphere.planetInstances[0].navManager.
+            if(Hexsphere.planetInstances[0].navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Oil, Unit.currentTile, out path)){
-                    Unit.currentTile.Occupied = false;
-                    Unit.moveOnPath(path);
+                Unit.currentTile.Occupied = false;
+                yield return Unit.moveOnPathCoroutine(path);
+            } else {
+                ChangeState(BearState.LOST);
             }
         }
-        return path;
     }
 
     private IEnumerator SearchForFish(Stack<Tile> path){
         if(!Unit.moving){
             if(Hexsphere.planetInstances[0].navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Fish, Unit.currentTile, out path)){
+                Unit.currentTile.Occupied = false;
                 yield return Unit.moveOnPathCoroutine(path);
+            } else {
+                ChangeState(BearState.LOST);
             }
         }
     }

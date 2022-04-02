@@ -105,6 +105,8 @@ public class NavigationManager : MonoBehaviour {
 			return false;
 		}
 
+		end.Occupied = true;
+
 		//Find the shortest path between two tiles using Dijkstra's algorithm
 		List<Tile> unvisited = new List<Tile> ();
 		Dictionary<Tile, int> distanceMap = new Dictionary<Tile, int> ();
@@ -177,13 +179,15 @@ public class NavigationManager : MonoBehaviour {
 	}
 
 	// BFS, returns the closest tile from a list of tiles
+	// 100 > tiles -> failure
 	public Tile ClosestTile(List<Tile> tiles, Tile start) {
 		HashSet<Tile> visited = new HashSet<Tile>();
 		Queue<Tile> queue = new Queue<Tile>();
 		queue.Enqueue(start);
 		visited.Add(start);
+		int count = 100;
 
-		while(queue.Count > 0){
+		while(queue.Count > 0 && count > 0){
 			Tile t = queue.Dequeue();
 			foreach(Tile v in t.neighborTiles){
 				if(visited.Contains(v))
@@ -197,6 +201,7 @@ public class NavigationManager : MonoBehaviour {
 				visited.Add(t);
 				queue.Enqueue(v);
 			}
+			count--;
 		}
 		return null;
 	}
