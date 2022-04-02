@@ -6,10 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Hexsphere ActivePlanet;
-    public GameObject PolarBearPrefab;
+
     [HideInInspector] public Tile SelectedTile;
 
-    private List<GameObject> spawnedPolarBears = new List<GameObject>();
+
 
     private void OnValidate()
     {
@@ -20,33 +20,7 @@ public class GameManager : MonoBehaviour
         if(instance == null) instance = this;
     }
 
-    public void SpawnPolarBears(int count)
-    {
-        for(int p = spawnedPolarBears.Count - 1; p >= 0; p--)
-        {
-            DestroyImmediate(spawnedPolarBears[p]);
-            spawnedPolarBears.RemoveAt(p);
-        }
-        HashSet<int> randomTiles = new HashSet<int>();
-        for(int i = 0; i < count; i++)
-        {
-            int num = Random.Range(0, ActivePlanet.IceTiles.Count);
-            randomTiles.Add(num);
-        }
-        foreach(int spawnLoc in randomTiles)
-        {
-            PlacePolarBear(ActivePlanet.IceTiles[spawnLoc]);
-        }
-    }
-    public GameObject PlacePolarBear(Tile location)
-    {
-        GameObject spawnedBear = Instantiate(PolarBearPrefab);
-        spawnedBear.GetComponent<MobileUnit>().parentPlanet = ActivePlanet;
-        spawnedBear.GetComponent<MobileUnit>().currentTile = location;
-        location.placeObject(spawnedBear);
-        spawnedPolarBears.Add(spawnedBear);
-        return spawnedBear;
-    }
+    
     public void SelectTile(Tile tile)
     {
         if(SelectedTile != null && tile != SelectedTile)
@@ -75,12 +49,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         KillBears();
-        SpawnPolarBears(10);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        ActivePlanet.Melt(Time.deltaTime);
     }
 }
