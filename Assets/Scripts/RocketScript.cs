@@ -7,6 +7,7 @@ public class RocketScript : MonoBehaviour
 {
     public Tile CurrentTile;
     public Tile DestinationTile;
+    public ParticleSystem Thrusters;
 
     public int NumBears = 0;
     public float NumOil = 0;
@@ -82,10 +83,7 @@ public class RocketScript : MonoBehaviour
     {
         Traveling = true;
 
-        // TODO: turn on thrusters
-        /*
-         * 
-         */
+        Thrusters.Play();
 
         Vector3 startPos = transform.localPosition;
         Vector3 endPos = startPos; endPos.y = 1;
@@ -137,10 +135,7 @@ public class RocketScript : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        // TODO: turn off thrusters
-        /*
-         * 
-         */
+        Thrusters.Stop();
 
         Traveling = false;
         CurrentTile = DestinationTile;
@@ -182,9 +177,7 @@ public class RocketScript : MonoBehaviour
         CurrentTile = tile;
         Traveling = true;
 
-        //thrusters on
-        /* TODO: Implement
-         */
+        Thrusters.Play();
 
         Vector3 startPos = new Vector3(0, 1.0f, 0);
         Vector3 endPos = new Vector3(0, tile.ExtrudedHeight * 2, 0);
@@ -198,9 +191,7 @@ public class RocketScript : MonoBehaviour
         }
         transform.localPosition = endPos;
 
-        // thrusters off
-        /* TODO: Implement
-         */
+        Thrusters.Stop();
 
         Traveling = false;
         GameManager.instance.OnGameStart?.Invoke();
