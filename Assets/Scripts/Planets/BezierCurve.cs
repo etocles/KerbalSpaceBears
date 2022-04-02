@@ -2,53 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode, RequireComponent(typeof(LineRenderer))]
-public class BezierCurve : MonoBehaviour 
-{
-	public GameObject start, middle, end;
-	public Color color = Color.white;
-	public float width = 0.2f;
-	public int numberOfPoints = 20;
+[ExecuteInEditMode]
+[RequireComponent(typeof(LineRenderer))]
+public class BezierCurve : MonoBehaviour {
+    public Transform[] points;
+    public LineRenderer lineRenderer;
+    
+    private int curveCount = 0;    
+    private int layerOrder = 0;
+    private int total = 75;
+    
+        
+    void Start(){
+        if (!lineRenderer){ lineRenderer = GetComponent<LineRenderer>(); }
+        lineRenderer.sortingLayerID = layerOrder;
+        curveCount = (int) points.Length / 3;
+    }
 
-    //private Vector3[] positions = new Vector3[numberOfPoints];
-	LineRenderer lineRenderer;
-
-	void Start () 
-	{
-		lineRenderer = GetComponent<LineRenderer>();
-		lineRenderer.useWorldSpace = true;
-		lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
-	}
-
-    //Vector3[] getPos(){ return positions; }
-	
-	void Update () {
-		if( lineRenderer == null || start == null || middle == null || end == null){
-			return; // no points specified
-		}
-
-		// update line renderer
-		lineRenderer.startColor = color;
-		lineRenderer.endColor = color;
-   		lineRenderer.startWidth = width;
-		lineRenderer.endWidth = width;
-
-  		if (numberOfPoints > 0){
-    		lineRenderer.positionCount = numberOfPoints;
-		}
-
-		// set points of quadratic Bezier curve
-		Vector3 p0 = start.transform.position;
-		Vector3 p1 = middle.transform.position;
-		Vector3 p2 = end.transform.position;
-		float t;
-		for(int i = 0; i < numberOfPoints; i++)
-		{
-            /*
-			t = i / (numberOfPoints - 1.0f);
-			positions[i] = (1.0f - t) * (1.0f - t) * p0 
-			+ 2.0f * (1.0f - t) * t * p1 + t * t * p2;
-			lineRenderer.SetPosition(i, positions[i]);*/
-		}
-	}
+    void Update(){
+        DrawCurve();
+    }
+    
+    void DrawCurve(){
+        for (int j = 0; j < curveCount; j++){
+            for (int i = 1; i <= total; i++){
+                float t = i / (float) total;
+                int nodeIndex = j * 3;
+                Vector3 location = CalculateCubicBezierPoint(t, points[nodeIndex].position, points[nodeIndex + 1].position, points[nodeIndex + 2].position, points[nodeIndex + 3].position);
+                lineRenderer.positionCount = (j * total) + i;
+                lineRenderer.SetPosition((j * total) + (i - 1), location);
+            }
+        }
+    }
+        
+    Vector3 CalculateCubicBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3){
+        float u = 1 - t;
+        
+        Vector3 p = u * u * u * p0; 
+        p += 3 * u * u * t * p1; 
+        p += 3 * u * t * t * p2; 
+        p += t * t * t * p3; 
+        
+        return p;
+    }
 }

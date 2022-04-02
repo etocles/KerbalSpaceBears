@@ -15,8 +15,6 @@ public class MobileUnit : MonoBehaviour {
 
 	public bool moving;
 
-	
-
 	public void moveOnPath(Stack<Tile> path)
     {
 		StartCoroutine ("move", path);

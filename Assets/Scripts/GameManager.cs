@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public GameObject PlacePolarBear(Tile location)
     {
         GameObject spawnedBear = Instantiate(PolarBearPrefab);
+        spawnedBear.GetComponent<MobileUnit>().parentPlanet = ActivePlanet;
+        spawnedBear.GetComponent<MobileUnit>().currentTile = location;
         location.placeObject(spawnedBear);
         spawnedPolarBears.Add(spawnedBear);
         return spawnedBear;
@@ -64,7 +66,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        SpawnPolarBears(20);
     }
 
     // Update is called once per frame
