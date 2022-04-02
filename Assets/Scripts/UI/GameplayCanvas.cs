@@ -61,6 +61,7 @@ public class GameplayCanvas : MonoBehaviour
         Tile tileCtrl = SelectedObject.GetComponent<Tile>();
         if(tileCtrl != null)
         {
+            
             if (tileCtrl.parentPlanet == GameManager.instance.ActivePlanet) // Clicking tile on active planet
             {
                 if(tileCtrl.BiomeType == Hexsphere.BiomeType.Ice)
@@ -74,6 +75,7 @@ public class GameplayCanvas : MonoBehaviour
                     {
                         AddContextButton(ContextAction.NavigateWithRover);
                     }
+                    ContextMenuVisible = true;
                 }
             }
             else if (tileCtrl.parentPlanet != GameManager.instance.ActivePlanet) // Clicking tile on another planet
@@ -81,15 +83,17 @@ public class GameplayCanvas : MonoBehaviour
                 if(tileCtrl.BiomeType == Hexsphere.BiomeType.Ice)
                 {
                     AddContextButton(ContextAction.NavigateWithShip);
+                    ContextMenuVisible = true;
                 }
             }
-            ContextMenuParent.gameObject.SetActive(true);
+            if(ContextMenuVisible) ContextMenuParent.gameObject.SetActive(true);
         }
     }
     public void HideContextMenu()
     {
+        ContextMenuVisible = false;
         ContextMenuParent.gameObject.SetActive(false);
-        for (int i = ContextMenuParent.childCount; i >= 0; i--)
+        for (int i = ContextMenuParent.childCount - 1; i >= 0; i--)
         {
             Destroy(ContextMenuParent.GetChild(i).gameObject);
         }

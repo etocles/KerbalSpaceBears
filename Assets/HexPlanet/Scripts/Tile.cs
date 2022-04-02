@@ -137,7 +137,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	}
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		SetHighlight(0.33f);
+		if(Selected == false) SetHighlight(0.33f);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
@@ -147,8 +147,12 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	}
 	public void OnPointerDown(PointerEventData eventData)
 	{
-		GameManager.instance.SelectTile(this);
-		OnTileClickedAction?.Invoke(this);
+		if(eventData.button == PointerEventData.InputButton.Left)
+        {
+			GameManager.instance.SelectTile(this);
+			OnTileClickedAction?.Invoke(this);
+		}
+		
 	}
 	public void SetHighlight(float intensity)
     {

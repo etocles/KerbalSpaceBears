@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         SelectedTile.SetHighlight(0.75f);
         SelectedTile.Selected = true;
         OnTileSelected?.Invoke();
+        GameplayCanvas.instance.DisplayContextMenu(SelectedTile.gameObject);
     }
     public void DeselectTile()
     {

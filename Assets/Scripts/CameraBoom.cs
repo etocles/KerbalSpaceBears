@@ -305,6 +305,7 @@ public class CameraBoom : MonoBehaviour
 			rotY -= Input.GetAxis("Mouse Y") * mouseSensitivityY * zoomSpeedModifier * sensitivityTimeMod;
 			rotY = Mathf.Clamp(rotY, -89.5f, 89.5f);
 			transform.localEulerAngles = new Vector3(rotY, rotX, 0.0f);
+			if (GameplayCanvas.instance.ContextMenuVisible) GameplayCanvas.instance.HideContextMenu();
 		}
 
 
