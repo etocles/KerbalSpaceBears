@@ -8,6 +8,8 @@ public class PolarBearController : MonoBehaviour {
         DEFAULT, FISH, OIL, LOST
     }
 
+    
+    private Tile shipTile;
     private MobileUnit Unit;
     // Start is called before the first frame update
     void Start(){
@@ -19,21 +21,20 @@ public class PolarBearController : MonoBehaviour {
     public IEnumerator GetFish(Tile tile, Stack<Tile> fishPath){
         // tile (temp) = ship starting origin
         // yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
-        yield return fishPath = SearchForFish(fishPath);
+        yield return StartCoroutine(SearchForFish(fishPath));
         //if(path == null) -> lost state (?)
         yield return new WaitForSeconds(5.0f);
-        ReturnToShip(tile);
+        ReturnToShip();
 
         yield return null;
             
     }
 
-    private void ReturnToShip(Tile shipTile){
+    private void ReturnToShip(){
         Debug.Log("navigate back to the ship");
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
-            if(shipTile != null || Hexsphere.planetInstances[0].navManager.
-            findPath(Unit.currentTile, shipTile, out path)){
+            if(Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, shipTile, out path)){
                 Unit.moveOnPath(path);
             }
         }
@@ -50,17 +51,16 @@ public class PolarBearController : MonoBehaviour {
         return path;
     }
 
-    private Stack<Tile> SearchForFish(Stack<Tile> path){
+    private IEnumerator SearchForFish(Stack<Tile> path){
         if(!Unit.moving){
             if(Hexsphere.planetInstances[0].navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Fish, Unit.currentTile, out path)){
-                    Unit.moveOnPath(path);
+                yield return Unit.moveOnPathCoroutine(path);
             }
         }
-        return path;
     }
 
     public void OnTileClicked(Tile tile){
-        StartCoroutine(GetFish(tile, null));
+        //StartCoroutine(GetFish(tile, null));
     }
 }

@@ -20,6 +20,10 @@ public class MobileUnit : MonoBehaviour {
 		StartCoroutine ("move", path);
 	}
 
+	public IEnumerator moveOnPathCoroutine(Stack<Tile> path){
+		yield return StartCoroutine("move", path);
+	}
+
 	public GameObject getGameObject(){ return this.gameObject; }
 
 	public IEnumerator move(Stack<Tile> path)
