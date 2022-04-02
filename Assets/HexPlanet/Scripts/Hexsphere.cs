@@ -16,7 +16,7 @@ public enum TileColliderType
 
 public class Hexsphere : MonoBehaviour {
 
-    public enum BiomeType { Unassigned, Ice, Water };
+    public enum BiomeType { Unassigned, Ice, Water, Fish, Oil };
     [System.Serializable]
     public class Biome
     {

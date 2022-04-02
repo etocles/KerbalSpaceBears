@@ -7,8 +7,7 @@ public class NavigationDemo : MonoBehaviour
     public MobileUnit Unit;
     
 	// Use this for initialization
-	void Start ()
-    {
+	void Start (){
         Tile.OnTileClickedAction += OnTileClicked;
 	}
 	

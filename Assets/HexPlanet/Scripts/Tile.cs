@@ -145,6 +145,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	}
 	public void OnPointerDown(PointerEventData eventData)
 	{
+		Debug.Log("lol");
 		GameManager.instance.SelectTile(this);
 	}
 	public void SetHighlight(float intensity)
