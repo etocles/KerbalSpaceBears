@@ -15,10 +15,13 @@ public class GameplayCanvas : MonoBehaviour
     public Sprite RocketIcon;
     public Sprite RoverIcon;
     public Sprite BearIcon;
+    public Sprite QuestionMarkIcon;
 
     private Transform PopupsParent;
     private Transform IconsParent;
     private Transform ContextMenuParent;
+                       // Obj      // Icon
+    private Dictionary<GameObject, GameObject> SpawnedIcons = new Dictionary<GameObject, GameObject>();
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -45,6 +48,16 @@ public class GameplayCanvas : MonoBehaviour
         spawnedIcon.transform.localScale = Vector3.one;
         spawnedIcon.GetComponent<Image>().sprite = icon;
         spawnedIcon.GetComponent<WorldUIObject>().Initialize(objectToFollow);
+        if(SpawnedIcons.ContainsKey(objectToFollow))
+        {
+            Destroy(SpawnedIcons[objectToFollow]); // Destroy existing icon
+            SpawnedIcons[objectToFollow] = spawnedIcon; // Replace with new icon
+        }
+        else
+        {
+            SpawnedIcons.Add(objectToFollow, spawnedIcon);
+        }
+        
         
     }
     public void SpawnPopup(Sprite icon, string text, Vector3 location)
@@ -90,7 +103,11 @@ public class GameplayCanvas : MonoBehaviour
                     ContextMenuVisible = true;
                 }
             }
-            if(ContextMenuVisible) ContextMenuParent.gameObject.SetActive(true);
+            if (ContextMenuVisible)
+            {
+                ContextMenuParent.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
+                ContextMenuParent.gameObject.SetActive(true);
+            }
         }
     }
     public void HideContextMenu()
@@ -126,5 +143,20 @@ public class GameplayCanvas : MonoBehaviour
                 img.sprite = BearIcon;
                 break;
         }
+    }
+    public Sprite GetIconByBearState(PolarBearController.BearState state)
+    {
+        switch (state)
+        {
+            case PolarBearController.BearState.DEFAULT:
+                return BearIcon;
+            case PolarBearController.BearState.FISH:
+                return FishIcon;
+            case PolarBearController.BearState.OIL:
+                return OilIcon;
+            case PolarBearController.BearState.LOST:
+                return QuestionMarkIcon;
+        }
+        return null;
     }
 }

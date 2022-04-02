@@ -20,8 +20,14 @@ public class GameStateController : MonoBehaviour
     [HideInInspector] public List<Hexsphere> planets = new List<Hexsphere>();
     public GameObject HexspherePrefab;
     [HideInInspector] public Hexsphere ActiveHexsphere;
-
+    public static GameStateController instance;
+    
     private List<GameObject> spawnedPolarBears = new List<GameObject>();
+
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {

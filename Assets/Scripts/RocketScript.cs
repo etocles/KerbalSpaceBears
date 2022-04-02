@@ -214,7 +214,7 @@ public class RocketScript : MonoBehaviour
         Thrusters.Stop();
 
         Traveling = false;
-        GameManager.instance.OnGameStart?.Invoke();
+        //GameManager.instance.OnGameStart?.Invoke();
     }
     #endregion
 }

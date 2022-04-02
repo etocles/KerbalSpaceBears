@@ -861,7 +861,7 @@ MonoBehaviour:
     weight: 7
     navigable: 1
     movementCost: 1
-    material: {fileID: 2100000, guid: bd2cc58e0e2ce6a49ac0501e0df616ad, type: 2}
+    material: {fileID: 2100000, guid: 069f45cddc66ab745a59b9db8efd09f5, type: 2}
     ObjectToPlace: {fileID: 0}
   - type: 2
     weight: 8
