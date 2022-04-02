@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEditor;
+using UnityEngine.Assertions;
 
 public enum TileColliderType
 {
@@ -38,7 +39,9 @@ public class Hexsphere : MonoBehaviour {
     
 	[HideInInspector]
 	public int planetID;
-	[Tooltip("Should this planet build itself when the game enters Play Mode?")]
+    [Range(0,10)]
+    public float meltRate;
+    [Tooltip("Defined as the amount of time (s) an extrusion of length 0.06 takes to reach 0")]
 	public bool generateOnPlay;
     [Tooltip("SHould we generate gameobjects for each tile or just a single mesh for the entire planet?")]
     public bool GenerateAsSingleMesh;
@@ -101,11 +104,34 @@ public class Hexsphere : MonoBehaviour {
             //Assign tile attributes
             MapBuilder ();
 		}
-		navManager.setWorldTiles (tiles);
-
-        
-        
+        navManager.setWorldTiles(tiles);        
 	}
+
+
+    public void Melt(float dt)
+    {
+        List<Tile> ToRemove = new List<Tile>();
+        foreach (Tile tile in IceTiles)
+        {
+            float amt = (0.008f) / Mathf.Abs(10-meltRate);
+            //float destHeight = tile.ExtrudedHeight - amt;
+            //float newHeight = Mathf.Lerp(tile.ExtrudedHeight, destHeight, dt);
+            //newHeight = Mathf.Min(newHeight, 0);
+            //tile.SetExtrusionHeight(newHeight);
+            tile.Extrude(-amt*dt);
+            if (tile.ExtrudedHeight < 0)
+            {
+                tile.SetExtrusionHeight(0.0f);
+                ToRemove.Add(tile);
+            }
+        }
+
+        foreach (Tile tile in ToRemove)
+        {
+            tile.SetGroupID(FindBiomeIDByType(BiomeType.Water));
+        }
+
+    }
 
     public int FindBiomeIDByType(BiomeType type)
     {
