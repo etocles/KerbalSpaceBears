@@ -219,7 +219,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &384453407
+--- !u!21 &377041294
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -371,10 +371,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraRotationSpeed: 10
   pivotPoint: {fileID: 1934229302}
-  camTransform: {fileID: 532318386}
+  camTransform: {fileID: 664952418}
   cameraZoomFloor: 10
   cameraZoomCeiling: 50
-  cameraZoomSpeed: {x: 10, y: 10, z: 10}
+  cameraZoomSpeed: 30
 --- !u!4 &532318386
 Transform:
   m_ObjectHideFlags: 0
@@ -386,6 +386,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -13.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 664952418}
   - {fileID: 1934229302}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -468,10 +469,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664952415}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -7.02}
+  m_LocalPosition: {x: 0, y: 0.36, z: 6.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1934229302}
+  m_Father: {fileID: 532318386}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &664952419
@@ -641,12 +642,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934229301}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.64, z: 13.59}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 664952418}
+  m_LocalPosition: {x: 0, y: 0, z: 13.5}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_Children: []
   m_Father: {fileID: 532318386}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2565322096776999854
 PrefabInstance:
@@ -722,7 +722,7 @@ PrefabInstance:
     - target: {fileID: 2565322095315764845, guid: d97e3493a1b51df41a707e968cf8eef7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 384453407}
+      objectReference: {fileID: 377041294}
     - target: {fileID: 2565322095315764845, guid: d97e3493a1b51df41a707e968cf8eef7, type: 3}
       propertyPath: m_Positions.Array.data[0].x
       value: -0.6800003

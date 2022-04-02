@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] float cameraZoomFloor;
     [SerializeField] float cameraZoomCeiling;
-    [SerializeField] Vector3 cameraZoomSpeed;
+    [SerializeField] float cameraZoomSpeed;
 
     // Private var
     private Vector3 saveLocation;
@@ -29,8 +29,7 @@ public class CameraController : MonoBehaviour
         }
         if(Input.GetMouseButton(0)){
             Vector3 loc = saveLocation - Input.mousePosition;
-            pivotPoint.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), loc.y*cameraRotationSpeed/35.0f, Space.World);
-            pivotPoint.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), loc.x*cameraRotationSpeed/35.0f, Space.World);
+            camTransform.RotateAround(pivotPoint.position, Vector3.up, loc.x*cameraRotationSpeed/35.0f);
             saveLocation = Input.mousePosition;
         }
     }
@@ -38,15 +37,24 @@ public class CameraController : MonoBehaviour
     void Scroll(){
         Vector3 targetPos = pivotPoint.position;
 
-        Vector3 zoom = camTransform.localPosition;
-        if(Input.mouseScrollDelta.y != 0)
-            zoom += (Input.mouseScrollDelta.y * cameraZoomSpeed);
+        float zoom = 1.0f;
+        Vector3 dir = camTransform.position - pivotPoint.position;
+        dir = -dir;
 
-        if(Input.mouseScrollDelta.y > 0 && cameraZoomSpeed.y > cameraZoomFloor)
+        if (Mathf.Abs(Input.mouseScrollDelta.y) >= 0.001f)
+            zoom = (Input.mouseScrollDelta.y * cameraZoomSpeed);
+        else
+            zoom = 0.0f;
+
+        Vector3 finalPos = camTransform.localPosition + dir.normalized * zoom;
+        dir = finalPos - pivotPoint.position;
+        // if we would be going further than the allowed zoom-out, don't
+        if(Input.mouseScrollDelta.y > 0 && dir.magnitude > cameraZoomCeiling)
             return;
-        else if(Input.mouseScrollDelta.y < 0 && cameraZoomSpeed.y < cameraZoomCeiling)
+        // if we would be going closer than the allowed zoom-in, don't
+        else if (Input.mouseScrollDelta.y < 0 && dir.magnitude < cameraZoomFloor)
             return;
 
-        camTransform.localPosition = Vector3.Lerp(camTransform.localPosition, zoom, Time.deltaTime);
+        camTransform.localPosition = Vector3.Lerp(camTransform.localPosition, finalPos, Time.deltaTime);
     }
 }
