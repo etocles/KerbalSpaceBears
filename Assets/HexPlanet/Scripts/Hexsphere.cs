@@ -110,7 +110,7 @@ public class Hexsphere : MonoBehaviour {
 
     public void Melt(float dt)
     {
-        List<Tile> ToRemove = new List<Tile>();
+        List<Tile> NewIceTiles = new List<Tile>();
         foreach (Tile tile in IceTiles)
         {
             float amt = (0.008f) / Mathf.Abs(10-meltRate);
@@ -119,17 +119,17 @@ public class Hexsphere : MonoBehaviour {
             //newHeight = Mathf.Min(newHeight, 0);
             //tile.SetExtrusionHeight(newHeight);
             tile.Extrude(-amt*dt);
-            if (tile.ExtrudedHeight < 0)
+            if (tile.ExtrudedHeight <= 0)
             {
                 tile.SetExtrusionHeight(0.0f);
-                ToRemove.Add(tile);
+                tile.SetGroupID(FindBiomeIDByType(BiomeType.Water));
+            }
+            else
+            {
+                NewIceTiles.Add(tile);
             }
         }
-
-        foreach (Tile tile in ToRemove)
-        {
-            tile.SetGroupID(FindBiomeIDByType(BiomeType.Water));
-        }
+        IceTiles = NewIceTiles;
 
     }
 
