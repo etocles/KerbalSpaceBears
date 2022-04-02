@@ -58,15 +58,16 @@ public class CameraController : MonoBehaviour
         else
             zoom = 0.0f;
 
-        Vector3 finalPos = camTransform.localPosition + dir.normalized * zoom;
+        Vector3 dest = camTransform.position + dir.normalized * zoom;
+        Vector3 finalPos = Vector3.Lerp(camTransform.position, dest, Time.deltaTime);
         dir = finalPos - pivotPoint.position;
         // if we would be going further than the allowed zoom-out, don't
-        if(Input.mouseScrollDelta.y > 0 && dir.magnitude > cameraZoomCeiling)
+        if (Input.mouseScrollDelta.y < 0 && dir.magnitude > cameraZoomCeiling)
             return;
         // if we would be going closer than the allowed zoom-in, don't
-        else if (Input.mouseScrollDelta.y < 0 && dir.magnitude < cameraZoomFloor)
+        else if (Input.mouseScrollDelta.y > 0 && dir.magnitude < cameraZoomFloor)
             return;
 
-        camTransform.localPosition = Vector3.Lerp(camTransform.localPosition, finalPos, Time.deltaTime);
+        camTransform.position = finalPos;
     }
 }
