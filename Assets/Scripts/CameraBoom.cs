@@ -66,6 +66,7 @@ public class CameraBoom : MonoBehaviour
 	float timeToSwitchPlanets = 3.5f;
 	bool switchingPlanets = false;
 	private float switchingTimer = 0.0f;
+	private float baseZoomSensitivity;
 
 	private float maxZoom;
 	private float minZoom;
@@ -207,17 +208,24 @@ public class CameraBoom : MonoBehaviour
 		transform.localPosition = new Vector3(0, 0, 0);
 		switchingTimer = 0.0f;
 		zoomSensitivity *= hexsphere.planetScale;
-
-		float rad = hexsphere.GetRadius();
-		minZoom = -(rad * 6);
-		maxZoom = -0.35f - rad;
+		float rad = hexsphere.planetScale;
+		minZoom = -(rad * 2);
+		maxZoom = 0.3f * rad;
 		pivotZoom = (minZoom + maxZoom) * 0.5f; //Will maybe tweak this
+		///*
+		// set cam pivot and modify minZoom and maxZoom to nullify the offset
 
+		minZoom += -(pivotZoom);
+		maxZoom += -(pivotZoom);
+		defaultZoom = (minZoom + maxZoom) * .5f;
+
+		MoveToLocation(defaultRot, defaultZoom);
 
 	}
 
 	private void Awake()
 	{
+		baseZoomSensitivity = zoomSensitivity;
 		//Set globals
 		dummy = new GameObject("Dummy");
 		dummy.transform.SetParent(this.transform.parent);
@@ -338,7 +346,7 @@ public class CameraBoom : MonoBehaviour
         {
 			switchingTimer += Time.deltaTime;
 			transform.position = Vector3.Lerp(transform.position, hexsphere.transform.position, switchingTimer / timeToSwitchPlanets);
-			if (switchingTimer > timeToSwitchPlanets)
+			if (switchingTimer > timeToSwitchPlanets || Vector3.Distance(transform.position, hexsphere.transform.position) < 0.05f)
 			{
 				switchingPlanets = false;
 				OnPlanetSwitchCompleted();

@@ -207,7 +207,7 @@ MonoBehaviour:
   OilPrefab: {fileID: 0}
   planetDefinitions:
   - orbitalRadius: 8
-    polarBearCount: 5
+    polarBearCount: 12
     oilCount: 5
     waterWeight: 4
     planetScale: 0.86
@@ -5499,7 +5499,7 @@ MonoBehaviour:
   m_EventMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_MaxRayIntersections: 0
+  m_MaxRayIntersections: 1
 --- !u!1 &1936664672
 GameObject:
   m_ObjectHideFlags: 0
