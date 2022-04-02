@@ -89,6 +89,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ActivePlanet.Melt(Time.deltaTime);
+        if(ActivePlanet != null) ActivePlanet.Melt(Time.deltaTime);
     }
 }

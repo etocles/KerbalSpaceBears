@@ -16,7 +16,6 @@ public class GameStateController : MonoBehaviour
         public float planetScale;
     }
     public GameObject PolarBearPrefab;
-    public GameObject OilPrefab;
     public List<PlanetDefinition> planetDefinitions = new List<PlanetDefinition>();
     [HideInInspector] public List<Hexsphere> planets = new List<Hexsphere>();
     public GameObject HexspherePrefab;
@@ -92,6 +91,7 @@ public class GameStateController : MonoBehaviour
         }
         ActiveHexsphere = sphere;
         CameraBoom.instance.SwitchPlanets(sphere);
+        GameManager.instance.ActivePlanet = sphere;
         ActiveHexsphere.transform.Find("Atmosphere").GetComponent<SphereCollider>().enabled = false;
     }
 
