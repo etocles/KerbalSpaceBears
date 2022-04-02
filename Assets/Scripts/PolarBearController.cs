@@ -8,11 +8,12 @@ public class PolarBearController : MonoBehaviour {
         DEFAULT, FISH, OIL, LOST
     }
 
-    
     private Tile shipTile;
     private MobileUnit Unit;
+    private BearState state;
     // Start is called before the first frame update
     void Start(){
+        state = DEFAULT;
         Unit = GetComponent<MobileUnit>();
         Tile.OnTileClickedAction += OnTileClicked;
 
@@ -20,6 +21,7 @@ public class PolarBearController : MonoBehaviour {
 
     public IEnumerator GetFish(Tile tile, Stack<Tile> fishPath){
         // tile (temp) = ship starting origin
+        state = FISH;
         // yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
         yield return StartCoroutine(SearchForFish(fishPath));
         //if(path == null) -> lost state (?)
@@ -30,8 +32,7 @@ public class PolarBearController : MonoBehaviour {
             
     }
 
-    private void ReturnToShip(){
-        Debug.Log("navigate back to the ship");
+    public void ReturnToShip(){
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
             if(Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, shipTile, out path)){
