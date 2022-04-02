@@ -71,6 +71,10 @@ public class GameplayCanvas : MonoBehaviour
                         AddContextButton(ContextAction.SearchForFish);
                         AddContextButton(ContextAction.SearchForOil);
                     }
+                    else if(GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile == tileCtrl)
+                    {
+                        AddContextButton(ContextAction.RecallAllBears);
+                    }
                     else
                     {
                         AddContextButton(ContextAction.NavigateWithRover);
@@ -103,7 +107,7 @@ public class GameplayCanvas : MonoBehaviour
         GameObject spawnedButton = Instantiate(ContextMenuButtonPrefab);
         spawnedButton.transform.SetParent(ContextMenuParent);
         spawnedButton.transform.localScale = Vector3.one;
-        Image img = spawnedButton.transform.GetChild(0).GetComponent<Image>();
+        Image img = spawnedButton.GetComponent<ContextMenuButton>().icon;
         switch (action)
         {
             case ContextAction.NavigateWithShip:

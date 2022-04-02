@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 94318200822778188}
   - component: {fileID: 6329291200909701576}
   - component: {fileID: 3532401345348143784}
+  - component: {fileID: 4309278383183890696}
   m_Layer: 5
   m_Name: ContextMenu_Button
   m_TagString: Untagged
@@ -38,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6672989665283882327
 CanvasRenderer:
@@ -139,6 +140,19 @@ MonoBehaviour:
   offsetMax: {x: 12, y: 12}
   offsetMin: {x: -12, y: -12}
   imageType: 1
+--- !u!114 &4309278383183890696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2242350616243695108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83df06f17b1eb5f43aa86eebd9475141, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 8893006822890257060}
 --- !u!1 &3649256451676406846
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 445e09155db176645934c36f68d0fd2c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

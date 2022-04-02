@@ -282,8 +282,8 @@ MonoBehaviour:
   ContextMenuVisible: 0
   FishIcon: {fileID: 21300000, guid: 445e09155db176645934c36f68d0fd2c, type: 3}
   OilIcon: {fileID: 21300000, guid: 8ce528e093c0a474483aaaeaf4b78c47, type: 3}
-  RocketIcon: {fileID: 21300000, guid: baab431d376c2404797bfbba197e2883, type: 3}
-  RoverIcon: {fileID: 21300000, guid: baab431d376c2404797bfbba197e2883, type: 3}
+  RocketIcon: {fileID: 21300000, guid: ded38922021e0a042be640d9f0bf4641, type: 3}
+  RoverIcon: {fileID: 21300000, guid: aaa22d1d90d671142bb3d6dbff1a7d47, type: 3}
   BearIcon: {fileID: 21300000, guid: 8292e0370767eab40a3918f1fb0e7428, type: 3}
 --- !u!1 &8133545163413679960
 GameObject:

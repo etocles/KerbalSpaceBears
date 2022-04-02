@@ -91,7 +91,6 @@ public class GameStateController : MonoBehaviour
         }
         ActiveHexsphere = sphere;
         CameraBoom.instance.SwitchPlanets(sphere);
-        GameManager.instance.ActivePlanet = sphere;
         ActiveHexsphere.transform.Find("Atmosphere").GetComponent<SphereCollider>().enabled = false;
     }
 

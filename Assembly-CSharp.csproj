@@ -76,7 +76,6 @@
     <Compile Include="Assets\Scripts\Rotate.cs" />
     <Compile Include="Assets\Scripts\Planets\BezierCurve.cs" />
     <Compile Include="Assets\HexPlanet\Scripts\PlanetTools.cs" />
-    <Compile Include="Assets\Scripts\UI\ContextUIButton.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\PolarBearController.cs" />
     <Compile Include="Assets\Scripts\UI\InteractableUI.cs" />
@@ -85,6 +84,7 @@
     <Compile Include="Assets\Scripts\UI\TransformCurves.cs" />
     <Compile Include="Assets\Scripts\UI\Lifetime.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenuScript.cs" />
+    <Compile Include="Assets\Scripts\UI\ContextMenuButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

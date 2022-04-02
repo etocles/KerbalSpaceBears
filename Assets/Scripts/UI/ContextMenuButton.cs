@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ContextUIButton : MonoBehaviour
+using UnityEngine.UI;
+public class ContextMenuButton : MonoBehaviour
 {
+    public Image icon;
     // Start is called before the first frame update
     void Start()
     {
