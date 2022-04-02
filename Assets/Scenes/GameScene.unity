@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.043674428, g: 0.044857424, b: 0.059592403, a: 1}
+  m_IndirectSpecularColor: {r: 0.043679737, g: 0.04486384, b: 0.059601482, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5477,11 +5477,15 @@ MonoBehaviour:
   OnGameStart:
     m_PersistentCalls:
       m_Calls: []
+  OnRocketLanded:
+    m_PersistentCalls:
+      m_Calls: []
   OnTileSelected:
     m_PersistentCalls:
       m_Calls: []
   PolarBearPrefab: {fileID: 2236782185681638351, guid: 01e88ae95e03df04bb121cea936576bc, type: 3}
   RocketPrefab: {fileID: 4980866586724600000, guid: ce70a7b429fcffe45ba155ce6f74f9d5, type: 3}
+  Rocket: {fileID: 0}
   SelectedTile: {fileID: 0}
 --- !u!4 &960073274
 Transform:
