@@ -101,6 +101,8 @@ public class RocketScript : MonoBehaviour
     }
     IEnumerator Launch()
     {
+        // leave behind any bears we didn't pick up
+
         Traveling = true;
 
         Thrusters.Play();
@@ -159,7 +161,7 @@ public class RocketScript : MonoBehaviour
         Traveling = false;
         CurrentTile = DestinationTile;
         DestinationTile = null;
-        OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
+        GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
     }
     IEnumerator Travel()
     {

@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InitGame();
-        OnRocketLanded += SetActivePlanet;
+        OnRocketLanded.AddListener(SetActivePlanet);
     }
 
     // Update is called once per frame
