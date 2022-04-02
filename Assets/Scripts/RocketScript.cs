@@ -162,6 +162,7 @@ public class RocketScript : MonoBehaviour
         CurrentTile = DestinationTile;
         DestinationTile = null;
         GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
+        //GameManager.instance.ActivePlanet = CurrentTile.parentPlanet;
     }
     IEnumerator Travel()
     {
@@ -214,7 +215,8 @@ public class RocketScript : MonoBehaviour
         Thrusters.Stop();
 
         Traveling = false;
-        //GameManager.instance.OnGameStart?.Invoke();
+        GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
+        GameManager.instance.OnGameStart?.Invoke();
     }
     #endregion
 }
