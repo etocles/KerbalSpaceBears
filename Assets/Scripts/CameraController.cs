@@ -29,8 +29,8 @@ public class CameraController : MonoBehaviour
         }
         if(Input.GetMouseButton(0)){
             Vector3 loc = saveLocation - Input.mousePosition;
-            pivotPoint.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), loc.y/35.0f);
-            pivotPoint.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), loc.x/35.0f, Space.World);
+            pivotPoint.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), loc.y*cameraRotationSpeed/35.0f, Space.World);
+            pivotPoint.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), loc.x*cameraRotationSpeed/35.0f, Space.World);
             saveLocation = Input.mousePosition;
         }
     }
