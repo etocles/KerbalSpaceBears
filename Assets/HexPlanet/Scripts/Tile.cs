@@ -23,6 +23,7 @@ public enum Sides
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
 
+	public bool Occupied;
 	public bool Selected;
 	public static float planetScale;
 	private static int ID = 0;
