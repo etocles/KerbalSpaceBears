@@ -644,7 +644,7 @@ public class Hexsphere : MonoBehaviour {
             }
             if (GenerateTileColliders) tile.gameObject.AddComponent<MeshCollider>();
         }
-        GameManager.instance.SpawnPolarBears(15);
+        //GameManager.instance.SpawnPolarBears(15);
 	}
 
 	public void setWorldScale(float scale){
