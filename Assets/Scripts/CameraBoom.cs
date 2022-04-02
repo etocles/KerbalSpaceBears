@@ -211,7 +211,7 @@ public class CameraBoom : MonoBehaviour
 		float rad = hexsphere.planetScale;
 		minZoom = -(rad * 2);
 		maxZoom = 0.3f * rad;
-		pivotZoom = (minZoom + maxZoom) * 0.5f; //Will maybe tweak this
+		pivotZoom = (minZoom + maxZoom) * 0.6f; //Will maybe tweak this
 		///*
 		// set cam pivot and modify minZoom and maxZoom to nullify the offset
 
