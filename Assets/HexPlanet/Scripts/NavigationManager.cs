@@ -16,19 +16,27 @@ public class NavigationManager : MonoBehaviour {
 		planet = transform.parent.GetComponent<Hexsphere>();
 	}
 
-
 	// Find the closest fish tile
-    public bool FindClosestFishTiles(Tile start, out Stack<Tile> pathStack){
+    public bool FindClosestIDTiles(Hexsphere.BiomeType biomeType, Tile start, out Stack<Tile> pathStack){
 		pathStack = new Stack<Tile>();
+		// if start is already the tile do not return a path
+		if(start.GroupID == planet.FindBiomeIDByType(biomeType))
+			return false;
+
+		// get tiles of all biomeids from tiletype
+		List<Tile> NewIceTiles = new List<Tile>();
 		//Check if the connected region which start is in also contains end
-		List<Tile> fish = planet.GetTilesByBiome(Hexsphere.BiomeType.Fish);
-		foreach(Tile f in fish){
-			if (!start.navigable || !f.navigable)
-				fish.Remove(f);
+		foreach(Tile potentialTile in planet.GetTilesByBiome(biomeType)){
+			if (start.navigable && potentialTile.navigable && !potentialTile.Occupied)
+				NewIceTiles.Add(potentialTile);
 		}
-		
-		Tile end = ClosestFishTile(fish, start);
-		
+
+		Tile end;
+		if(!(end = ClosestTile(NewIceTiles, start)))
+			return false;
+			
+		end.Occupied = true;
+
 		//Find the shortest path between two tiles using Dijkstra's algorithm
 		List<Tile> unvisited = new List<Tile>();
 		Dictionary<Tile, int> distanceMap = new Dictionary<Tile, int> ();
@@ -169,7 +177,7 @@ public class NavigationManager : MonoBehaviour {
 	}
 
 	// BFS, returns the closest tile from a list of tiles
-	public Tile ClosestFishTile(List<Tile> tiles, Tile start) {
+	public Tile ClosestTile(List<Tile> tiles, Tile start) {
 		HashSet<Tile> visited = new HashSet<Tile>();
 		Queue<Tile> queue = new Queue<Tile>();
 		queue.Enqueue(start);

@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentPlanet: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 2
   currentTile: {fileID: 0}
   moving: 0
 --- !u!114 &2639435621510431183

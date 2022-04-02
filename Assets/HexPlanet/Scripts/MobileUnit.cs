@@ -26,7 +26,8 @@ public class MobileUnit : MonoBehaviour {
     {
 		moving = true;
 		//Pop the first tile from the stack as it is the one we are currently on
-		currentTile = path.Pop ();
+		if(path.Count > 0)
+			currentTile = path.Pop();
         Vector3 lastPos = transform.position;
 		//Pop off the tiles in the path and move to each one
 		while (path.Count > 0)

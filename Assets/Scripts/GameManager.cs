@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     public void InitGame()
     {
         KillBears();
-        SpawnPolarBears(10);
+        //SpawnPolarBears(10);
         // greet user by using GamePlay canvas to convey that we have to land on a planet
         /*
          *  TODO: Implement
