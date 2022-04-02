@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Planets\PlanetaryOrbit.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Planets\PlanetaryParent.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
