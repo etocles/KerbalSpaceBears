@@ -9,26 +9,35 @@ public class RocketScript : MonoBehaviour
     public Tile DestinationTile;
     public ParticleSystem Thrusters;
 
-    public int NumBears = 0;
+    public HashSet<GameObject> BearsOwned;
+    public HashSet<GameObject> BearsBoarded;
+    public int NumBears => BearsOwned.Count;
     public float NumOil = 0;
-    public int BearThreshold = 2;
-    public float OilThreshold = 0.6f;
+    public int NumFish = 0;
     public bool CanLaunch => (NumBears >= BearThreshold) && (NumOil >= OilThreshold);
     public bool Traveling = false;
     public bool Sank = false;
 
+
+    [Tooltip("How many fish per bear")]
+    public static int FishPerBear = 2;
+    [Tooltip("Minimum bears for takeoff")]
+    public static int BearThreshold = 2;
+    [Tooltip("Minimum oil for takeoff")]
+    public static float OilThreshold = 0.6f;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        BearsOwned = new HashSet<GameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // for testing, do movement sequence
-        if (Input.GetKeyDown(KeyCode.Space) 
-            && !Traveling 
+        if (Input.GetKeyDown(KeyCode.Space)
+            && !Traveling
             && DestinationTile.parentPlanet != CurrentTile.parentPlanet)
         {
             StartLaunch();
@@ -38,6 +47,19 @@ public class RocketScript : MonoBehaviour
             TrySink();
         }
     }
+
+    #region Resource Functions
+    public void AddOil(float amt) => NumOil += amt;
+    public void AddFish(int amt) => NumFish += amt;
+    public void RecruitBear(GameObject bear) {
+        if (NumFish >= FishPerBear)
+        {
+            NumFish -= FishPerBear;
+            BearsOwned.Add(bear);
+        }
+    }
+    #endregion  
+
 
     void TrySink()
     {
@@ -52,12 +74,11 @@ public class RocketScript : MonoBehaviour
             Sank = true;
         }
     }
-
     // leave atmosphere by incrementing 
     void StartLaunch() => StartCoroutine(Launch());
-
     public void FirstLanding(Tile tile) => StartCoroutine(FirstLandingCutscene(tile));
 
+    #region Coroutines
     IEnumerator TipOver()
     {
         Vector3 startRot = transform.localEulerAngles;
@@ -78,7 +99,6 @@ public class RocketScript : MonoBehaviour
 
         GameManager.instance.OnGameOver?.Invoke();
     }
-
     IEnumerator Launch()
     {
         Traveling = true;
@@ -106,7 +126,6 @@ public class RocketScript : MonoBehaviour
 
         StartCoroutine(Travel());
     }
-
     IEnumerator Land()
     {
         transform.SetParent(DestinationTile.transform);
@@ -141,7 +160,6 @@ public class RocketScript : MonoBehaviour
         CurrentTile = DestinationTile;
         DestinationTile = null;
     }
-
     IEnumerator Travel()
     {
 
@@ -171,7 +189,6 @@ public class RocketScript : MonoBehaviour
 
         StartCoroutine(Land());
     }
-
     IEnumerator FirstLandingCutscene(Tile tile)
     {
         CurrentTile = tile;
@@ -196,5 +213,5 @@ public class RocketScript : MonoBehaviour
         Traveling = false;
         GameManager.instance.OnGameStart?.Invoke();
     }
-
+    #endregion
 }
