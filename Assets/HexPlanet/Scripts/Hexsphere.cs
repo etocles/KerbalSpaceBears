@@ -79,7 +79,7 @@ public class Hexsphere : MonoBehaviour {
     public List<Tile> pentagonTiles;
     [HideInInspector]
     public List<Tile> IceTiles;
-    [HideInInspector]
+    //[HideInInspector]
     public List<Tile> FishTiles;
 
 	[HideInInspector]
@@ -657,7 +657,6 @@ public class Hexsphere : MonoBehaviour {
         foreach(Tile tile in tiles)
         {
             if(tile.gameObject.GetComponent<MeshCollider>() != null) DestroyImmediate(tile.GetComponent<MeshCollider>());
-
             if (tile.GroupID == FindBiomeIDByType(BiomeType.Ice) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
             {
                 if (tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
@@ -672,19 +671,9 @@ public class Hexsphere : MonoBehaviour {
                 }
                 tile.Extrude(neighborIceCount * 0.01f);
             }
-            if (tile.GroupID == FindBiomeIDByType(BiomeType.Fish) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
+            if (tile.GroupID == 3)
             {
-                if (tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
-                {
-                    tile.SetGroupID(FishBiomeID);
-                }
                 FishTiles.Add(tile);
-                int neighborIceCount = 0;
-                foreach (Tile neighbor in tile.neighborTiles)
-                {
-                    if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice)) neighborIceCount++;
-                }
-                tile.Extrude(neighborIceCount * 0.01f);
             }
             if (GenerateTileColliders) tile.gameObject.AddComponent<MeshCollider>();
         }

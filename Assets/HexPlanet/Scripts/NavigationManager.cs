@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class NavigationManager : MonoBehaviour {
 
 	public List<Tile> worldTiles;
-	public Hexsphere planet;
+	private Hexsphere planet;
 	public LineRenderer pathRenderer;
 
 	public void setWorldTiles(List<Tile> tiles){
@@ -13,18 +13,9 @@ public class NavigationManager : MonoBehaviour {
 	}
 
 	void Start(){
-		// get all of the fish tiles
-		//fishTiles = planet.FishTiles;
+		planet = transform.parent.GetComponent<Hexsphere>();
 	}
-	/*
-	// Get all of the file tiles in the planet
-	private List<Tile> initiateAllFishTiles(){
-		fishTiles = new List<Tile>();
-		foreach(Tile t in worldTiles){
-			if(t.BiomeType == Hexsphere.BiomeType.Fish)
-				fishTiles.Add(t);
-		}
-	}*/
+
 
 	// Find the closest fish tile
     public bool FindClosestFishTiles(Tile start, out Stack<Tile> pathStack){
@@ -92,7 +83,7 @@ public class NavigationManager : MonoBehaviour {
 			pathStack.Push(pathV);
 			pathV = previousNode[pathV];
 		}
-		pathStack.Push (pathV);
+		pathStack.Push(pathV);
 		return true;
     }
 
@@ -179,21 +170,24 @@ public class NavigationManager : MonoBehaviour {
 
 	// BFS, returns the closest tile from a list of tiles
 	public Tile ClosestFishTile(List<Tile> tiles, Tile start) {
-		Dictionary<Tile, Tile> previous = new Dictionary<Tile, Tile>();
+		HashSet<Tile> visited = new HashSet<Tile>();
 		Queue<Tile> queue = new Queue<Tile>();
 		queue.Enqueue(start);
+		visited.Add(start);
 
 		while(queue.Count > 0){
 			Tile t = queue.Dequeue();
 			foreach(Tile v in t.neighborTiles){
-				if(previous.ContainsKey(v))
+				if(visited.Contains(v))
 					continue;
-				previous[v] = t;
-				queue.Enqueue(v);
+				
 				foreach(Tile d in tiles){
 					if(v == d)
 						return d;
 				}
+				
+				visited.Add(t);
+				queue.Enqueue(v);
 			}
 		}
 		return null;
