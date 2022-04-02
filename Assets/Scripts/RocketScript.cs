@@ -39,7 +39,9 @@ public class RocketScript : MonoBehaviour
         BearsOwned = new HashSet<GameObject>();
         for (int i = 0; i < StartingBears; i++)
         {
-            BearsOwned.Add(Instantiate(SpaceBearPrefab));
+            GameObject bear = Instantiate(SpaceBearPrefab);
+            bear.SetActive(false);
+            BearsOwned.Add(bear);
         }
         BearsBoarded = new HashSet<GameObject>(BearsOwned);
     }
@@ -47,9 +49,8 @@ public class RocketScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // for testing, do movement sequence
-        if (Input.GetKeyDown(KeyCode.Space)
-            && !Traveling
+        if (/* TODO: CLICKED CONTEXT MENU TO MOVE PLANETS &&*/
+            !Traveling // traveling can be removed when Context Functionality is added
             && DestinationTile.parentPlanet != CurrentTile.parentPlanet)
         {
             StartLaunch();
@@ -61,13 +62,14 @@ public class RocketScript : MonoBehaviour
     }
 
     #region Resource Functions
-    public void AddOil(float amt) => NumOil += amt;
-    public void AddFish(int amt) => NumFish += amt;
+    public void AddOil(float amt) => NumOil += amt; // TODO: Report to canvas
+    public void AddFish(int amt) => NumFish += amt; // TODO: Report to canvas
     public void RecruitBear(GameObject bear) {
         if (NumFish >= FishPerBear)
         {
             NumFish -= FishPerBear;
             BearsOwned.Add(bear);
+            // TODO: Report to canvas
         }
     }
     public void BoardBear(GameObject bear)
@@ -248,6 +250,7 @@ public class RocketScript : MonoBehaviour
         GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
         TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnRocketLanded);
         GameManager.instance.OnGameStart?.Invoke();
+        GameStateController.instance.UnboardBears();
     }
     #endregion
 }
