@@ -76,6 +76,8 @@ public class Hexsphere : MonoBehaviour {
     public List<Tile> pentagonTiles;
     [HideInInspector]
     public List<Tile> IceTiles;
+    [HideInInspector]
+    public List<Tile> FishTiles;
 
 	[HideInInspector]
 	public bool tilesGenerated;
@@ -522,9 +524,11 @@ public class Hexsphere : MonoBehaviour {
         List<Tile> unAssignedTiles = new List<Tile>(tiles);
         List<Tile> tilesToRemove = new List<Tile>();
         IceTiles.Clear();
+        FishTiles.Clear();
 
         int UnassignedBiomeID = FindBiomeIDByType(BiomeType.Unassigned);
         int IceBiomeID = FindBiomeIDByType(BiomeType.Ice);
+        int FishBiomeID = FindBiomeIDByType(BiomeType.Fish);
         // Generate grassland around colony centers
         for(int i = 0; i < unAssignedTiles.Count; i++)
         {
@@ -635,6 +639,20 @@ public class Hexsphere : MonoBehaviour {
                     tile.SetGroupID(IceBiomeID);
                 }
                 IceTiles.Add(tile);
+                int neighborIceCount = 0;
+                foreach (Tile neighbor in tile.neighborTiles)
+                {
+                    if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice)) neighborIceCount++;
+                }
+                tile.Extrude(neighborIceCount * 0.01f);
+            }
+            if (tile.GroupID == FindBiomeIDByType(BiomeType.Fish) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
+            {
+                if (tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
+                {
+                    tile.SetGroupID(FishBiomeID);
+                }
+                Fishtiles.Add(tile);
                 int neighborIceCount = 0;
                 foreach (Tile neighbor in tile.neighborTiles)
                 {
