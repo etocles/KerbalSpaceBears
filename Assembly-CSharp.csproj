@@ -65,7 +65,6 @@
     <Compile Include="Assets\HexPlanet\Scripts\PlanetVertexData.cs" />
     <Compile Include="Assets\HexPlanet\Scripts\MobileUnit.cs" />
     <Compile Include="Assets\HexPlanet\Scripts\NavigationManager.cs" />
-    <Compile Include="Assets\HexPlanet\Scripts\CameraController.cs" />
     <Compile Include="Assets\HexPlanet\Scripts\PlanetTools.cs" />
     <Compile Include="Assets\Scripts\Planets\BezierCurve.cs" />
     <Compile Include="Assets\Scripts\Planets\PlanetaryOrbit.cs" />
