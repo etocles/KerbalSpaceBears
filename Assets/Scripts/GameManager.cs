@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public Hexsphere ActivePlanet;
     public UnityEvent OnGameOver;
     public UnityEvent OnGameStart;
+    public UnityEvent<Hexsphere> OnRocketLanded;
     public UnityEvent OnTileSelected;
 
     private List<GameObject> spawnedPolarBears = new List<GameObject>();
@@ -109,11 +110,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartGame() { GameStarted = true; }
+    private void SetActivePlanet(Hexsphere planet) { ActivePlanet = planet; }
 
     // Start is called before the first frame update
     void Start()
     {
         InitGame();
+        OnRocketLanded += SetActivePlanet;
     }
 
     // Update is called once per frame

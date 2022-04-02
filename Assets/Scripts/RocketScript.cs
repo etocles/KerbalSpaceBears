@@ -159,6 +159,7 @@ public class RocketScript : MonoBehaviour
         Traveling = false;
         CurrentTile = DestinationTile;
         DestinationTile = null;
+        OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
     }
     IEnumerator Travel()
     {
