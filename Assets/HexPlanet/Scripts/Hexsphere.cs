@@ -678,7 +678,7 @@ public class Hexsphere : MonoBehaviour {
                 {
                     tile.SetGroupID(FishBiomeID);
                 }
-                Fishtiles.Add(tile);
+                FishTiles.Add(tile);
                 int neighborIceCount = 0;
                 foreach (Tile neighbor in tile.neighborTiles)
                 {

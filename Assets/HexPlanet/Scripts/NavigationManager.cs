@@ -36,7 +36,7 @@ public class NavigationManager : MonoBehaviour {
 				fish.Remove(f);
 		}
 		
-		Tile end = BFSShortestPath(fish, start);
+		Tile end = ClosestFishTile(fish, start);
 		
 		//Find the shortest path between two tiles using Dijkstra's algorithm
 		List<Tile> unvisited = new List<Tile>();
@@ -177,38 +177,26 @@ public class NavigationManager : MonoBehaviour {
 		}
 	}
 
-	public Tile BFSShortestPath(List<Tile> graph, Tile start) {
-		var previous = new Dictionary<Tile, Tile>();
-		var queue = new Queue<Tile>();
+	// BFS, returns the closest tile from a list of tiles
+	public Tile ClosestFishTile(List<Tile> tiles, Tile start) {
+		Dictionary<Tile, Tile> previous = new Dictionary<Tile, Tile>();
+		Queue<Tile> queue = new Queue<Tile>();
 		queue.Enqueue(start);
 
 		while(queue.Count > 0){
-			var vertex = queue.Dequeue();
-			foreach(var neighbor in graph.Contains(vertex)) {
-				if (previous.ContainsKey(neighbor))
+			Tile t = queue.Dequeue();
+			foreach(Tile v in t.neighborTiles){
+				if(previous.ContainsKey(v))
 					continue;
-				
-				previous[neighbor] = vertex;
-				queue.Enqueue(neighbor);
+				previous[v] = t;
+				queue.Enqueue(v);
+				foreach(Tile d in tiles){
+					if(v == d)
+						return d;
+				}
 			}
 		}
-
-		Tile shortestPath = v => {
-			var path = new List<Tile>{};
-
-			var current = v;
-			while (!current.Equals(start)) {
-				path.Add(current);
-				current = previous[current];
-			};
-
-			path.Add(start);
-			path.Reverse();
-
-			return path;
-		};
-
-		return shortestPath;
+		return null;
 	}
 
 	public List<Tile> DFS(Tile start){
