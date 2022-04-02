@@ -1,11 +1,20 @@
 fileFormatVersion: 2
-guid: af9b49cb8aa9dee46bffac770690454a
+guid: 841e4d5b65ec0ca409b6b2ffd560a4c8
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: 1827226128182048838
-    second: Take 001
+      74: -5252816984213320552
+    second: idle
+  - first:
+      74: -3419257869308726280
+    second: walk
+  - first:
+      74: -2045415434294449350
+    second: bend
+  - first:
+      74: -3824078280368627652
+    second: eat
   externalObjects: {}
   materials:
     materialImportMode: 2
