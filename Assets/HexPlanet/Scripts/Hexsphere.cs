@@ -77,10 +77,6 @@ public class Hexsphere : MonoBehaviour {
 	public List<Tile> tiles;
     [HideInInspector]
     public List<Tile> pentagonTiles;
-    [HideInInspector]
-    public List<Tile> IceTiles;
-    //[HideInInspector]
-    public List<Tile> FishTiles;
 
 	[HideInInspector]
 	public bool tilesGenerated;
@@ -92,7 +88,7 @@ public class Hexsphere : MonoBehaviour {
     public bool TileMeshesRestored;
 
     private PlanetVertexData[] VertexData;
-
+    private Dictionary<BiomeType, List<Tile>> TilesByBiome = new Dictionary<BiomeType, List<Tile>>();
 	void Start()
     {
 		planetID = Planet_ID;
@@ -113,7 +109,7 @@ public class Hexsphere : MonoBehaviour {
     public void Melt(float dt)
     {
         List<Tile> NewIceTiles = new List<Tile>();
-        foreach (Tile tile in IceTiles)
+        foreach (Tile tile in TilesByBiome[BiomeType.Ice])
         {
             float amt = (0.008f) / Mathf.Abs(10-meltRate);
             //float destHeight = tile.ExtrudedHeight - amt;
@@ -131,7 +127,7 @@ public class Hexsphere : MonoBehaviour {
                 NewIceTiles.Add(tile);
             }
         }
-        IceTiles = NewIceTiles;
+        TilesByBiome[BiomeType.Ice] = NewIceTiles;
 
     }
 
@@ -538,7 +534,10 @@ public class Hexsphere : MonoBehaviour {
 			Destroy(t.GetComponent<Collider>());
 		}
 	}
-
+    public List<Tile> GetTilesByBiome(BiomeType type)
+    {
+        return TilesByBiome[type];
+    }
 	
 	void MapBuilder()
     {
@@ -549,8 +548,6 @@ public class Hexsphere : MonoBehaviour {
         //Randomly assign colors
         List<Tile> unAssignedTiles = new List<Tile>(tiles);
         List<Tile> tilesToRemove = new List<Tile>();
-        IceTiles.Clear();
-        FishTiles.Clear();
 
         int UnassignedBiomeID = FindBiomeIDByType(BiomeType.Unassigned);
         int IceBiomeID = FindBiomeIDByType(BiomeType.Ice);
@@ -654,26 +651,23 @@ public class Hexsphere : MonoBehaviour {
 			}
             */
 		}
+        TilesByBiome.Clear();
         foreach(Tile tile in tiles)
         {
             if(tile.gameObject.GetComponent<MeshCollider>() != null) DestroyImmediate(tile.GetComponent<MeshCollider>());
+            // EXTRUDE ICE BASED ON NEIGHBORS
             if (tile.GroupID == FindBiomeIDByType(BiomeType.Ice) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
             {
                 if (tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
                 {
                     tile.SetGroupID(IceBiomeID);
                 }
-                IceTiles.Add(tile);
                 int neighborIceCount = 0;
                 foreach (Tile neighbor in tile.neighborTiles)
                 {
                     if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice)) neighborIceCount++;
                 }
                 tile.Extrude(neighborIceCount * 0.01f);
-            }
-            if (tile.GroupID == 3)
-            {
-                FishTiles.Add(tile);
             }
             // PLACE OBJECTS IN BIOME!
             if (FindBiomeByID(tile.GroupID).ObjectToPlace != null)
@@ -690,6 +684,9 @@ public class Hexsphere : MonoBehaviour {
             }
             
             if (GenerateTileColliders) tile.gameObject.AddComponent<MeshCollider>();
+
+            if(TilesByBiome.ContainsKey(tile.BiomeType) == false) TilesByBiome.Add(tile.BiomeType, new List<Tile>());
+            TilesByBiome[tile.BiomeType].Add(tile);
         }
         //GameManager.instance.SpawnPolarBears(15);
 	}

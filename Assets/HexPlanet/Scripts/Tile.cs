@@ -66,6 +66,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     [HideInInspector]
 	public int GroupID;
+	public Hexsphere.BiomeType BiomeType;
 
     [HideInInspector]
 	public int id;
@@ -479,6 +480,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
 		GroupID = groupId;
 		Hexsphere.Biome thisBiome = parentPlanet.FindBiomeByID(groupId);
+		BiomeType = thisBiome.type;
 		// set color
         if (GroupID < parentPlanet.GroupBiomes.Length)
         {

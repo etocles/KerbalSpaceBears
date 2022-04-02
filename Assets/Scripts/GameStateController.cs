@@ -100,12 +100,12 @@ public class GameStateController : MonoBehaviour
         HashSet<int> randomTiles = new HashSet<int>();
         for (int i = 0; i < count; i++)
         {
-            int num = Random.Range(0, planet.IceTiles.Count);
+            int num = Random.Range(0, planet.GetTilesByBiome(Hexsphere.BiomeType.Ice).Count);
             randomTiles.Add(num);
         }
         foreach (int spawnLoc in randomTiles)
         {
-            PlacePolarBear(planet.IceTiles[spawnLoc]);
+            PlacePolarBear(planet.GetTilesByBiome(Hexsphere.BiomeType.Ice)[spawnLoc]);
         }
     }
     public GameObject PlacePolarBear(Tile location)

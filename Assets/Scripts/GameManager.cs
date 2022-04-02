@@ -59,12 +59,12 @@ public class GameManager : MonoBehaviour
         HashSet<int> randomTiles = new HashSet<int>();
         for(int i = 0; i < count; i++)
         {
-            int num = Random.Range(0, ActivePlanet.IceTiles.Count);
+            int num = Random.Range(0, ActivePlanet.GetTilesByBiome(Hexsphere.BiomeType.Ice).Count);
             randomTiles.Add(num);
         }
         foreach(int spawnLoc in randomTiles)
         {
-            PlacePolarBear(ActivePlanet.IceTiles[spawnLoc]);
+            PlacePolarBear(ActivePlanet.GetTilesByBiome(Hexsphere.BiomeType.Ice)[spawnLoc]);
         }
     }
     public GameObject PlacePolarBear(Tile location)

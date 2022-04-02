@@ -21,7 +21,7 @@ public class NavigationManager : MonoBehaviour {
     public bool FindClosestFishTiles(Tile start, out Stack<Tile> pathStack){
 		pathStack = new Stack<Tile>();
 		//Check if the connected region which start is in also contains end
-		List<Tile> fish = planet.FishTiles;
+		List<Tile> fish = planet.GetTilesByBiome(Hexsphere.BiomeType.Fish);
 		foreach(Tile f in fish){
 			if (!start.navigable || !f.navigable)
 				fish.Remove(f);
