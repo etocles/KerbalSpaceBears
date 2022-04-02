@@ -204,12 +204,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PolarBearPrefab: {fileID: 2236782185681638351, guid: 01e88ae95e03df04bb121cea936576bc, type: 3}
-  OilPrefab: {fileID: 0}
   planetDefinitions:
   - orbitalRadius: 8
     polarBearCount: 12
     oilCount: 5
-    waterWeight: 4
+    waterWeight: 5
     planetScale: 0.86
   - orbitalRadius: 15
     polarBearCount: 5
@@ -5240,6 +5239,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActivePlanet: {fileID: 0}
+  OnGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  PolarBearPrefab: {fileID: 0}
   SelectedTile: {fileID: 0}
 --- !u!4 &364828104
 Transform:

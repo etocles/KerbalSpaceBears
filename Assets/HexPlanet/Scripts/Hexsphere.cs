@@ -675,6 +675,20 @@ public class Hexsphere : MonoBehaviour {
             {
                 FishTiles.Add(tile);
             }
+            // PLACE OBJECTS IN BIOME!
+            if (FindBiomeByID(tile.GroupID).ObjectToPlace != null)
+            {
+                tile.placeObject(Instantiate(FindBiomeByID(tile.GroupID).ObjectToPlace));
+                if (tile.PlacedObjects.Count > 0 && tile.PlacedObjects[tile.PlacedObjects.Count - 1] != null)
+                {
+                    tile.PlacedObjects[tile.PlacedObjects.Count - 1].transform.localPosition += new Vector3(0, tile.ExtrudedHeight + 0.01f, 0);
+                }
+                else if (tile.PlacedObjects[tile.PlacedObjects.Count - 1] == null)
+                {
+                    tile.PlacedObjects.RemoveAt(tile.PlacedObjects.Count - 1);
+                }
+            }
+            
             if (GenerateTileColliders) tile.gameObject.AddComponent<MeshCollider>();
         }
         //GameManager.instance.SpawnPolarBears(15);
