@@ -8,9 +8,14 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Hexsphere ActivePlanet;
     public UnityEvent OnGameOver;
+    public UnityEvent OnGameStart;
+    public UnityEvent OnTileSelected;
 
     private List<GameObject> spawnedPolarBears = new List<GameObject>();
     public GameObject PolarBearPrefab;
+    public GameObject RocketPrefab;
+    //public GameObject Rocket = null;
+    private bool GameStarted = false;
 
     [HideInInspector] public Tile SelectedTile;
 
@@ -35,6 +40,7 @@ public class GameManager : MonoBehaviour
         SelectedTile = tile;
         SelectedTile.SetHighlight(0.75f);
         SelectedTile.Selected = true;
+        OnTileSelected?.Invoke();
     }
     public void DeselectTile()
     {
@@ -78,17 +84,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void InitGame()
     {
         KillBears();
         SpawnPolarBears(10);
-        
+        // greet user by using GamePlay canvas to convey that we have to land on a planet
+        /*
+         *  TODO: Implement
+         */
+        // wait for tile to be selected
+        OnTileSelected.AddListener(FirstLanding);
+        OnGameStart.AddListener(StartGame);
+    }
+
+    public void FirstLanding()
+    {
+        // only fire once
+        OnTileSelected.RemoveListener(FirstLanding);
+        // Instantiate the ship
+        GameObject Rocket = Instantiate(RocketPrefab, SelectedTile.transform);
+        // Do landing sequence
+        Rocket.GetComponent<RocketScript>().FirstLanding(SelectedTile);
+    }
+
+    private void StartGame() { GameStarted = true; }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        InitGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(ActivePlanet != null) ActivePlanet.Melt(Time.deltaTime);
+        if(ActivePlanet != null && GameStarted) ActivePlanet.Melt(Time.deltaTime);
     }
 }

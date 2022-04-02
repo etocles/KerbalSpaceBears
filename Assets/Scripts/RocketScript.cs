@@ -53,11 +53,9 @@ public class RocketScript : MonoBehaviour
     }
 
     // leave atmosphere by incrementing 
-    void StartLaunch()
-    {
-        Traveling = true;
-        StartCoroutine(Launch());
-    }
+    void StartLaunch() => StartCoroutine(Launch());
+
+    public void FirstLanding(Tile tile) => StartCoroutine(FirstLandingCutscene(tile));
 
     IEnumerator TipOver()
     {
@@ -177,6 +175,35 @@ public class RocketScript : MonoBehaviour
         transform.localPosition = endPos;
 
         StartCoroutine(Land());
+    }
+
+    IEnumerator FirstLandingCutscene(Tile tile)
+    {
+        CurrentTile = tile;
+        Traveling = true;
+
+        //thrusters on
+        /* TODO: Implement
+         */
+
+        Vector3 startPos = new Vector3(0, 1.0f, 0);
+        Vector3 endPos = new Vector3(0, tile.ExtrudedHeight * 2, 0);
+
+        float t = 0.0f;
+        while (t <= 2.0f)
+        {
+            t += Time.deltaTime;
+            transform.localPosition = Vector3.Lerp(startPos, endPos, t / 2.0f);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localPosition = endPos;
+
+        // thrusters off
+        /* TODO: Implement
+         */
+
+        Traveling = false;
+        GameManager.instance.OnGameStart?.Invoke();
     }
 
 }
