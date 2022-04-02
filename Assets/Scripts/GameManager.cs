@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     private List<GameObject> spawnedPolarBears = new List<GameObject>();
     public GameObject PolarBearPrefab;
+    public GameObject SpaceBearPrefab;
     public GameObject RocketPrefab;
     public GameObject Rocket = null;
     private bool GameStarted = false;
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
         OnTileSelected.RemoveListener(FirstLanding);
         // Instantiate the ship
         Rocket = Instantiate(RocketPrefab, SelectedTile.transform);
+        Rocket.GetComponent<RocketScript>().SpaceBearPrefab = SpaceBearPrefab;
         // Do landing sequence
         Rocket.GetComponent<RocketScript>().FirstLanding(SelectedTile);
     }

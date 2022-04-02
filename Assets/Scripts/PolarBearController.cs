@@ -68,6 +68,9 @@ public class PolarBearController : MonoBehaviour {
                 ChangeState(BearState.LOST);
             }
         }
+        // if voyage is complete, notify ship and deactivate self
+        GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator SearchForOil(Stack<Tile> path){
@@ -93,6 +96,7 @@ public class PolarBearController : MonoBehaviour {
             }
         }
     }
+    public void SetShipTile(Tile tile) => shipTile = tile;
 
     public void OnTileClicked(Tile tile){
         //StartCoroutine(GetFish(tile, null));

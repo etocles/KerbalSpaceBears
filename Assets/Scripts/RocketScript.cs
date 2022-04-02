@@ -17,6 +17,7 @@ public class RocketScript : MonoBehaviour
     public bool CanLaunch => (NumBears >= BearThreshold) && (NumOil >= OilThreshold);
     public bool Traveling = false;
     public bool Sank = false;
+    
 
 
     [Tooltip("How many fish per bear")]
@@ -25,11 +26,22 @@ public class RocketScript : MonoBehaviour
     public static int BearThreshold = 2;
     [Tooltip("Minimum oil for takeoff")]
     public static float OilThreshold = 0.6f;
+    [Tooltip("Starting Amount of Bears")]
+    public static int StartingBears = 3;
+    [Tooltip("Starting Amount of Fish")]
+    public static int StartingFish = 3;
+    [SerializeField]
+    public GameObject SpaceBearPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
         BearsOwned = new HashSet<GameObject>();
+        for (int i = 0; i < StartingBears; i++)
+        {
+            BearsOwned.Add(Instantiate(SpaceBearPrefab));
+        }
+        BearsBoarded = new HashSet<GameObject>(BearsOwned);
     }
 
     // Update is called once per frame
@@ -57,6 +69,23 @@ public class RocketScript : MonoBehaviour
             NumFish -= FishPerBear;
             BearsOwned.Add(bear);
         }
+    }
+    public void BoardBear(GameObject bear)
+    {
+        BearsBoarded.Add(bear);
+    }
+    public GameObject UnboardBear()
+    {
+        List<GameObject> temp = new List<GameObject>(BearsBoarded);
+        GameObject b = temp[0];
+        // remove bear from ship
+        BearsBoarded.Remove(b);
+        return b;
+    }
+    public void LeaveBehind()
+    {
+        BearsOwned.IntersectWith(BearsBoarded);
+        //bears owned gets changed but bears boarded doesn't
     }
     #endregion  
 
@@ -102,6 +131,7 @@ public class RocketScript : MonoBehaviour
     IEnumerator Launch()
     {
         // leave behind any bears we didn't pick up
+        LeaveBehind();
 
         Traveling = true;
 
@@ -162,7 +192,7 @@ public class RocketScript : MonoBehaviour
         CurrentTile = DestinationTile;
         DestinationTile = null;
         GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
-        //GameManager.instance.ActivePlanet = CurrentTile.parentPlanet;
+        GameStateController.instance.UnboardBears();
     }
     IEnumerator Travel()
     {

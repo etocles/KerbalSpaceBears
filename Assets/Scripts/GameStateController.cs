@@ -122,4 +122,54 @@ public class GameStateController : MonoBehaviour
         spawnedPolarBears.Add(spawnedBear);
         return spawnedBear;
     }
+    
+    public void DepositBear(GameObject bear, Tile location)
+    {
+        bear.SetActive(true);
+        bear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
+        bear.GetComponent<MobileUnit>().currentTile = location;
+        location.placeObject(bear);
+        location.Occupied = true;
+    }
+
+    public void BoardBears()
+    {
+        RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
+        // request return and let PolarBear controller take care of it
+        foreach (GameObject bear in rocket.BearsOwned)
+        {
+            bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
+            bear.GetComponent<PolarBearController>().ReturnToShip();
+        }
+    }
+    public void UnboardBears()
+    {
+        StartCoroutine(UnBoarding());
+    }
+
+    IEnumerator UnBoarding()
+    {
+        RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
+        Tile GetUnOccupiedTile()
+        {
+            foreach (Tile t in rocket.CurrentTile.neighborTiles) {
+                if (!t.Occupied)
+                    return t;
+            }
+            return null;
+        }
+        while (rocket.BearsBoarded.Count > 0)
+        {
+            Tile tryTile = GetUnOccupiedTile();
+            if (tryTile == null)
+            {
+                yield return new WaitForEndOfFrame();
+                continue;
+            }
+
+            GameObject bear = rocket.UnboardBear();
+            DepositBear(bear, tryTile);
+        }
+    }
+
 }

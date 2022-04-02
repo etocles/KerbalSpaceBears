@@ -3,7 +3,11 @@ guid: f46f4d9baf220564f9cf3fcd52ffc049
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - CurrentTile: {instanceID: 0}
+  - DestinationTile: {instanceID: 0}
+  - Thrusters: {instanceID: 0}
+  - spaceBearPrefab: {fileID: 7275161588404515118, guid: 8944c622fb674e44abac57f3bf045aeb, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
