@@ -30,7 +30,7 @@ public class Hexsphere : MonoBehaviour {
         public int movementCost;
         
         public Material material;
-       
+        public GameObject ObjectToPlace;
 
     }
     public static List<Hexsphere> planetInstances = new List<Hexsphere> ();

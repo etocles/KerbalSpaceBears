@@ -484,8 +484,10 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             tileRenderer.sharedMaterial = thisBiome.material;
             TileMaterial = tileRenderer.sharedMaterial;
         }
-
+		if (thisBiome.ObjectToPlace != null) placeObject(Instantiate(thisBiome.ObjectToPlace));
+		if(PlacedObjects.Count > 0) PlacedObjects[PlacedObjects.Count - 1].transform.localPosition += new Vector3(0, 0.005f, 0);
 		navigable = thisBiome.navigable;
+		
 		
 	}
 
