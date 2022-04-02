@@ -74,6 +74,8 @@ public class Hexsphere : MonoBehaviour {
 	public List<Tile> tiles;
     [HideInInspector]
     public List<Tile> pentagonTiles;
+    [HideInInspector]
+    public List<Tile> IceTiles;
 
 	[HideInInspector]
 	public bool tilesGenerated;
@@ -515,10 +517,11 @@ public class Hexsphere : MonoBehaviour {
 		//Put your map building logic in here
 	}
 
-	public void generateRandomRegions(){
+	public void GenerateRandom(){
         //Randomly assign colors
         List<Tile> unAssignedTiles = new List<Tile>(tiles);
         List<Tile> tilesToRemove = new List<Tile>();
+        IceTiles.Clear();
 
         int UnassignedBiomeID = FindBiomeIDByType(BiomeType.Unassigned);
         int IceBiomeID = FindBiomeIDByType(BiomeType.Ice);
@@ -631,6 +634,7 @@ public class Hexsphere : MonoBehaviour {
                 {
                     tile.SetGroupID(IceBiomeID);
                 }
+                IceTiles.Add(tile);
                 int neighborIceCount = 0;
                 foreach (Tile neighbor in tile.neighborTiles)
                 {
@@ -640,6 +644,7 @@ public class Hexsphere : MonoBehaviour {
             }
             if (GenerateTileColliders) tile.gameObject.AddComponent<MeshCollider>();
         }
+        GameManager.instance.SpawnPolarBears(15);
 	}
 
 	public void setWorldScale(float scale){
