@@ -8,6 +8,8 @@ public class PolarBearController : MonoBehaviour {
         DEFAULT, FISH, OIL, LOST, SHIP
     }
 
+    [SerializeField] float gatheringTime = 5.0f;
+
     private Tile shipTile;
     private MobileUnit Unit;
     private BearState state;
@@ -23,13 +25,13 @@ public class PolarBearController : MonoBehaviour {
             return;
         state = newState;
         switch(newState){
-            case FISH:
+            case BearState.FISH:
                 break;
-            case OIL:
+            case BearState.OIL:
                 break;
-            case LOST:
+            case BearState.LOST:
                 break;
-            case SHIP:
+            case BearState.SHIP:
                 break;
             default:
                 break;
@@ -41,7 +43,7 @@ public class PolarBearController : MonoBehaviour {
         ChangeState(BearState.FISH);
         yield return StartCoroutine(SearchForFish(fishPath));
         //if(path == null) -> lost state (?)
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(gatheringTime);
         ReturnToShip();
 
         yield return null;
@@ -50,9 +52,9 @@ public class PolarBearController : MonoBehaviour {
     public IEnumerator GetOil(Tile tile, Stack<Tile> oilPath){
         // tile (temp) = ship starting origin
         ChangeState(BearState.OIL);
-        yield return StartCoroutine(SearchForOil(fishPath));
+        yield return StartCoroutine(SearchForOil(oilPath));
         //if(path == null) -> lost state (?)
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(gatheringTime);
         ReturnToShip();
     }
 
