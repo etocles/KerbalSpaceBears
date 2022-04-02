@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public Transform camTransform;
 
     [SerializeField] float cameraZoomFloor;
+    [SerializeField] float cameraYAngleCeiling;
     [SerializeField] float cameraZoomCeiling;
     [SerializeField] float cameraZoomSpeed;
 
@@ -29,7 +30,18 @@ public class CameraController : MonoBehaviour
         }
         if(Input.GetMouseButton(0)){
             Vector3 loc = saveLocation - Input.mousePosition;
+            // rotate side to side
             camTransform.RotateAround(pivotPoint.position, Vector3.up, loc.x*cameraRotationSpeed/35.0f);
+            Vector3 pos = camTransform.position;
+            // rotate up and down with Clamping
+            if (Mathf.Abs(loc.y) >= 0.1f)
+            {
+                pos.y += loc.y * cameraRotationSpeed / 35.0f;
+                pos.y = Mathf.Clamp(pos.y, -cameraYAngleCeiling, cameraYAngleCeiling);
+                camTransform.position = pos.normalized * (camTransform.position - pivotPoint.position).magnitude;
+                camTransform.LookAt(pivotPoint, Vector3.up);
+            }
+
             saveLocation = Input.mousePosition;
         }
     }
