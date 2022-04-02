@@ -53,11 +53,7 @@ public class Hexsphere : MonoBehaviour {
 	public int TileCount;
 	[Space, Space, Range(0, 5)]
 	public int detailLevel;
-
-    public bool generateHologramSphere = false;
-
-    public Material pentagonMaterial;
-    public Material hexagonMaterial;
+    public Material highlightedMaterial;
     [Tooltip("The materials assigned to each tile group.  The length of this array determines the number of available tile groups.")]
     public Biome[] GroupBiomes;
 
@@ -627,18 +623,22 @@ public class Hexsphere : MonoBehaviour {
 		}
         foreach(Tile tile in tiles)
         {
-            if (tile.GroupID != FindBiomeIDByType(BiomeType.Ice) && tile.GroupID != FindBiomeIDByType(BiomeType.Unassigned)) continue;
-            
-            if(tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
+            if(tile.gameObject.GetComponent<MeshCollider>() != null) DestroyImmediate(tile.GetComponent<MeshCollider>());
+
+            if (tile.GroupID == FindBiomeIDByType(BiomeType.Ice) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
             {
-                tile.SetGroupID(IceBiomeID);
+                if (tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
+                {
+                    tile.SetGroupID(IceBiomeID);
+                }
+                int neighborIceCount = 0;
+                foreach (Tile neighbor in tile.neighborTiles)
+                {
+                    if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice)) neighborIceCount++;
+                }
+                tile.Extrude(neighborIceCount * 0.01f);
             }
-            int neighborIceCount = 0;
-            foreach(Tile neighbor in tile.neighborTiles)
-            {
-                if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice)) neighborIceCount++;
-            }
-            tile.Extrude(neighborIceCount * 0.01f);
+            if (GenerateTileColliders) tile.gameObject.AddComponent<MeshCollider>();
         }
 	}
 

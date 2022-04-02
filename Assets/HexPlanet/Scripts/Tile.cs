@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using UnityEditor;
 using System.Xml.Serialization.Advanced;
-
+using UnityEngine.EventSystems;
 public enum TileDisplayOptions
 {
     None,
@@ -20,9 +20,10 @@ public enum Sides
 
 
 [Serializable]
-public class Tile : MonoBehaviour {
+public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+{
 
-
+	public bool Selected;
 	public static float planetScale;
 	private static int ID = 0;
     public static Action<Tile> OnTileClickedAction;
@@ -31,7 +32,7 @@ public class Tile : MonoBehaviour {
 	public Hexsphere parentPlanet;
 	
 	public List<Tile> neighborTiles = new List<Tile>();
-
+	
 	//Tile Attributes
 	[Tooltip("Whether or not navigation will consider this tile as a valid to move over")]
 	public bool navigable = true;
@@ -39,6 +40,7 @@ public class Tile : MonoBehaviour {
 	[Range(1, 100)]
 	public int pathCost = 1;
 
+	private MaterialPropertyBlock propBlock;
 	// The center of this tile when initially generated.  Does not account for extrusion.
 	public Vector3 center
     {
@@ -112,6 +114,7 @@ public class Tile : MonoBehaviour {
 	private void Awake()
     {
 		tileRenderer = GetComponent<Renderer> ();
+		propBlock = new MaterialPropertyBlock();
 
 	}
     private void Start()
@@ -130,24 +133,29 @@ public class Tile : MonoBehaviour {
 		id = ID;
 		ID++;
 	}
-
-	void OnMouseEnter()
-    {
-		
-		//Pointer.instance.setPointer (PointerStatus.TILE, FaceCenter, transform.up);
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		SetHighlight(0.33f);
 	}
-	void OnMouseExit()
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		if(Selected == false) SetHighlight(0.0f);
+
+	}
+	public void OnPointerDown(PointerEventData eventData)
+	{
+		GameManager.instance.SelectTile(this);
+	}
+	public void SetHighlight(float intensity)
     {
-		
-		//Pointer.instance.unsetPointer ();
+		tileRenderer.GetPropertyBlock(propBlock);
+		tileRenderer.material.EnableKeyword("_EMISSION");
+		propBlock.SetColor("_EmissionColor", new Color(intensity, intensity, intensity));
+		tileRenderer.SetPropertyBlock(propBlock);
 	}
 	
-	void OnMouseDown()
-    {
-		
-		
-		//pathfindingDrawDemo ();
-	}
+	
 
 	/// <summary>
 	/// Just a simple demo function that allows you to click on two tiles and draw the shortest path between them.
