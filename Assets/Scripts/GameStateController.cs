@@ -59,7 +59,7 @@ public class GameStateController : MonoBehaviour
             spawnedPlanet.transform.localPosition = new Vector3(definition.orbitalRadius, 0, 0);
             planetPivot.transform.localEulerAngles = new Vector3(0, Random.Range(0, 360), 0);
             Rotate rotCtrl = planetPivot.AddComponent<Rotate>();
-            rotCtrl.speed += rotCtrl.speed * (definition.orbitalRadius / 200);
+            rotCtrl.speed -= rotCtrl.speed * (definition.orbitalRadius / 200);
             if (Random.value > 0.5f) rotCtrl.speed *= -1f;
         }
     }
