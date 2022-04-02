@@ -5,7 +5,7 @@ using UnityEngine;
 public class PolarBearController : MonoBehaviour {
 
     public enum BearState{
-        DEFAULT, FISH, LOST
+        DEFAULT, FISH, OIL, LOST
     }
 
     private MobileUnit Unit;
@@ -13,6 +13,7 @@ public class PolarBearController : MonoBehaviour {
     void Start(){
         Unit = GetComponent<MobileUnit>();
         Tile.OnTileClickedAction += OnTileClicked;
+        
     }
 
     // Find the closest fish tile
@@ -23,13 +24,14 @@ public class PolarBearController : MonoBehaviour {
 
     // Testing
     public void OnTileClicked(Tile tile){
+        /*
         if(!Unit.moving){
             Stack<Tile> path;
             if(Hexsphere.planetInstances[0].navManager.FindClosestFishTiles(Unit.currentTile, out path)){
                 Unit.moveOnPath(path);
             }
-        }
-        /*
+        }*/
+        
         if(!Unit.moving)
         {
             Stack<Tile> path;
@@ -37,6 +39,6 @@ public class PolarBearController : MonoBehaviour {
             {
                 Unit.moveOnPath(path);
             }
-        }*/
+        }
     }
 }
