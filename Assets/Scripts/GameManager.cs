@@ -63,10 +63,19 @@ public class GameManager : MonoBehaviour
         SelectedTile.Selected = false;
         SelectedTile = null;
     }
+
+    public void KillBears(){
+        MobileUnit[] components = GameObject.FindObjectsOfType<MobileUnit>();
+        foreach(MobileUnit mu in components){
+            Destroy(mu.getGameObject());
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        SpawnPolarBears(20);
+        KillBears();
+        SpawnPolarBears(10);
     }
 
     // Update is called once per frame
