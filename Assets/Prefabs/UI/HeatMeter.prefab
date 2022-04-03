@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 21617049877900249}
   - component: {fileID: 21617049877900250}
   - component: {fileID: 4274535552621871271}
+  - component: {fileID: 5350253882736744451}
   m_Layer: 5
   m_Name: HeatMeter
   m_TagString: Untagged
@@ -261,6 +262,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5350253882736744451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21617049877900255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413aab13b6ebfed4588dcb6b9f1c8769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  eventType: 1
+  timeToAppear: 0.25
+  CustomString: Percentage of Ice Melted on Current Planet
+  customSprite: {fileID: 21300000, guid: baab431d376c2404797bfbba197e2883, type: 3}
+  hovering: 0
 --- !u!1 &21617050209727914
 GameObject:
   m_ObjectHideFlags: 0

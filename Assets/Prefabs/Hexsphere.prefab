@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 7668306457725357431}
   - component: {fileID: 7668306457725357430}
   - component: {fileID: 7668306457725357425}
+  - component: {fileID: 650543670270978650}
   m_Layer: 6
   m_Name: Atmosphere
   m_TagString: Untagged
@@ -356,3 +357,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.49999997
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &650543670270978650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7668306457725357427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413aab13b6ebfed4588dcb6b9f1c8769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  eventType: 0
+  timeToAppear: 0.25
+  CustomString: Only active if "Type" is set to "Custom"...
+  customSprite: {fileID: 0}
+  hovering: 0
