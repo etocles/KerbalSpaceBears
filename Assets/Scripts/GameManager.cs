@@ -104,7 +104,16 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartGame() { GameStarted = true; }
-    private void EndGame() { SceneManager.LoadScene("GameOver"); }
+    private void EndGame() {
+        RocketScript.Stats temp = GameManager.instance.Rocket.GetComponent<RocketScript>().MyStats;
+
+        PlayerPrefs.SetFloat("_start_time", temp.start_time - Time.time);
+        PlayerPrefs.SetInt("_num_tamed_bears", temp.num_tamed_bears);
+        PlayerPrefs.SetInt("_planets_traveled", temp.planets_traveled.Count);
+        PlayerPrefs.SetInt("_num_fish_obtained", temp.num_fish_obtained);
+        PlayerPrefs.SetInt("_num_oil_obtained", temp.num_oil_obtained);
+        SceneManager.LoadScene("GameOver"); 
+    }
     private void SetActivePlanet(Hexsphere planet) { 
         // assume set active planet is where we start with the planet
         ActivePlanet = planet;

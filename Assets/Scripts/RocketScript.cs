@@ -6,6 +6,16 @@ using System.Threading;
 public class RocketScript : MonoBehaviour {
     public static RocketScript instance;
 
+    public struct Stats
+    {
+        public float start_time; //survival_time;
+        public int num_tamed_bears;
+        public HashSet<Hexsphere> planets_traveled;
+        public int num_fish_obtained;
+        public int num_oil_obtained;
+    }
+    public Stats MyStats;
+
     public GameObject fakeBear;
 
     public Tile CurrentTile;
@@ -49,6 +59,9 @@ public class RocketScript : MonoBehaviour {
     private void Awake()
     {
         instance = this;
+        MyStats = new Stats();
+        MyStats.planets_traveled = new HashSet<Hexsphere>();
+        MyStats.start_time = Time.time;
     }
 
     // Start is called before the first frame update
@@ -97,6 +110,7 @@ public class RocketScript : MonoBehaviour {
             firstEnoughFuel = false;
         }
         Interlocked.Add(ref NumOil, amt);
+        Interlocked.Add(ref MyStats.num_oil_obtained, 1);
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Oil", gameObject.transform.position);
         UpdateSliders();
     }
@@ -108,6 +122,7 @@ public class RocketScript : MonoBehaviour {
             firstFishObtained = false;
         }
         Interlocked.Add(ref NumFish, amt);
+        Interlocked.Add(ref MyStats.num_fish_obtained, 1);
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Fish", gameObject.transform.position);
         UpdateSliders();
     }
@@ -137,6 +152,7 @@ public class RocketScript : MonoBehaviour {
         GameObject temp = Instantiate(pfb);
         BearsOwned.Add(temp);
         BearsBoarded.Add(temp);
+        Interlocked.Add(ref MyStats.num_tamed_bears, 1);
         UpdateSliders();
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear", gameObject.transform.position);
         // if there's still bears on board, that means the ship is full.
@@ -314,6 +330,7 @@ public class RocketScript : MonoBehaviour {
         DestinationTile = null;
         GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
         GameStateController.instance.UnboardBears();
+        MyStats.planets_traveled.Add(DestinationTile.parentPlanet);
     }
     IEnumerator Travel()
     {
@@ -380,6 +397,8 @@ public class RocketScript : MonoBehaviour {
         TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnRocketLanded);
         GameManager.instance.OnGameStart?.Invoke();
         GameStateController.instance.UnboardBears();
+
+        MyStats.planets_traveled.Add(tile.parentPlanet);
     }
     #endregion
 }
