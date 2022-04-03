@@ -171,18 +171,22 @@ public class GameplayCanvas : MonoBehaviour
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
                 button.onClick.AddListener(() => OnSearchForFish?.Invoke());
+                AudioManager.instance.Bear_SFX();
                 break;
             case ContextAction.SearchForOil:
                 img.sprite = OilIcon;
                 button.onClick.AddListener(() => OnSearchForOil?.Invoke());
+                AudioManager.instance.Bear_SFX();
                 break;
             case ContextAction.RecallAllBears:
                 img.sprite = BearIcon;
                 button.onClick.AddListener(() => OnRecallAllBears?.Invoke());
+                AudioManager.instance.Rocket_SFX_Short();
                 break;
             case ContextAction.TameBear:
                 img.sprite = TameIcon;
                 button.onClick.AddListener(() => OnTameBear?.Invoke());
+                AudioManager.instance.Bear_SFX();
                 break;
         }
     }

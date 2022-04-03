@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RocketScript : MonoBehaviour {
+    public static RocketScript instance;
+
     public GameObject fakeBear;
 
     public Tile CurrentTile;
@@ -39,6 +41,14 @@ public class RocketScript : MonoBehaviour {
     private bool firstBearObtained = true;
     private bool firstPlanetTravel = true;
     private bool firstEnoughFuel = true;
+
+    public AudioSource SFX_Thrusters_Long;
+    public AudioSource SFX_Thrusters_Short;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -235,6 +245,7 @@ public class RocketScript : MonoBehaviour {
         Traveling = true;
 
         Thrusters.Play();
+        SFX_Thrusters_Long.Play();
 
         Vector3 startPos = transform.localPosition;
         Vector3 endPos = startPos; endPos.y = 1;

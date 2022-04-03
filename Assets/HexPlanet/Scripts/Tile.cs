@@ -20,7 +20,7 @@ public enum Sides
 
 public enum ActiveBear { None, Tamed, Untamed }
 [Serializable]
-public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
 	public ActiveBear activeBear = ActiveBear.None;
 	public bool Occupied;
@@ -138,11 +138,13 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		if(Selected == false) SetHighlight(0.33f);
+		AudioManager.instance.Hover_SFX();
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		if(Selected == false) SetHighlight(0.0f);
+		
 
 	}
 	public void OnPointerDown(PointerEventData eventData)
@@ -151,8 +153,13 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         {
 			GameManager.instance.SelectTile(this);
 			OnTileClickedAction?.Invoke(this);
+			AudioManager.instance.Press_SFX();
 		}
 		
+	}
+	public void OnPointerUp(PointerEventData eventData)
+    {
+		AudioManager.instance.Release_SFX();
 	}
 	public void SetHighlight(float intensity)
     {

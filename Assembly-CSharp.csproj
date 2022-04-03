@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\UI\ContextMenuButton.cs" />
     <Compile Include="Assets\Scripts\UI\ProgressIcon.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

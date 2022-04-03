@@ -69,6 +69,7 @@ public class InteractableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             spawnedImage.color = new Color(0.95f, 0.95f, 0.95f, 1.0f);
             spawnedImage.gameObject.SetActive(true);
+            AudioManager.instance.Hover_SFX();
         }
     }
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
@@ -88,6 +89,7 @@ public class InteractableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             spawnedImage.color = new Color(0.0f, 0.0f, 0.0f, 0.7f);
             spawnedRect.offsetMax = pressedOffsetMax;
             spawnedRect.offsetMin = pressedOffsetMin;
+            AudioManager.instance.Press_SFX();
         }
     }
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
@@ -98,6 +100,7 @@ public class InteractableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             spawnedImage.color = new Color(0.95f, 0.95f, 0.95f, 1.0f);
             spawnedRect.offsetMax = offsetMax;
             spawnedRect.offsetMin = offsetMin;
+            AudioManager.instance.Release_SFX();
         }
     }
     private void OnEnable()
