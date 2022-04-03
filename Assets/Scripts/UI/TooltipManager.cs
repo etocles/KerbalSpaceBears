@@ -178,7 +178,13 @@ public class TooltipManager : MonoBehaviour
     
     public void Tooltip_Custom()
     {
-        if(activeTooltip.customSprite == null) 
+        if (activeTooltip.customSprite != null)
+        {
+            custom_icon.sprite = activeTooltip.customSprite;
+            custom_icon.gameObject.SetActive(true);
+
+        }
+        else custom_icon.gameObject.SetActive(false);
         custom_text.text = CustomText;
         customTextParent.gameObject.SetActive(true);
     }
