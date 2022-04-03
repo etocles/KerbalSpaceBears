@@ -107,7 +107,7 @@ public class Hexsphere : MonoBehaviour {
         navManager.setWorldTiles(tiles);        
 	}
 
-
+    private bool firstHalfMelt = true;
     public void Melt(float dt)
     {
         List<Tile> NewIceTiles = new List<Tile>();
@@ -145,6 +145,11 @@ public class Hexsphere : MonoBehaviour {
         }
         TilesByBiome[BiomeType.Fish] = NewIceTiles;
         GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, currentMelt / maxMelt, ((currentMelt / maxMelt) * 100f).ToString("F0") + "%");
+        if (currentMelt / maxMelt >= 0.5f && !firstHalfMelt)
+        {
+            firstHalfMelt = false;
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstPlanetHalfMelted);
+        }
     }
 
     public int FindBiomeIDByType(BiomeType type)
