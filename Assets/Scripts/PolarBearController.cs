@@ -24,6 +24,14 @@ public class PolarBearController : Bear {
         GameplayCanvas.instance.OnSearchForOil.AddListener(() => { if (gameObject.activeSelf) StartCoroutine(GetOil()); });
     }
 
+    public void Die()
+    {
+        // subtract self from the bears owned array in the Rocket script
+        // after all ties are severed
+        // commit Die
+        Destroy(gameObject);
+    }
+
     public void ChangeState(BearState newState){
         //Debug.Log("Changing to: " + newState.ToString());
         if(state == newState)

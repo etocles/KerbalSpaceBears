@@ -647,7 +647,7 @@ MonoBehaviour:
   parentPlanet: {fileID: 0}
   moveSpeed: 2
   currentTile: {fileID: 0}
-  polarBear: {fileID: 0}
+  polarBear: {fileID: 7275161588404515118}
   moving: 0
 --- !u!114 &434589386453340475
 MonoBehaviour:
