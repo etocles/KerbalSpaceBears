@@ -17,7 +17,7 @@ public class RocketScript : MonoBehaviour
     public bool CanLaunch => (NumBears >= BearThreshold) && (NumOil >= OilThreshold);
     public bool Traveling = false;
     public bool Sank = false;
-    
+
 
 
     [Tooltip("How many fish per bear")]
@@ -48,8 +48,8 @@ public class RocketScript : MonoBehaviour
             BearsOwned.Add(bear);
         }
         BearsBoarded = new HashSet<GameObject>(BearsOwned);
-        // TODO: Subscribe to canvas's  context menu to begin launch
-        //StartLaunch();
+        // TODO: Subscribe to canvas's events
+        GameplayCanvas.instance.OnNavigateWithShip.AddListener(StartLaunch);
     }
 
     // Update is called once per frame
@@ -122,7 +122,11 @@ public class RocketScript : MonoBehaviour
         }
     }
     // leave atmosphere by incrementing 
-    void StartLaunch() => StartCoroutine(Launch());
+    void StartLaunch() {
+        DestinationTile = GameManager.instance.SelectedTile; 
+        StartCoroutine(Launch()); 
+    }
+
     public void FirstLanding(Tile tile) => StartCoroutine(FirstLandingCutscene(tile));
 
     #region Coroutines

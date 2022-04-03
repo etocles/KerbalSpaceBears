@@ -33,6 +33,7 @@ public class GameStateController : MonoBehaviour
     {
         GenerateSolarSystem();
         SetTarget(planets[0]);
+        GameplayCanvas.instance.OnRecallAllBears.AddListener(BoardBears);
     }
 
     // Update is called once per frame

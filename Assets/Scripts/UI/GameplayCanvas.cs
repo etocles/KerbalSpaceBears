@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 public enum ContextAction { NavigateWithShip, NavigateWithRover, SearchForFish, SearchForOil, RecallAllBears };
 public class GameplayCanvas : MonoBehaviour
@@ -22,6 +23,15 @@ public class GameplayCanvas : MonoBehaviour
     private Transform ContextMenuParent;
                        // Obj      // Icon
     private Dictionary<GameObject, GameObject> SpawnedIcons = new Dictionary<GameObject, GameObject>();
+
+
+    public UnityEvent OnNavigateWithShip;
+    public UnityEvent OnNavigateWithRover;
+    public UnityEvent OnSearchForFish;
+    public UnityEvent OnSearchForOil;
+    public UnityEvent OnRecallAllBears;
+
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -129,18 +139,23 @@ public class GameplayCanvas : MonoBehaviour
         {
             case ContextAction.NavigateWithShip:
                 img.sprite = RocketIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnNavigateWithShip?.Invoke());
                 break;
             case ContextAction.NavigateWithRover:
                 img.sprite = RoverIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnNavigateWithRover?.Invoke());
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnSearchForFish?.Invoke());
                 break;
             case ContextAction.SearchForOil:
                 img.sprite = OilIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnSearchForOil?.Invoke());
                 break;
             case ContextAction.RecallAllBears:
                 img.sprite = BearIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnRecallAllBears?.Invoke());
                 
                 break;
         }
