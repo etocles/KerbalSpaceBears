@@ -62,7 +62,6 @@ public class PolarBearController : Bear {
         yield return StartCoroutine(SearchForFish(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
         yield return new WaitForSeconds(fishGatheringTime);
-        //Unit.currentTile. //TODO: Aesthetic
         yield return StartCoroutine(ReturnToShip());
     }
 
@@ -78,6 +77,28 @@ public class PolarBearController : Bear {
         yield return StartCoroutine(ReturnToShip());
     }
 
+    private void ConsumeResource(Tile tile)
+    {
+        // make sure we can get there
+        tile.Occupied = false;
+
+        // remove the placed object that's NOT a bear
+        List<GameObject> temp = new List<GameObject>();
+        foreach (GameObject obj in tile.PlacedObjects)
+        {
+            // if it doesn't have a mobility unit, it's not a bear, keep going
+            if (obj.GetComponent<MobileUnit>() == null) temp.Add(obj);
+            else Destroy(obj);
+        }
+        // set our new List to be without the Fish/Oil model on top
+        tile.PlacedObjects = temp;
+
+        // necessary upkeep for TilesByBiome
+        tile.parentPlanet.TilesByBiome[tile.BiomeType].Remove(tile);
+        tile.parentPlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
+        // change our BiomeType to Ice
+        tile.BiomeType = Hexsphere.BiomeType.Ice;
+    }
 
     public IEnumerator ReturnToShip(){
         if(!Unit.moving){
@@ -102,8 +123,9 @@ public class PolarBearController : Bear {
             // try to find a path, if exists, traverse it
             if (GameManager.instance.ActivePlanet.navManager.findPath(Unit.currentTile, dest, out path))
             {
+                // consume the resource
+                ConsumeResource(Unit.currentTile);
                 // we want others to be able to get to the ship
-                Unit.currentTile.Occupied = false;
                 if (state == BearState.SHIP) dest.Occupied = false;
                 yield return Unit.moveOnPathCoroutine(path);
             } 
