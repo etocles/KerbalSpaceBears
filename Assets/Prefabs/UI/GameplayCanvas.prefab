@@ -438,17 +438,17 @@ MonoBehaviour:
   image: {fileID: 8316559955115115837}
   Text: {fileID: 5602793480903816252}
   TutorialPrompts:
-  - icon: {fileID: 21300000, guid: bacbbd4a906fca247bc0ff981dc6b7ff, type: 3}
+  - icon: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
     text: Choose a spot to land!
     activationEvent: 1
-    required: 1
+    duration: -1
     OnPromptDisappear:
       m_PersistentCalls:
         m_Calls: []
   - icon: {fileID: 21300000, guid: 8292e0370767eab40a3918f1fb0e7428, type: 3}
     text: Tell your polar bear to go fishing!
     activationEvent: 2
-    required: 0
+    duration: 3
     OnPromptDisappear:
       m_PersistentCalls:
         m_Calls:
@@ -467,7 +467,7 @@ MonoBehaviour:
   - icon: {fileID: 21300000, guid: 445e09155db176645934c36f68d0fd2c, type: 3}
     text: Fish allow you to recruit more bears.
     activationEvent: 0
-    required: 0
+    duration: -1
     OnPromptDisappear:
       m_PersistentCalls:
         m_Calls:
@@ -484,9 +484,64 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - icon: {fileID: 21300000, guid: 8292e0370767eab40a3918f1fb0e7428, type: 3}
-    text: Tell your polar bear to go fishing!
+    text: Recruit a wild polar bear!
+    activationEvent: 3
+    duration: -1
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls: []
+  - icon: {fileID: 21300000, guid: baab431d376c2404797bfbba197e2883, type: 3}
+    text: The planet is melting!
+    activationEvent: 6
+    duration: 3
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3554697549815797466}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: InitiateTutorialPromptByIndex
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - icon: {fileID: 21300000, guid: 8ce528e093c0a474483aaaeaf4b78c47, type: 3}
+    text: Gather some oil to get off this planet!
     activationEvent: 0
-    required: 1
+    duration: 3
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls: []
+  - icon: {fileID: 21300000, guid: 8ce528e093c0a474483aaaeaf4b78c47, type: 3}
+    text: You need 10 oil before you can travel between planets.
+    activationEvent: 4
+    duration: -1
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls: []
+  - icon: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
+    text: Select a new planet to travel to!
+    activationEvent: 7
+    duration: -1
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls: []
+  - icon: {fileID: 21300000, guid: 8292e0370767eab40a3918f1fb0e7428, type: 3}
+    text: There's more bears here to save!
+    activationEvent: 8
+    duration: 3
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls: []
+  activePrompt:
+    icon: {fileID: 0}
+    text: 
+    activationEvent: 0
+    duration: 3
     OnPromptDisappear:
       m_PersistentCalls:
         m_Calls: []

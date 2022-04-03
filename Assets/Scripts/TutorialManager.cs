@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-public enum TutorialEvent { None, OnGameStarted, OnRocketLanded, OnFirstFishObtained, OnFirstOilObtained, OnFirstBearObtained, OnFirstPlanetHalfMelted, OnEnoughFuelAccumulated }
+public enum TutorialEvent { None, OnGameStarted, OnRocketLanded, OnFirstFishObtained, 
+                            OnFirstOilObtained, OnFirstBearObtained, OnFirstPlanetHalfMelted, OnEnoughFuelAccumulated, 
+                            OnFirstPlanetTraveledTo };
 [System.Serializable]
 public class TutorialPrompt
 {
     public Sprite icon;
     public string text;
     public TutorialEvent activationEvent;
-    public bool required = false; // Stays visible until event finished
+    public float duration = 3.0f;
     public UnityEvent OnPromptDisappear = new UnityEvent();
 }
 public class TutorialManager : MonoBehaviour
@@ -22,7 +24,7 @@ public class TutorialManager : MonoBehaviour
     public List<TutorialPrompt> TutorialPrompts = new List<TutorialPrompt>();
     private Dictionary<TutorialEvent, TutorialPrompt> TutorialPrompts_Dict = new Dictionary<TutorialEvent, TutorialPrompt>();
     private AnimatedPanel panel;
-    private TutorialPrompt activePrompt;
+    public TutorialPrompt activePrompt;
     private void Awake()
     {
         instance = this;
@@ -32,7 +34,6 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         InitiateTutorialEvent(TutorialEvent.OnGameStarted);
     }
 
@@ -54,7 +55,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void InitiateTutorialPromptByIndex(int i)
     {
-        InitiateTutorialEvent(TutorialEvent.OnGameStarted, i);
+        InitiateTutorialEvent(TutorialEvent.None, i);
         
     }
     public void InitiateTutorialEvent(TutorialEvent Event, int i = -1)
@@ -62,14 +63,14 @@ public class TutorialManager : MonoBehaviour
         if (i == -1) activePrompt = TutorialPrompts_Dict[Event];
         else activePrompt = TutorialPrompts[i];
 
-        if (activePrompt.required == false) StartCoroutine(DisplayTutorialPrompt_Coroutine(Event, 5.0f));
-        else DisplayMessage(TutorialPrompts_Dict[Event].icon, TutorialPrompts_Dict[Event].text);
+        if (activePrompt.duration != -1) StartCoroutine(DisplayTutorialPrompt_Coroutine(Event, activePrompt.duration));
+        else DisplayMessage(activePrompt.icon, activePrompt.text);
     }
-    private IEnumerator DisplayTutorialPrompt_Coroutine(TutorialEvent Event, float dur)
+    public IEnumerator DisplayTutorialPrompt_Coroutine(TutorialEvent Event, float dur)
     {
-        DisplayMessage(TutorialPrompts_Dict[Event].icon, TutorialPrompts_Dict[Event].text);
+        DisplayMessage(activePrompt.icon, activePrompt.text);
         yield return new WaitForSeconds(dur);
-        HideMessage();
+        StartCoroutine(HideMessage());
     }
     public void DisplayMessage(Sprite icon, string text)
     {
@@ -77,10 +78,10 @@ public class TutorialManager : MonoBehaviour
         Text.text = text;
         panel.FadeIn();
     }
-    public void HideMessage()
+    public IEnumerator HideMessage()
     {
-        activePrompt.OnPromptDisappear.Invoke();
         panel.FadeOut();
-        activePrompt = null;
+        yield return new WaitForSeconds(panel.timeToFade);
+        activePrompt.OnPromptDisappear.Invoke();
     }
 }
