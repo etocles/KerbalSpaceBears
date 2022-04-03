@@ -13,7 +13,6 @@ public class TooltipManager : MonoBehaviour
     [Header("Ref")]
     public AnimatedPanel rectAnim;
     public RectTransform rect;
-    public TextMeshProUGUI text;
     public static TooltipManager instance;
     public enum Direction { Above, Below, Right, Left }; 
     [System.Serializable]
@@ -34,6 +33,7 @@ public class TooltipManager : MonoBehaviour
     [Header("Custom Tooltip References")]
     public Transform customTextParent;
     public TextMeshProUGUI custom_text;
+    public UnityEngine.UI.Image custom_icon;
 
     private string CustomText = "";
     private float toolTipLerpSpeed = 10.0f;
@@ -175,8 +175,10 @@ public class TooltipManager : MonoBehaviour
         }
         
     }
+    
     public void Tooltip_Custom()
     {
+        if(activeTooltip.customSprite == null) 
         custom_text.text = CustomText;
         customTextParent.gameObject.SetActive(true);
     }

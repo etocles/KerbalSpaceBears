@@ -675,7 +675,7 @@ public class Hexsphere : MonoBehaviour {
                 tile.placeObject(Instantiate(FindBiomeByID(tile.GroupID).ObjectToPlace));
                 if (tile.PlacedObjects.Count > 0 && tile.PlacedObjects[tile.PlacedObjects.Count - 1] != null)
                 {
-                    tile.PlacedObjects[tile.PlacedObjects.Count - 1].transform.localPosition += new Vector3(0, tile.ExtrudedHeight + 0.01f, 0);
+                    tile.PlacedObjects[tile.PlacedObjects.Count - 1].transform.localPosition += new Vector3(0, 0.001f, 0);
                 }
                 else if (tile.PlacedObjects[tile.PlacedObjects.Count - 1] == null)
                 {
