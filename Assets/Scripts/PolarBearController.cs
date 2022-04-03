@@ -89,7 +89,7 @@ public class PolarBearController : Bear {
 
 
             // try to find a path, if exists, traverse it
-            if (Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, dest, out path))
+            if (GameManager.instance.ActivePlanet.navManager.findPath(Unit.currentTile, dest, out path))
             {
                 // we want others to be able to get to the ship
                 if (state == BearState.SHIP) dest.Occupied = false;
@@ -126,7 +126,7 @@ public class PolarBearController : Bear {
 
     private IEnumerator SearchForOil(Stack<Tile> path){
         if(!Unit.moving){
-            if(Hexsphere.planetInstances[0].navManager.
+            if(GameManager.instance.ActivePlanet.navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Oil, Unit.currentTile, out path)){
                 Unit.currentTile.Occupied = false;
                 Unit.currentTile.activeBear = ActiveBear.None;
@@ -139,7 +139,7 @@ public class PolarBearController : Bear {
 
     private IEnumerator SearchForFish(Stack<Tile> path){
         if(!Unit.moving){
-            if(Hexsphere.planetInstances[0].navManager.
+            if(GameManager.instance.ActivePlanet.navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Fish, Unit.currentTile, out path)){
                 Unit.currentTile.Occupied = false;
                 Unit.currentTile.activeBear = ActiveBear.None;

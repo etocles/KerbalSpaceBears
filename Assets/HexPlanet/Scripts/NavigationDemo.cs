@@ -17,7 +17,7 @@ public class NavigationDemo : MonoBehaviour
         if(!Unit.moving)
         {
             Stack<Tile> path;
-            if(Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, tile, out path))
+            if(GameManager.instance.ActivePlanet.navManager.findPath(Unit.currentTile, tile, out path))
             {
                 Unit.moveOnPath(path);
             }
