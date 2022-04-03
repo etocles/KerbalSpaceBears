@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public enum Type { Custom_Text, Planet, PolarBear };
+    public enum Type { Custom_Text, Planet, PolarBear, Rocket };
     public Type type;
     public enum EventType { Collider, UI};
     public EventType eventType;

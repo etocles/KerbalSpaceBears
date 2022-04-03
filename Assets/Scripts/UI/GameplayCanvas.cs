@@ -94,6 +94,7 @@ public class GameplayCanvas : MonoBehaviour
     public void DisplayContextMenu(GameObject SelectedObject)
     {
         if (ContextMenuVisible) HideContextMenu();
+        if (RocketScript.instance != null && RocketScript.instance.Traveling == true) return;
         Tile tileCtrl = SelectedObject.GetComponent<Tile>();
         if (tileCtrl != null)
         {
@@ -160,6 +161,7 @@ public class GameplayCanvas : MonoBehaviour
         Image img = spawnedButton.GetComponent<ContextMenuButton>().icon;
         Button button = spawnedButton.GetComponent<Button>();
         button.onClick.AddListener(HideContextMenu);
+        button.onClick.AddListener(TooltipManager.instance.HideTooltip);
         switch (action)
         {
             case ContextAction.NavigateWithShip:
@@ -171,6 +173,9 @@ public class GameplayCanvas : MonoBehaviour
                     OnFirstLanding?.Invoke(); 
                 });
                 else button.onClick.AddListener(() => OnNavigateWithShip?.Invoke());
+                Tooltip tip = spawnedButton.AddComponent<Tooltip>();
+                tip.eventType = Tooltip.EventType.UI;
+                tip.type = Tooltip.Type.Planet;
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
@@ -186,6 +191,10 @@ public class GameplayCanvas : MonoBehaviour
                 img.sprite = BearIcon;
                 button.onClick.AddListener(() => OnRecallAllBears?.Invoke());
                 AudioManager.instance.Rocket_SFX_Short();
+                Tooltip tip2 = spawnedButton.AddComponent<Tooltip>();
+                tip2.eventType = Tooltip.EventType.UI;
+                tip2.type = Tooltip.Type.Custom_Text;
+                tip2.CustomString = "Click to board/unboard all bears. Requires 1 Fish Per Bear to board!";
                 break;
             case ContextAction.TameBear:
                 img.sprite = TameIcon;
