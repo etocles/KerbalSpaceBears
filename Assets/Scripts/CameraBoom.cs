@@ -351,7 +351,7 @@ public class CameraBoom : MonoBehaviour
 		// Press S to switch view between angled cam and main cam 
 		else if (Input.GetKeyDown(KeyCode.S) && !pauseMovement)
 		{
-			StartCoroutine("SwitchView");
+			//StartCoroutine("SwitchView");
 		}
 
 		else
