@@ -240,7 +240,7 @@ public class RocketScript : MonoBehaviour {
         Vector3 startRot = transform.localEulerAngles;
         Vector3 endRot = new Vector3();
         float t = 0.0f;
-        while (t <= 0.3f)
+        while (t <= 1.0f)
         {
             t += Time.deltaTime;
             transform.localEulerAngles = Vector3.Lerp(startRot, endRot, t / 0.3f);
@@ -273,21 +273,30 @@ public class RocketScript : MonoBehaviour {
 
         Vector3 startPos = transform.position;
         // TODO: Find appropriate position to fly to
-        Vector3 endPos = DestinationTile.parentPlanet.transform.TransformPoint(DestinationTile.transform.localPosition + new Vector3(0, 1.0f, 0));
+        Vector3 endPos = DestinationTile.parentPlanet.transform.TransformPoint(DestinationTile.transform.localPosition + new Vector3(0, 2.0f, 0));
+        float duration = 3.0f;
         float t = 0.0f;
-        while (t <= 3.0f)
+        while (t < duration)
         {
-            endPos = DestinationTile.parentPlanet.transform.TransformPoint(DestinationTile.transform.localPosition + new Vector3(0, 1.0f, 0));
+            // stop traveling if the rocket is already there
+            if(transform.position == endPos)
+                break;
+            //
+            endPos = DestinationTile.parentPlanet.transform.TransformPoint(DestinationTile.transform.localPosition + new Vector3(0, 2.0f, 0));
             t += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, endPos, t / 3.0f);
+            transform.position = Vector3.Lerp(startPos, endPos, t / duration);
+            // rotation
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(Vector3.up, endPos - startPos), t);
+
             yield return new WaitForEndOfFrame();
         }
 
         t = 0.0f;
+        duration = 2.0f;
         transform.SetParent(DestinationTile.transform);
         startPos = transform.localPosition;
         endPos = new Vector3(0, 1.0f, 0);
-        while (t <= 2.0f)
+        while (t < duration)
         {
             t += Time.deltaTime;
             transform.localPosition = Vector3.Lerp(startPos, endPos, t / 2.0f);
