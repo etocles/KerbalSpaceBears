@@ -83,6 +83,7 @@ public class PolarBearController : Bear {
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
             Tile dest = (ChooseBestAdjacentTile(shipTile) == null) ? Unit.currentTile : ChooseBestAdjacentTile(shipTile);
+            dest.Occupied = true;
             if (Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, dest, out path)){
                 yield return Unit.moveOnPathCoroutine(path);
             } else {

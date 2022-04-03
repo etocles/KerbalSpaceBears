@@ -96,20 +96,21 @@ public class RocketScript : MonoBehaviour {
     public void RecruitBear(GameObject bear) {
         if (!bear.GetComponent<UntamedBear>().PaidFor) return;
         GameObject pfb = (bear.GetComponent<UntamedBear>().GetBearType() == Bear.BearType.Brown) 
-                            ? GameStateController.instance.BearPrefabs[0] 
-                            : GameStateController.instance.BearPrefabs[1];
+                            ? GameStateController.instance.BearPrefabs[0] // 0 is brown
+                            : GameStateController.instance.BearPrefabs[1]; // 1 is polar
         GameObject temp = Instantiate(pfb);
         BearsOwned.Add(temp);
         BearsBoarded.Add(temp);
         // TODO: Report to canvas
 
         // if there's still bears on board, that means the ship is full.
-        // coroutine is still emptying them out, so we don't have to
-        // if there's 0, do a manual refresh
-        if (BearsBoarded.Count == 0) {
-            bear = UnboardBear();
-            GameStateController.instance.DepositBear(bear, GetUnOccupiedTile());
+        // coroutine is still emptying themt out, so we don't have to
+        // if there's 1 (the one we just added), do a manual refresh
+        if (BearsBoarded.Count == 1) {
+            temp = UnboardBear();
+            GameStateController.instance.DepositBear(temp, GetUnOccupiedTile());
         }
+        Destroy(bear);
     }
     public void BoardBear(GameObject bear)
     {
@@ -125,6 +126,7 @@ public class RocketScript : MonoBehaviour {
         GameObject b = temp[0];
         // remove bear from ship
         BearsBoarded.Remove(b);
+        print("UnboardBear() complete");
         return b;
     }
     public void LeaveBehind()
