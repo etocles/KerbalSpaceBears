@@ -69,9 +69,12 @@ public class MobileUnit : MonoBehaviour {
 		if (!tile.navigable || tile.BiomeType == Hexsphere.BiomeType.Water){
 			return false;
         }
-		// if boarding ship but received stop message, quit moving
-		if (temp.state == PolarBearController.BearState.SHIP 
-			&& !GameStateController.GoingToShip) return false;
+		// if spacebear, boarding ship but received stop message, quit moving
+		if (temp != null)
+        {
+			if (temp.state == PolarBearController.BearState.SHIP
+				&& !GameStateController.GoingToShip) return false;
+		}
 		return true;
     }
 
