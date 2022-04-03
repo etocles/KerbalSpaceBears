@@ -19,9 +19,6 @@ public class NavigationManager : MonoBehaviour {
 	// Find the closest fish tile
     public bool FindClosestIDTiles(Hexsphere.BiomeType biomeType, Tile start, out Stack<Tile> pathStack){
 		pathStack = new Stack<Tile>();
-		// if start is already the tile do not return a path
-		if(start.GroupID == planet.FindBiomeIDByType(biomeType))
-			return false;
 
 		// get tiles of all biomeids from tiletype
 		List<Tile> NewIceTiles = new List<Tile>();
@@ -190,7 +187,7 @@ public class NavigationManager : MonoBehaviour {
 		Queue<Tile> queue = new Queue<Tile>();
 		queue.Enqueue(start);
 		visited.Add(start);
-		int count = 100;
+		int count = 9999;
 
 		while(queue.Count > 0 && count > 0){
 			Tile t = queue.Dequeue();
