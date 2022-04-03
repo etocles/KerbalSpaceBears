@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent OnGameStart;
     public UnityEvent<Hexsphere> OnRocketLanded;
     public UnityEvent OnTileSelected;
+    public UnityEvent OnContextConfirmFirstLand;
 
     private List<GameObject> spawnedPolarBears = new List<GameObject>();
     public GameObject PolarBearPrefab;
@@ -69,7 +70,7 @@ public class GameManager : MonoBehaviour
         OnRocketLanded.AddListener(SetActivePlanet);
         OnGameStart.AddListener(StartGame);
         OnGameOver.AddListener(EndGame);
-        OnTileSelected.AddListener(FirstLanding);
+        GameplayCanvas.instance.OnFirstLanding.AddListener(FirstLanding);
     }
 
     public static bool ValidTileForLanding(Tile tile)
@@ -84,8 +85,6 @@ public class GameManager : MonoBehaviour
     {
         // make sure it is a valid tile to land on
         if (!ValidTileForLanding(SelectedTile)) return;
-        // only fire once
-        OnTileSelected.RemoveListener(FirstLanding);
         // Instantiate the ship
         Rocket = Instantiate(RocketPrefab, SelectedTile.transform);
         Rocket.GetComponent<RocketScript>().SpaceBearPrefab = SpaceBearPrefab;

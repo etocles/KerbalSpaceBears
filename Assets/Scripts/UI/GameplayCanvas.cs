@@ -34,6 +34,7 @@ public class GameplayCanvas : MonoBehaviour
 
 
     [HideInInspector] public UnityEvent OnNavigateWithShip;
+    [HideInInspector] public UnityEvent OnFirstLanding;
     [HideInInspector] public UnityEvent OnSearchForFish;
     [HideInInspector] public UnityEvent OnSearchForOil;
     [HideInInspector] public UnityEvent OnRecallAllBears;
@@ -145,6 +146,8 @@ public class GameplayCanvas : MonoBehaviour
             Destroy(ContextMenuParent.GetChild(i).gameObject);
         }
     }
+
+    public bool firstLanding = false;
     public void AddContextButton(ContextAction action)
     {
         GameObject spawnedButton = Instantiate(ContextMenuButtonPrefab);
@@ -155,7 +158,9 @@ public class GameplayCanvas : MonoBehaviour
         {
             case ContextAction.NavigateWithShip:
                 img.sprite = RocketIcon;
-                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnNavigateWithShip?.Invoke());
+                if (firstLanding) spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnNavigateWithShip?.Invoke());
+                if (firstLanding) firstLanding = false;
+                else              spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnFirstLanding?.Invoke());
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
