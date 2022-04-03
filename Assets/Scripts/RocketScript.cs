@@ -116,7 +116,7 @@ public class RocketScript : MonoBehaviour {
     {
         if (NumFish >= FishPerBear)
         {
-            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
+            //TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
             Interlocked.Add(ref NumFish, -FishPerBear);
             bear.GetComponent<UntamedBear>().PaidFor = true;
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "-" + FishPerBear.ToString() + " Fish", gameObject.transform.position);
@@ -223,7 +223,7 @@ public class RocketScript : MonoBehaviour {
     {
         foreach (Tile t in CurrentTile.neighborTiles)
         {
-            if (!t.Occupied && t.BiomeType == Hexsphere.BiomeType.Ice)
+            if (!t.Occupied && t.BiomeType != Hexsphere.BiomeType.Water)
                 return t;
         }
         return null;

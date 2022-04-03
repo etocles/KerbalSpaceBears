@@ -11,7 +11,7 @@ public class GameStateController : MonoBehaviour
         public int polarBearCount = 5;
         [Range(1, 5)]
         public int iceWeight = 1;
-        [Range(1,5)]
+        [Range(1, 5)]
         public int waterWeight = 1;
         [Range(1, 5)]
         public int oilWeight = 1;
@@ -28,7 +28,7 @@ public class GameStateController : MonoBehaviour
     public GameObject HexspherePrefab;
     [HideInInspector] public Hexsphere ActiveHexsphere;
     public static GameStateController instance;
-    
+
     private List<GameObject> spawnedPolarBears = new List<GameObject>();
 
     private void Awake()
@@ -46,10 +46,10 @@ public class GameStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit = MouseHit();
-            if(hit.collider != null && hit.collider.gameObject.layer == 6) // Planet layer
+            if (hit.collider != null && hit.collider.gameObject.layer == 6) // Planet layer
             {
                 SetTarget(hit.collider.GetComponentInParent<Hexsphere>());
             }
@@ -58,7 +58,7 @@ public class GameStateController : MonoBehaviour
 
     public void GenerateSolarSystem()
     {
-        foreach(PlanetDefinition definition in planetDefinitions)
+        foreach (PlanetDefinition definition in planetDefinitions)
         {
             GameObject planetPivot = new GameObject();
             planetPivot.name = "Generated Planet";
@@ -84,7 +84,7 @@ public class GameStateController : MonoBehaviour
             Rotate planetRotCtrl = spawnedPlanet.AddComponent<Rotate>();
             planetRotCtrl.speed = 2;
             SpawnBears(sphereCtrl, definition.polarBearCount);
-            
+
         }
     }
 
@@ -102,7 +102,7 @@ public class GameStateController : MonoBehaviour
     }
     public void SetTarget(Hexsphere sphere)
     {
-        if(ActiveHexsphere != null && sphere != ActiveHexsphere)
+        if (ActiveHexsphere != null && sphere != ActiveHexsphere)
         {
             RemoveTarget();
         }
@@ -125,9 +125,9 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    public GameObject PlaceUntamedBear(Tile location){
-        
-        GameObject spawnedBear = Instantiate(UntamedBearPrefabs[(int) Random.Range(0.0f, UntamedBearPrefabs.Count)]);
+    public GameObject PlaceUntamedBear(Tile location) {
+
+        GameObject spawnedBear = Instantiate(UntamedBearPrefabs[(int)Random.Range(0.0f, UntamedBearPrefabs.Count)]);
         spawnedBear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         spawnedBear.GetComponent<MobileUnit>().currentTile = location;
         location.placeObject(spawnedBear);
@@ -139,8 +139,8 @@ public class GameStateController : MonoBehaviour
 
     public GameObject PlaceBear(Tile location)
     {
-        
-        GameObject spawnedBear = Instantiate(BearPrefabs[(int) Random.Range(0.0f, BearPrefabs.Count)]);
+
+        GameObject spawnedBear = Instantiate(BearPrefabs[(int)Random.Range(0.0f, BearPrefabs.Count)]);
         spawnedBear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         spawnedBear.GetComponent<MobileUnit>().currentTile = location;
         location.placeObject(spawnedBear);
@@ -149,7 +149,7 @@ public class GameStateController : MonoBehaviour
         spawnedPolarBears.Add(spawnedBear);
         return spawnedBear;
     }
-    
+
     public void DepositBear(GameObject bear, Tile location)
     {
         bear.SetActive(true);
@@ -160,6 +160,10 @@ public class GameStateController : MonoBehaviour
         location.placeObject(bear);
         location.Occupied = true;
         location.activeBear = ActiveBear.Tamed;
+        if (location.BiomeType == Hexsphere.BiomeType.Fish || location.BiomeType == Hexsphere.BiomeType.Oil)
+        {
+            bear.GetComponent<PolarBearController>().StartAutoHarvest(location);
+        }
     }
 
     public void BoardBears()

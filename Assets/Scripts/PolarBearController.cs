@@ -54,6 +54,39 @@ public class PolarBearController : Bear {
         }
     }
 
+    public void StartAutoHarvest(Tile tile)
+    {
+        StartCoroutine(AutoHarvest(tile));
+    }
+    public IEnumerator AutoHarvest(Tile tile)
+    {
+        // change state appropriately
+        if (tile.BiomeType == Hexsphere.BiomeType.Fish) ChangeState(BearState.FISH);
+        if (tile.BiomeType == Hexsphere.BiomeType.Oil) ChangeState(BearState.OIL);
+        bool gettingFish = state == BearState.FISH;
+        Sprite icon = (gettingFish) ? GameplayCanvas.instance.FishIcon : GameplayCanvas.instance.OilIcon;
+        float timeToWait = (gettingFish) ? fishGatheringTime : oilGatheringTime;
+
+        GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(icon, gameObject, GameplayCanvas.instance.ProgressPrefab);
+        spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(timeToWait);
+        yield return new WaitForSeconds(timeToWait);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position);
+        ConsumeResource(Unit.currentTile);
+
+        switch (state)
+        {
+            // completed journey, add a fish
+            case BearState.FISH:
+                GameManager.instance.Rocket.GetComponent<RocketScript>().AddFish(1);
+                break;
+            // completed journey, add an oil
+            case BearState.OIL:
+                GameManager.instance.Rocket.GetComponent<RocketScript>().AddOil(1);
+                break;
+        }
+        tile.Occupied = true; // might need to be moved
+    }
+
     public IEnumerator GetFish(){
         // fires from context menu, so first have to check
         // if we're the right bear
@@ -66,7 +99,7 @@ public class PolarBearController : Bear {
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.FishIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(fishGatheringTime);
         yield return new WaitForSeconds(fishGatheringTime);
-        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position); // TODO: Maybe baxk to fish icon
         yield return StartCoroutine(ReturnToShip());
     }
 
@@ -102,7 +135,16 @@ public class PolarBearController : Bear {
             // if it doesn't have a mobility unit, it's not a bear, delete it
             if (obj.GetComponent<MobileUnit>() == null)
             {
-                Destroy(obj);
+                if (tile.BiomeType == Hexsphere.BiomeType.Oil)
+                {
+                    // remove the oil particle effect
+                    Destroy(obj.transform.GetChild(0).gameObject);
+                }
+                else
+                {
+                    // remove the Fish model in its entirety
+                    Destroy(obj);
+                }
             }
             else
             {
@@ -117,7 +159,6 @@ public class PolarBearController : Bear {
         tile.parentPlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
         // change our BiomeType to Ice
         tile.BiomeType = Hexsphere.BiomeType.Ice;
-        // even if oil, give it a bit of ice to work with
         if (tile.ExtrudedHeight <= 0.0000000001f) tile.ExtrudedHeight = 0.0001f;
     }
 
