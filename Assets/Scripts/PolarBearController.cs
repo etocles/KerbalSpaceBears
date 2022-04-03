@@ -46,7 +46,6 @@ public class PolarBearController : Bear {
             case BearState.OIL:
                 break;
             case BearState.LOST:
-                Debug.Log("CANVAS: Bear is confused!");
                 break;
             case BearState.SHIP:
                 break;
