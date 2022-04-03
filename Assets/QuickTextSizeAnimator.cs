@@ -19,10 +19,10 @@ public class QuickTextSizeAnimator : MonoBehaviour
 
     void Update(){
         if(Mathf.Abs(transform.rotation.z) < maxRotate){
-            transform.Rotate(0, 0, rotate); 
+            transform.Rotate(new Vector3(0, 0, rotate) * Time.deltaTime); 
         } else {
             rotate *= -1;
-            transform.Rotate(0, 0, rotate); 
+            transform.Rotate(new Vector3(0, 0, rotate) * Time.deltaTime); 
         }
     }
 }

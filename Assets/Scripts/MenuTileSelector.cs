@@ -31,7 +31,10 @@ public class MenuTileSelector : MonoBehaviour, IPointerEnterHandler, IPointerExi
 	{
         switch(item){
             case Buttons.Game:
-                BeginGame();
+                if(rocket != null)
+                    BeginGame();
+                else
+                    BeginGameWithoutRocket();
                 break;
             case Buttons.Exit:
                 Application.Quit();
@@ -41,6 +44,10 @@ public class MenuTileSelector : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void BeginGame(){
         StartCoroutine(rocket.Launch());
+        Fade();
+    }
+
+    private void BeginGameWithoutRocket(){
         Fade();
     }
 
