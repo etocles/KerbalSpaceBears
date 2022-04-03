@@ -53,8 +53,17 @@ public class RocketScript : MonoBehaviour {
         BearsBoarded = new HashSet<GameObject>(BearsOwned);
         // TODO: Subscribe to canvas's events
         GameplayCanvas.instance.OnNavigateWithShip.AddListener(StartLaunch);
+        UpdateSliders();
+        
     }
 
+    public void UpdateSliders()
+    {
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Fish, Mathf.Clamp01((float)NumFish / (float)NumBears), NumFish.ToString());
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Oil, Mathf.Clamp01((float)NumOil / (float)OilThreshold), NumOil.ToString());
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Bear, 1, NumBears.ToString());
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, Mathf.Clamp01((float)NumFish / (float)NumBears), NumFish.ToString());
+    }
     // Update is called once per frame
     void Update()
     {
@@ -78,6 +87,8 @@ public class RocketScript : MonoBehaviour {
         }
         NumOil += amt;
         Debug.Log("CANVAS: +1 Oil!");
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Oil", gameObject.transform.position);
+        UpdateSliders();
     }
 
     public void AddFish(int amt) {
@@ -88,6 +99,8 @@ public class RocketScript : MonoBehaviour {
         }
         NumFish += amt;
         Debug.Log("CANVAS: +1 Fish!");
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Fish", gameObject.transform.position);
+        UpdateSliders();
     }
 
     public bool PayForBear(GameObject bear)
@@ -99,10 +112,13 @@ public class RocketScript : MonoBehaviour {
             bear.GetComponent<UntamedBear>().PaidFor = true;
 
             Debug.Log("CANVAS: -"+FishPerBear+" Fish!");
+            GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "-" + FishPerBear.ToString() + " Fish", gameObject.transform.position);
+            UpdateSliders();
             return true;
         }
         else
         {
+            GameplayCanvas.instance.PushMessage("You need at least " + FishPerBear + " fish to recruit a bear!", 3);
             Debug.Log("CANVAS: Need at least "+FishPerBear+" fish to recruit a bear!");
             return false;
         }
@@ -116,13 +132,15 @@ public class RocketScript : MonoBehaviour {
         BearsOwned.Add(temp);
         BearsBoarded.Add(temp);
         Debug.Log("CANVAS: +1 Bear!");
-
+        UpdateSliders();
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear", gameObject.transform.position);
         // if there's still bears on board, that means the ship is full.
         // coroutine is still emptying themt out, so we don't have to
         // if there's 1 (the one we just added), do a manual refresh
         if (BearsBoarded.Count == 1) {
             temp = UnboardBear();
             GameStateController.instance.DepositBear(temp, GetUnOccupiedTile());
+            
         }
         Destroy(bear);
     }

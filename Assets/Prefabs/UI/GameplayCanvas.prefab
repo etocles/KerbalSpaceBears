@@ -1660,7 +1660,7 @@ MonoBehaviour:
   ContextMenuVisible: 0
   FishIcon: {fileID: 21300000, guid: 445e09155db176645934c36f68d0fd2c, type: 3}
   OilIcon: {fileID: 21300000, guid: 8ce528e093c0a474483aaaeaf4b78c47, type: 3}
-  RocketIcon: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
+  RocketIcon: {fileID: 21300000, guid: aa66d2c8e7180b5459dcda1b2f650ea6, type: 3}
   BearIcon: {fileID: 21300000, guid: 8292e0370767eab40a3918f1fb0e7428, type: 3}
   TameIcon: {fileID: 21300000, guid: 6b333652d1025244982a01d9626b94f0, type: 3}
   QuestionMarkIcon: {fileID: 21300000, guid: 1763d977d1c09aa48b688d60f5ec3b24, type: 3}

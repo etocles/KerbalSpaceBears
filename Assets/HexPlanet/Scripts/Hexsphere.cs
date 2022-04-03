@@ -41,6 +41,8 @@ public class Hexsphere : MonoBehaviour {
 	public int planetID;
     [Range(0,10)]
     public float meltRate;
+    [HideInInspector] public float maxMelt = 0.06f;
+    [HideInInspector] public float currentMelt;
     [Tooltip("Defined as the amount of time (s) an extrusion of length 0.06 takes to reach 0")]
 	public bool generateOnPlay;
     [Tooltip("SHould we generate gameobjects for each tile or just a single mesh for the entire planet?")]
@@ -109,9 +111,10 @@ public class Hexsphere : MonoBehaviour {
     public void Melt(float dt)
     {
         List<Tile> NewIceTiles = new List<Tile>();
+        float amt = (0.008f) / Mathf.Abs(10 - meltRate);
+        currentMelt += amt;
         foreach (Tile tile in TilesByBiome[BiomeType.Ice])
         {
-            float amt = (0.008f) / Mathf.Abs(10-meltRate);
             //float destHeight = tile.ExtrudedHeight - amt;
             //float newHeight = Mathf.Lerp(tile.ExtrudedHeight, destHeight, dt);
             //newHeight = Mathf.Min(newHeight, 0);
@@ -128,7 +131,7 @@ public class Hexsphere : MonoBehaviour {
             }
         }
         TilesByBiome[BiomeType.Ice] = NewIceTiles;
-
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, currentMelt / maxMelt, ((currentMelt / maxMelt) * 100f).ToString("F0") + "%");
     }
 
     public int FindBiomeIDByType(BiomeType type)

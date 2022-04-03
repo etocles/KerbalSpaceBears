@@ -35,11 +35,12 @@ public class PolarBearController : Bear {
 
     public void ChangeState(BearState newState){
         //Debug.Log("Changing to: " + newState.ToString());
-        GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.GetIconByBearState(state), gameObject);
+        
         if (state == newState)
             return;
         state = newState;
-        switch(newState){
+        GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.GetIconByBearState(state), gameObject);
+        switch (newState){
             case BearState.FISH:
                 break;
             case BearState.OIL:
@@ -66,7 +67,7 @@ public class PolarBearController : Bear {
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.FishIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(fishGatheringTime);
         yield return new WaitForSeconds(fishGatheringTime);
-        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.FishIcon, "+1 Fish", gameObject.transform.position);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position);
         yield return StartCoroutine(ReturnToShip());
     }
 
@@ -83,7 +84,7 @@ public class PolarBearController : Bear {
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.OilIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(oilGatheringTime);
         yield return new WaitForSeconds(oilGatheringTime);
-        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.OilIcon, "+1 Oil", gameObject.transform.position);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Oil", gameObject.transform.position);
         yield return StartCoroutine(ReturnToShip());
     }
 
