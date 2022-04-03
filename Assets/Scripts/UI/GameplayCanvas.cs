@@ -17,6 +17,7 @@ public class GameplayCanvas : MonoBehaviour
     public Sprite OilIcon;
     public Sprite RocketIcon;
     public Sprite BearIcon;
+    public Sprite TameIcon;
     public Sprite QuestionMarkIcon;
     [Header("References")]
     public RadialUIHandler FishSlider;
@@ -164,7 +165,7 @@ public class GameplayCanvas : MonoBehaviour
                 spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnRecallAllBears?.Invoke());
                 break;
             case ContextAction.TameBear:
-                img.sprite = FishIcon;
+                img.sprite = TameIcon;
                 spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnTameBear?.Invoke());
                 break;
         }
