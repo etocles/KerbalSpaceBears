@@ -139,7 +139,7 @@ public class GameStateController : MonoBehaviour
         foreach (GameObject bear in rocket.BearsOwned)
         {
             bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
-            bear.GetComponent<PolarBearController>().ReturnToShip();
+            StartCoroutine(bear.GetComponent<PolarBearController>().ReturnToShip());
         }
     }
     public void UnboardBears()

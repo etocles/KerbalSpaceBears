@@ -58,19 +58,23 @@ public class PolarBearController : MonoBehaviour {
         ReturnToShip();
     }
 
-    public void ReturnToShip(){
+    public IEnumerator ReturnToShip(){
         state = BearState.SHIP;
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
             if(Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, shipTile, out path)){
-                Unit.moveOnPath(path);
+                yield return Unit.moveOnPathCoroutine(path);
             } else {
                 ChangeState(BearState.LOST);
             }
         }
-        // if voyage is complete, notify ship and deactivate self
-        GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
-        gameObject.SetActive(false);
+        if (state == BearState.LOST) yield break;
+        else
+        {
+            // if voyage is complete, notify ship and deactivate self
+            GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
+            gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator SearchForOil(Stack<Tile> path){
