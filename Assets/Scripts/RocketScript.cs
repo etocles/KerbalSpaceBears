@@ -33,6 +33,9 @@ public class RocketScript : MonoBehaviour
     [SerializeField]
     public GameObject SpaceBearPrefab;
 
+
+    private bool firstFishObtained = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,17 +47,13 @@ public class RocketScript : MonoBehaviour
             BearsOwned.Add(bear);
         }
         BearsBoarded = new HashSet<GameObject>(BearsOwned);
+        // TODO: Subscribe to canvas's  context menu to begin launch
+        //StartLaunch();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (/* TODO: CLICKED CONTEXT MENU TO MOVE PLANETS &&*/
-            !Traveling // traveling can be removed when Context Functionality is added
-            && DestinationTile.parentPlanet != CurrentTile.parentPlanet)
-        {
-            StartLaunch();
-        }
         if (!Traveling)
         {
             TrySink();
@@ -62,8 +61,19 @@ public class RocketScript : MonoBehaviour
     }
 
     #region Resource Functions
-    public void AddOil(float amt) => NumOil += amt; // TODO: Report to canvas
-    public void AddFish(int amt) => NumFish += amt; // TODO: Report to canvas
+    public void AddOil(float amt) {
+        NumOil += amt; // TODO: Report to canvas
+    }
+
+    public void AddFish(int amt) {
+        if (firstFishObtained)
+        {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstFishObtained);
+            firstFishObtained = false;
+        }
+        NumFish += amt; // TODO: Report to canvas
+    }
+
     public void RecruitBear(GameObject bear) {
         if (NumFish >= FishPerBear)
         {
