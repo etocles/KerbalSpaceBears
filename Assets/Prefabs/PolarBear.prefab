@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6084137834388793044}
   - component: {fileID: -2716061540069171243}
+  - component: {fileID: 4036733426149926542}
   m_Layer: 0
   m_Name: PolarBear
   m_TagString: Bear
@@ -170,7 +171,20 @@ MonoBehaviour:
   parentPlanet: {fileID: 0}
   moveSpeed: 2
   currentTile: {fileID: 0}
+  polarBear: {fileID: 0}
   moving: 0
+--- !u!114 &4036733426149926542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2236782185681638351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02eabf27e2029b41aab174adff87374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2289739711227604503
 GameObject:
   m_ObjectHideFlags: 0

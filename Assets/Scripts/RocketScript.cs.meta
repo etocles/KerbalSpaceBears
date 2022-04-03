@@ -7,7 +7,7 @@ MonoImporter:
   - CurrentTile: {instanceID: 0}
   - DestinationTile: {instanceID: 0}
   - Thrusters: {instanceID: 0}
-  - spaceBearPrefab: {fileID: 7275161588404515118, guid: 8944c622fb674e44abac57f3bf045aeb, type: 3}
+  - SpaceBearPrefab: {fileID: 2236782185681638351, guid: 01e88ae95e03df04bb121cea936576bc, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

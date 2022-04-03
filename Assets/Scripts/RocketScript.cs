@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketScript : MonoBehaviour
+public class RocketScript : MonoBehaviour {
+    public GameObject fakeBear;
 
-{
     public Tile CurrentTile;
     public Tile DestinationTile;
     public ParticleSystem Thrusters;
@@ -75,6 +75,10 @@ public class RocketScript : MonoBehaviour
     public void BoardBear(GameObject bear)
     {
         BearsBoarded.Add(bear);
+    }
+    public void BoardUntamedBear(){
+        GameObject fake_bear = Instantiate(fakeBear, Vector3.zero, Quaternion.identity);
+        BearsBoarded.Add(fake_bear);
     }
     public GameObject UnboardBear()
     {
