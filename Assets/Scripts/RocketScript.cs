@@ -163,6 +163,8 @@ public class RocketScript : MonoBehaviour {
     void StartLaunch() {
         //if (!CanLaunch) return;
         DestinationTile = GameManager.instance.SelectedTile;
+        // see if we can land there
+        if (!GameManager.ValidTileForLanding(DestinationTile)) return ;
         if (firstPlanetTravel)
         {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstPlanetTraveledTo);
@@ -177,7 +179,7 @@ public class RocketScript : MonoBehaviour {
     {
         foreach (Tile t in CurrentTile.neighborTiles)
         {
-            if (!t.Occupied && t.GroupID != CurrentTile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
+            if (!t.Occupied && t.BiomeType == Hexsphere.BiomeType.Ice)
                 return t;
         }
         return null;

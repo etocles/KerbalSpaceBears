@@ -118,10 +118,14 @@ public class GameplayCanvas : MonoBehaviour
             }
             else if (tileCtrl.parentPlanet != GameManager.instance.ActivePlanet) // Clicking tile on another planet
             {
-                if(tileCtrl.BiomeType == Hexsphere.BiomeType.Ice)
+                if(GameManager.ValidTileForLanding(tileCtrl))
                 {
                     AddContextButton(ContextAction.NavigateWithShip);
                     ContextMenuVisible = true;
+                }
+                else
+                {
+                    Debug.Log("CANVAS: Can't Land Here!");
                 }
             }
             if (ContextMenuVisible)
