@@ -40,7 +40,7 @@ public class GameStateController : MonoBehaviour
     {
         GenerateSolarSystem();
         SetTarget(planets[0]);
-        GameplayCanvas.instance.OnRecallAllBears.AddListener(BoardBears);
+        GameplayCanvas.instance.OnRecallAllBears.AddListener(ToggleBoarding);
     }
 
     // Update is called once per frame
@@ -166,6 +166,22 @@ public class GameStateController : MonoBehaviour
         }
     }
 
+    public static bool GoingToShip = false; // should be false at the beginning because polar bears gotta leave the ship
+    public void ToggleBoarding()
+    {
+        if (GoingToShip)
+        {
+            // stop anyone that is still trying to get in 
+            GoingToShip = false; // will cause moving coroutine to stop abruptly (PolarBearController->Return To Ship->moveonPath->CanContinue)
+            UnboardBears();
+        }
+        else
+        {
+            // stop unboarding
+            GoingToShip = true;  // will cause UnBoarding() coroutine to stop abruptly (lIne 204)
+            BoardBears();
+        }
+    }
     public void BoardBears()
     {
         RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
@@ -185,7 +201,7 @@ public class GameStateController : MonoBehaviour
     IEnumerator UnBoarding()
     {
         RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
-        while (rocket.BearsBoarded.Count > 0)
+        while (rocket.BearsBoarded.Count > 0 && !GoingToShip)
         {
             Tile tryTile = rocket.GetUnOccupiedTile();
             if (tryTile == null)

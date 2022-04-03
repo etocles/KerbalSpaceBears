@@ -52,9 +52,9 @@ public class MobileUnit : MonoBehaviour {
 	private bool CanContinue(Tile tile)
     {
 		// if next tile is ship, board if tamed
+		PolarBearController temp = polarBear.GetComponent<PolarBearController>();
 		if (tile == GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile)
         {
-			PolarBearController temp = polarBear.GetComponent<PolarBearController>();
 			bool isTamed = temp != null;
 			// if Tamed and returning to ship, then try to pay admission
 			if (isTamed && temp.state == PolarBearController.BearState.SHIP)
@@ -65,9 +65,13 @@ public class MobileUnit : MonoBehaviour {
 			// if Tamed and not returning to ship, chill tf out
 			return true;
 		}
+		// check if environment is traversible
 		if (!tile.navigable || tile.BiomeType == Hexsphere.BiomeType.Water){
 			return false;
         }
+		// if boarding ship but received stop message, quit moving
+		if (temp.state == PolarBearController.BearState.SHIP 
+			&& !GameStateController.GoingToShip) return false;
 		return true;
     }
 
