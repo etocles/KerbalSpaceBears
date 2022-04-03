@@ -62,6 +62,7 @@ public class PolarBearController : Bear {
         yield return StartCoroutine(SearchForFish(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
         yield return new WaitForSeconds(fishGatheringTime);
+        //Unit.currentTile. //TODO: Aesthetic
         yield return StartCoroutine(ReturnToShip());
     }
 
@@ -102,6 +103,7 @@ public class PolarBearController : Bear {
             if (GameManager.instance.ActivePlanet.navManager.findPath(Unit.currentTile, dest, out path))
             {
                 // we want others to be able to get to the ship
+                Unit.currentTile.Occupied = false;
                 if (state == BearState.SHIP) dest.Occupied = false;
                 yield return Unit.moveOnPathCoroutine(path);
             } 
