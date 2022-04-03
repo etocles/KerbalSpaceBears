@@ -36,6 +36,7 @@ public class RocketScript : MonoBehaviour {
 
     private bool firstFishObtained = true;
     private bool firstOilObtained = true;
+    private bool firstBearObtained = true;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +67,7 @@ public class RocketScript : MonoBehaviour {
         if (firstOilObtained)
         {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstOilObtained);
-            firstFishObtained = false;
+            firstOilObtained = false;
         }
         NumOil += amt; // TODO: Report to canvas
     }
@@ -84,6 +85,7 @@ public class RocketScript : MonoBehaviour {
     {
         if (NumFish >= FishPerBear)
         {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
             NumFish -= FishPerBear;
             bear.GetComponent<UntamedBear>().PaidFor = true;
             return true;
