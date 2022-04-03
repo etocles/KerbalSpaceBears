@@ -9,4 +9,6 @@ public class Bear : MonoBehaviour
     }
     [SerializeField] private BearType type;
     public BearType GetBearType() => type;
+
+
 }

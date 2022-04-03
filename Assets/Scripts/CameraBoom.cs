@@ -233,6 +233,7 @@ public class CameraBoom : MonoBehaviour
 		dummy = new GameObject("Dummy");
 		dummy.transform.SetParent(this.transform.parent);
 		dummy.transform.position = new Vector3(0, 0, 0);
+		dummy.transform.rotation = Quaternion.Euler(Vector3.zero);
 		defaultRot = new Vector3(0, 0, 0);
 
 		playerCamera = GetComponentInChildren<Camera>();
