@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartGame() { GameStarted = true; }
+    private void EndGame() { SceneManager.LoadScene("GameOver"); }
     private void SetActivePlanet(Hexsphere planet) { 
         // assume set active planet is where we start with the planet
         ActivePlanet = planet;
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
     {
         InitGame();
         OnRocketLanded.AddListener(SetActivePlanet);
+        OnGameOver.AddListener(EndGame);
     }
 
     // Update is called once per frame

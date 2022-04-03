@@ -186,8 +186,7 @@ public class RocketScript : MonoBehaviour {
     IEnumerator TipOver()
     {
         Vector3 startRot = transform.localEulerAngles;
-        Vector3 endRot = transform.localEulerAngles;
-        endRot.y = 100.0f;
+        Vector3 endRot = new Vector3(50f,0,0f);
 
         Vector3 startPos = transform.localPosition;
         Vector3 endPos = transform.localPosition;
