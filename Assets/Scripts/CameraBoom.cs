@@ -47,10 +47,10 @@ public class CameraBoom : MonoBehaviour
 	public Hexsphere hexsphere;
 
 	private bool pauseMovement = false; //Freezes input during automatic movement
-	private float rotY, rotX = 0.0f;
+	private float rotY, rotX;
 	private float sensitivityTimeMod = 0.0f;
-	private float camRotY = 0.0f;
-	private float camRotX = 0.0f;
+	private float camRotY;
+	private float camRotX;
 	private readonly float peekTransitionDuration = 0.2f;
 	private bool camPeekActive = false;
 	private Camera playerCamera;
@@ -202,11 +202,15 @@ public class CameraBoom : MonoBehaviour
 		switchingTimer = 0.0f;
 		switchingPlanets = true;
 		hexsphere = sphere;
+		//defaultRot = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0.0f);
 		transform.SetParent(hexsphere.transform);
+		//StartCoroutine("ResetCam");
+		//defaultRot = new Vector3(hexsphere.transform.parent.rotation.x, hexsphere.transform.parent.rotation.y, 0.0f);
+		defaultRot = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0.0f);
 	}
+
 	public void OnPlanetSwitchCompleted()
     {
-		
 		transform.localPosition = new Vector3(0, 0, 0);
 		switchingTimer = 0.0f;
 		zoomSensitivity *= hexsphere.planetScale;
@@ -221,9 +225,11 @@ public class CameraBoom : MonoBehaviour
 		maxZoom += -(pivotZoom);
 		defaultZoom = (minZoom + maxZoom) * .5f;
 
+		//StartCoroutine(ResetCam());
 
-		StartCoroutine(ResetCam());
-		//MoveToLocation(defaultRot, defaultZoom);
+		//defaultRot = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0.0f);
+
+		MoveToLocation(defaultRot, defaultZoom);
 	}
 
 	private void Awake()
@@ -233,7 +239,7 @@ public class CameraBoom : MonoBehaviour
 		dummy = new GameObject("Dummy");
 		dummy.transform.SetParent(this.transform.parent);
 		dummy.transform.position = new Vector3(0, 0, 0);
-		dummy.transform.rotation = Quaternion.Euler(Vector3.zero);
+		//transform.rotation = Quaternion.Euler(Vector3.zero);
 		defaultRot = new Vector3(0, 0, 0);
 
 		playerCamera = GetComponentInChildren<Camera>();
@@ -247,18 +253,17 @@ public class CameraBoom : MonoBehaviour
 		///*
 		// set cam pivot and modify minZoom and maxZoom to nullify the offset
 
-		CamPivot.transform.position = new Vector3(0, 0, pivotZoom);
+		CamPivot.transform.position = new Vector3(playerCamera.transform.localPosition.x, playerCamera.transform.localPosition.y, pivotZoom);
 		minZoom += -(pivotZoom);
 		maxZoom += -(pivotZoom);
 		defaultZoom = (minZoom + maxZoom) * .5f;
-		playerCamera.transform.localPosition = new Vector3(0, 0, defaultZoom);
+		playerCamera.transform.localPosition = new Vector3(playerCamera.transform.localPosition.x, playerCamera.transform.localPosition.y , defaultZoom);
 		//*/
-
 	}
 
     private void Start()
     {
-		
+
 	}
 
     private void Update()
@@ -301,6 +306,8 @@ public class CameraBoom : MonoBehaviour
 		//Speed modified based of of current zoom and average sensitivity
 		else if (Input.GetMouseButton(1) && !pauseMovement && switchingPlanets == false)
 		{
+			//Debug.Log(transform.localEulerAngles);
+			//Debug.Log(rotX + " " + rotY);
 			sensitivityTimeMod += Mathf.Pow(sensitivityGrowthRate, 1.55f);
 			sensitivityTimeMod = Mathf.Clamp01(sensitivityTimeMod);
 			//Modify rotation speed 
