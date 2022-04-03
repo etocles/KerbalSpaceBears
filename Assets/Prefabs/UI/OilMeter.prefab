@@ -32,10 +32,10 @@ RectTransform:
   m_Father: {fileID: 6889138120225603092}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6889138119141498819
 CanvasRenderer:
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0.767
   m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -449,6 +449,7 @@ MonoBehaviour:
   circleFillImage: {fileID: 6889138120712393528}
   handlerEdgeImage: {fileID: 6889138119394215042}
   fillHandler: {fileID: 6889138121168092943}
+  text: {fileID: 0}
 --- !u!114 &6889138120225603094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +533,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 0.745
   m_FillClockwise: 0
   m_FillOrigin: 2
   m_UseSpriteMesh: 0

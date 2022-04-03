@@ -63,14 +63,14 @@ public class CameraBoom : MonoBehaviour
     bool isMainView = true;
     bool retrievedDistance = false; // temporary var
     float dummyDist = 0f;
-	float timeToSwitchPlanets = 3.5f;
+	float timeToSwitchPlanets = 2f;
 	bool switchingPlanets = false;
 	private float switchingTimer = 0.0f;
 	private float baseZoomSensitivity;
 
 	private float maxZoom;
 	private float minZoom;
-
+	private Vector3 oldPlanetLoc;
 	//Reset each turn to a position above a player's pentagon OR hexagon of their last action
 	//Something along those lines.
 	private float defaultZoom, pivotZoom; 
@@ -197,6 +197,8 @@ public class CameraBoom : MonoBehaviour
     }
 	public void SwitchPlanets(Hexsphere sphere)
     {
+		if (hexsphere == null) oldPlanetLoc = GameStateController.instance.planets[0].transform.position;
+		else oldPlanetLoc = hexsphere.transform.position;
 		switchingTimer = 0.0f;
 		switchingPlanets = true;
 		hexsphere = sphere;
@@ -219,8 +221,9 @@ public class CameraBoom : MonoBehaviour
 		maxZoom += -(pivotZoom);
 		defaultZoom = (minZoom + maxZoom) * .5f;
 
-		MoveToLocation(defaultRot, defaultZoom);
 
+		StartCoroutine(ResetCam());
+		//MoveToLocation(defaultRot, defaultZoom);
 	}
 
 	private void Awake()
@@ -237,7 +240,7 @@ public class CameraBoom : MonoBehaviour
 		instance = this;
 
 		float rad = 1;
-		minZoom = -(rad * 6);
+		minZoom = -(rad * 5);
 		maxZoom = -0.35f - rad;
 		pivotZoom = (minZoom + maxZoom) * 0.5f; //Will maybe tweak this
 		///*
@@ -252,7 +255,12 @@ public class CameraBoom : MonoBehaviour
 
 	}
 
-	private void Update()
+    private void Start()
+    {
+		
+	}
+
+    private void Update()
 	{
 		float scrollDelta = Input.mouseScrollDelta.y;
 
@@ -290,7 +298,7 @@ public class CameraBoom : MonoBehaviour
 
 		// rotation around HexSphere 
 		//Speed modified based of of current zoom and average sensitivity
-		else if (Input.GetMouseButton(1) && !pauseMovement)
+		else if (Input.GetMouseButton(1) && !pauseMovement && switchingPlanets == false)
 		{
 			sensitivityTimeMod += Mathf.Pow(sensitivityGrowthRate, 1.55f);
 			sensitivityTimeMod = Mathf.Clamp01(sensitivityTimeMod);
@@ -346,7 +354,7 @@ public class CameraBoom : MonoBehaviour
 		if(switchingPlanets)
         {
 			switchingTimer += Time.deltaTime;
-			transform.position = Vector3.Lerp(transform.position, hexsphere.transform.position, switchingTimer / timeToSwitchPlanets);
+			transform.position = Vector3.Lerp(oldPlanetLoc, hexsphere.transform.position, switchingTimer / timeToSwitchPlanets);
 			if (switchingTimer > timeToSwitchPlanets || Vector3.Distance(transform.position, hexsphere.transform.position) < 0.05f)
 			{
 				switchingPlanets = false;

@@ -183,12 +183,16 @@ public class GameplayCanvas : MonoBehaviour
         switch (resourceType)
         {
             case Resource.Fish:
+                FishSlider.fillValue = value;
                 break;
             case Resource.Bear:
+                BearSlider.fillValue = value;
                 break;
             case Resource.Oil:
+                OilSlider.fillValue = value;
                 break;
             case Resource.Heat:
+                HeatSlider.fillValue = value;
                 break;
         }
     }

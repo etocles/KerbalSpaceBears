@@ -13,7 +13,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public float timeToAppear = 0.25f;
     [TextArea]
     public string CustomString = "Only active if \"Type\" is set to \"Custom\"...";
-
+    public Sprite customSprite = null;
     private float timer = 0;
     [HideInInspector] public bool hovering = false;
     private bool tooltipDisplayed = false;

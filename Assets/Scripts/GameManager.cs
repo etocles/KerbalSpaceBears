@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     
     public void SelectTile(Tile tile)
     {
-        if(SelectedTile != null && tile != SelectedTile)
+        if (SelectedTile != null && tile != SelectedTile)
         {
             DeselectTile();
         }
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         SelectedTile.SetHighlight(0.75f);
         SelectedTile.Selected = true;
         OnTileSelected?.Invoke();
-        GameplayCanvas.instance.DisplayContextMenu(SelectedTile.gameObject);
+        if(SelectedTile.parentPlanet == GameStateController.instance.ActiveHexsphere) GameplayCanvas.instance.DisplayContextMenu(SelectedTile.gameObject);
     }
     public void DeselectTile()
     {
