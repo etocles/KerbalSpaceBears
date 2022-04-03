@@ -28,6 +28,8 @@ public class RocketScript : MonoBehaviour {
     public static int BearThreshold = 2;
     [Tooltip("Minimum oil for takeoff")]
     public static int OilThreshold = 10;
+    [Tooltip("How many fish to board the ship")]
+    public static int AdmissionPrice = 1;
     [Tooltip("Starting Amount of Bears")]
     public static int StartingBears = 3;
     [Tooltip("Starting Amount of Fish")]
@@ -148,9 +150,21 @@ public class RocketScript : MonoBehaviour {
         }
         Destroy(bear);
     }
-    public void BoardBear(GameObject bear)
+    public bool BoardBear(GameObject bear)
     {
-        BearsBoarded.Add(bear);
+        if (NumFish >= AdmissionPrice)
+        {
+            GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.FishIcon, "-" + AdmissionPrice.ToString() + " Fish", gameObject.transform.position);
+            GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear Boarded", gameObject.transform.position);
+            NumFish -= AdmissionPrice;
+            BearsBoarded.Add(bear);
+            return true;
+        }
+        else
+        {
+            GameplayCanvas.instance.PushMessage("Out of fish! Ship is at capacity!", 0.5f);
+            return false;
+        }
     }
     public void BoardUntamedBear(){
         GameObject fake_bear = Instantiate(fakeBear, Vector3.zero, Quaternion.identity);

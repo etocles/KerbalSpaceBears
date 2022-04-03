@@ -206,6 +206,8 @@ public class GameplayCanvas : MonoBehaviour
                 return OilIcon;
             case PolarBearController.BearState.LOST:
                 return QuestionMarkIcon;
+            case PolarBearController.BearState.SHIP:
+                return RocketIcon;
         }
         return null;
     }

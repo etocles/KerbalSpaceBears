@@ -92,6 +92,9 @@ public class PolarBearController : Bear {
         // make sure we can get there
         tile.Occupied = false;
 
+        // don't consume any resources if you're coming back from an ice tile
+        if (tile.BiomeType == Hexsphere.BiomeType.Ice) return;
+
         // remove the placed object that's NOT a bear
         List<GameObject> temp = new List<GameObject>();
         foreach (GameObject obj in tile.PlacedObjects)
@@ -130,7 +133,7 @@ public class PolarBearController : Bear {
                 dest = shipTile;
                 dest.activeBear = ActiveBear.None; // just in case
             }
-            // otherwise reserve that position
+            // otherwise reserve that position (around the ship)
             else
             {
                 dest.Occupied = true;
@@ -206,6 +209,7 @@ public class PolarBearController : Bear {
         }
     }
     public void SetShipTile(Tile tile) => shipTile = tile;
+    public Tile GetShipTile()=>shipTile;
 
     public void OnTileClicked(Tile tile){
         //StartCoroutine(GetFish(tile, null));

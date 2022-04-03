@@ -49,6 +49,18 @@ public class MobileUnit : MonoBehaviour {
 
 	public GameObject getGameObject(){ return this.gameObject; }
 
+	private bool CanContinue(Tile tile)
+    {
+		if (tile == polarBear.GetComponent<PolarBearController>().GetShipTile())
+        {
+			return GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(polarBear);
+        }
+		if (!tile.navigable || tile.BiomeType == Hexsphere.BiomeType.Water){
+			return false;
+        }
+		return true;
+    }
+
 	public IEnumerator move(Stack<Tile> path)
     {
 		moving = true;
@@ -60,6 +72,13 @@ public class MobileUnit : MonoBehaviour {
 		while (path.Count > 0)
         {
 			Tile next = path.Pop();
+
+			if (!CanContinue(next))
+            {
+				polarBear.GetComponent<PolarBearController>().ChangeState(PolarBearController.BearState.LOST);
+				break;
+            }
+
 			//Vector3 currentPos = transform.position - parentPlanet.transform.position;
 			Vector3 currentPos = transform.position;
 			float t = 0f;
