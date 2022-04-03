@@ -37,6 +37,8 @@ public class RocketScript : MonoBehaviour {
     private bool firstFishObtained = true;
     private bool firstOilObtained = true;
     private bool firstBearObtained = true;
+    private bool firstPlanetTravel = true;
+    private bool firstEnoughFuel = true;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +70,11 @@ public class RocketScript : MonoBehaviour {
         {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstOilObtained);
             firstOilObtained = false;
+        }
+        if (firstEnoughFuel)
+        {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnEnoughFuelAccumulated);
+            firstEnoughFuel = false;
         }
         NumOil += amt; // TODO: Report to canvas
     }
@@ -155,7 +162,12 @@ public class RocketScript : MonoBehaviour {
     }
     // leave atmosphere by incrementing 
     void StartLaunch() {
-        DestinationTile = GameManager.instance.SelectedTile; 
+        DestinationTile = GameManager.instance.SelectedTile;
+        if (firstPlanetTravel)
+        {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstPlanetTraveledTo);
+            firstPlanetTravel = false;
+        }
         StartCoroutine(Launch()); 
     }
 
