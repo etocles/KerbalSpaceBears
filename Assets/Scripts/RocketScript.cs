@@ -92,7 +92,7 @@ public class RocketScript : MonoBehaviour {
     {
         if (NumFish >= FishPerBear)
         {
-            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
+            //TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
             NumFish -= FishPerBear;
             bear.GetComponent<UntamedBear>().PaidFor = true;
             return true;
@@ -135,7 +135,6 @@ public class RocketScript : MonoBehaviour {
         GameObject b = temp[0];
         // remove bear from ship
         BearsBoarded.Remove(b);
-        print("UnboardBear() complete");
         return b;
     }
     public void LeaveBehind()
