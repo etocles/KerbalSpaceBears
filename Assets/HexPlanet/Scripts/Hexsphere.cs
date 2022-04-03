@@ -113,12 +113,9 @@ public class Hexsphere : MonoBehaviour {
         List<Tile> NewIceTiles = new List<Tile>();
         float amt = (0.008f) / Mathf.Abs(10 - meltRate);
         currentMelt += amt * dt;
+        // melt the ice
         foreach (Tile tile in TilesByBiome[BiomeType.Ice])
         {
-            //float destHeight = tile.ExtrudedHeight - amt;
-            //float newHeight = Mathf.Lerp(tile.ExtrudedHeight, destHeight, dt);
-            //newHeight = Mathf.Min(newHeight, 0);
-            //tile.SetExtrusionHeight(newHeight);
             tile.Extrude(-amt*dt);
             if (tile.ExtrudedHeight <= 0)
             {
@@ -131,6 +128,22 @@ public class Hexsphere : MonoBehaviour {
             }
         }
         TilesByBiome[BiomeType.Ice] = NewIceTiles;
+        NewIceTiles.Clear();
+        // do the same for fish tiles
+        foreach (Tile tile in TilesByBiome[BiomeType.Fish])
+        {
+            tile.Extrude(-amt * dt);
+            if (tile.ExtrudedHeight <= 0)
+            {
+                tile.SetExtrusionHeight(0.0f);
+                tile.SetGroupID(FindBiomeIDByType(BiomeType.Water));
+            }
+            else
+            {
+                NewIceTiles.Add(tile);
+            }
+        }
+        TilesByBiome[BiomeType.Fish] = NewIceTiles;
         GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, currentMelt / maxMelt, ((currentMelt / maxMelt) * 100f).ToString("F0") + "%");
     }
 
