@@ -155,11 +155,19 @@ public class PolarBearController : Bear {
         // set our new List to be without the Fish/Oil model on top
         tile.PlacedObjects = temp;
 
-        // necessary upkeep for TilesByBiome
-        tile.parentPlanet.TilesByBiome[tile.BiomeType].Remove(tile);
-        tile.parentPlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
-        // change our BiomeType to Ice
-        tile.BiomeType = Hexsphere.BiomeType.Ice;
+        if (tile.BiomeType == Hexsphere.BiomeType.Oil)
+        {
+            // necessary upkeep for TilesByBiome
+            tile.parentPlanet.TilesByBiome[tile.BiomeType].Remove(tile);
+        }
+        else if (tile.BiomeType == Hexsphere.BiomeType.Fish)
+        {
+            // necessary upkeep for TilesByBiome
+            tile.parentPlanet.TilesByBiome[tile.BiomeType].Remove(tile);
+            tile.parentPlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
+            // change our BiomeType to Ice
+            tile.BiomeType = Hexsphere.BiomeType.Ice;
+        }
         if (tile.ExtrudedHeight <= 0.0000000001f) tile.ExtrudedHeight = 0.0001f;
     }
 
