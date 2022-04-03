@@ -609,6 +609,7 @@ GameObject:
   - component: {fileID: 8051662385898498964}
   - component: {fileID: -2650770204257218547}
   - component: {fileID: 434589386453340475}
+  - component: {fileID: 5019465469566535973}
   m_Layer: 0
   m_Name: PolarBearAstronaut
   m_TagString: Untagged
@@ -664,6 +665,24 @@ MonoBehaviour:
   type: 0
   oilGatheringTime: 10
   fishGatheringTime: 5
+--- !u!114 &5019465469566535973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7275161588404515118}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0.31764707, g: 0.77254903, b: 0.28627452, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &7432120258062681517
 GameObject:
   m_ObjectHideFlags: 0

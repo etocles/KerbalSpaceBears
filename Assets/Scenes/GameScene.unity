@@ -161,38 +161,52 @@ MonoBehaviour:
   planetDefinitions:
   - orbitalRadius: 8
     polarBearCount: 12
-    oilCount: 5
+    iceWeight: 1
     waterWeight: 5
+    oilWeight: 3
+    fishWeight: 1
     planetScale: 1
   - orbitalRadius: 15
     polarBearCount: 5
-    oilCount: 5
-    waterWeight: 3
+    iceWeight: 2
+    waterWeight: 4
+    oilWeight: 1
+    fishWeight: 3
     planetScale: 1
   - orbitalRadius: 25
     polarBearCount: 5
-    oilCount: 5
-    waterWeight: 2
+    iceWeight: 2
+    waterWeight: 3
+    oilWeight: 1
+    fishWeight: 1
     planetScale: 1
   - orbitalRadius: 60
     polarBearCount: 5
-    oilCount: 5
+    iceWeight: 3
     waterWeight: 2
+    oilWeight: 1
+    fishWeight: 2
     planetScale: 1
   - orbitalRadius: 75
     polarBearCount: 5
-    oilCount: 5
-    waterWeight: 1
+    iceWeight: 3
+    waterWeight: 3
+    oilWeight: 1
+    fishWeight: 5
     planetScale: 1
   - orbitalRadius: 110
     polarBearCount: 5
-    oilCount: 5
+    iceWeight: 4
     waterWeight: 2
+    oilWeight: 1
+    fishWeight: 2
     planetScale: 1
   - orbitalRadius: 125
-    polarBearCount: 5
-    oilCount: 5
+    polarBearCount: 20
+    iceWeight: 5
     waterWeight: 1
+    oilWeight: 1
+    fishWeight: 1
     planetScale: 1
   planets: []
   HexspherePrefab: {fileID: 7668306457609355179, guid: 565b205bf34ee004688aaf0512a69201, type: 3}

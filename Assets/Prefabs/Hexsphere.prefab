@@ -200,6 +200,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetID: 0
   meltRate: 0.08
+  maxMelt: 0.06
+  currentMelt: 0
   generateOnPlay: 0
   GenerateAsSingleMesh: 0
   Invert: 0

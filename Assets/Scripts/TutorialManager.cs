@@ -60,7 +60,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void InitiateTutorialEvent(TutorialEvent Event, int i = -1)
     {
-        if (i == -1) activePrompt = TutorialPrompts_Dict[Event];
+        if (i == -1 && Event != TutorialEvent.None) activePrompt = TutorialPrompts_Dict[Event];
         else activePrompt = TutorialPrompts[i];
 
         if (activePrompt.duration != -1) StartCoroutine(DisplayTutorialPrompt_Coroutine(Event, activePrompt.duration));

@@ -47,11 +47,16 @@ public class GameManager : MonoBehaviour
         SelectedTile = tile;
         SelectedTile.SetHighlight(0.75f);
         SelectedTile.Selected = true;
+        if(SelectedTile.currentBear != null)
+        {
+            SelectedTile.currentBear.GetComponent<Outline>().enabled = true;
+        }
         OnTileSelected?.Invoke();
         if(SelectedTile.parentPlanet == GameStateController.instance.ActiveHexsphere) GameplayCanvas.instance.DisplayContextMenu(SelectedTile.gameObject);
     }
     public void DeselectTile()
     {
+        if(SelectedTile.currentBear != null) SelectedTile.currentBear.GetComponent<Outline>().enabled = false;
         SelectedTile.SetHighlight(0.0f);
         SelectedTile.Selected = false;
         SelectedTile = null;

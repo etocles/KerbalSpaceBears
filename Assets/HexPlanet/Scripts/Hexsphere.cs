@@ -112,7 +112,7 @@ public class Hexsphere : MonoBehaviour {
     {
         List<Tile> NewIceTiles = new List<Tile>();
         float amt = (0.008f) / Mathf.Abs(10 - meltRate);
-        currentMelt += amt;
+        currentMelt += amt * dt;
         foreach (Tile tile in TilesByBiome[BiomeType.Ice])
         {
             //float destHeight = tile.ExtrudedHeight - amt;
