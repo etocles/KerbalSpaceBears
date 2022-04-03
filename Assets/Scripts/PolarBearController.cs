@@ -61,6 +61,7 @@ public class PolarBearController : Bear {
     public IEnumerator AutoHarvest(Tile tile)
     {
         // change state appropriately
+        BearState temp2 = tile.BiomeType == Hexsphere.BiomeType.Fish ? BearState.FISH : BearState.OIL;
         if (tile.BiomeType == Hexsphere.BiomeType.Fish) ChangeState(BearState.FISH);
         if (tile.BiomeType == Hexsphere.BiomeType.Oil) ChangeState(BearState.OIL);
         bool gettingFish = state == BearState.FISH;
@@ -73,7 +74,7 @@ public class PolarBearController : Bear {
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position);
         ConsumeResource(Unit.currentTile);
 
-        switch (state)
+        switch (temp2)
         {
             // completed journey, add a fish
             case BearState.FISH:
