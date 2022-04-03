@@ -25,7 +25,7 @@ public class MobileUnit : MonoBehaviour {
 	{
         while (true)
         {
-			if (currentTile.ExtrudedHeight <= 0)
+			if (currentTile.ExtrudedHeight <= 0 && currentTile.BiomeType == Hexsphere.BiomeType.Water)
 			{
 				// check type (Space vs Non-Space)
 				bool isSpace = (polarBear.GetComponent<PolarBearController>() != null);
