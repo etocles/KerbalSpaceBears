@@ -8,6 +8,7 @@ public class UntamedBear : MonoBehaviour
 
     void Start(){
         Unit = GetComponent<MobileUnit>();
+        GameplayCanvas.instance.OnTameBear.AddListener(() => { if (gameObject.activeSelf) StartCoroutine(ReturnToShip()); });
     }
 
     public IEnumerator ReturnToShip(){
@@ -25,8 +26,7 @@ public class UntamedBear : MonoBehaviour
         else
         {
             // if voyage is complete, notify ship and deactivate self
-            GameManager.instance.Rocket.GetComponent<RocketScript>().BoardUntamedBear();
-            gameObject.SetActive(false);
+            GameManager.instance.Rocket.GetComponent<RocketScript>().RecruitBear(this.gameObject);
         }
     }
 }

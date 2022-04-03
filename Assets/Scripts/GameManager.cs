@@ -64,12 +64,6 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
-        //KillBears();
-        //SpawnPolarBears(10);
-        // greet user by using GamePlay canvas to convey that we have to land on a planet
-        /*
-         *  TODO: Implement
-         */
         // wait for tile to be selected
         OnTileSelected.AddListener(FirstLanding);
         OnGameStart.AddListener(StartGame);

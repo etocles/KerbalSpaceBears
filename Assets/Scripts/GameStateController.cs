@@ -154,20 +154,12 @@ public class GameStateController : MonoBehaviour
     IEnumerator UnBoarding()
     {
         RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
-        Tile GetUnOccupiedTile()
-        {
-            foreach (Tile t in rocket.CurrentTile.neighborTiles) {
-                if (!t.Occupied && t.GroupID != rocket.CurrentTile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
-                    return t;
-            }
-            return null;
-        }
         while (rocket.BearsBoarded.Count > 0)
         {
-            Tile tryTile = GetUnOccupiedTile();
+            Tile tryTile = rocket.GetUnOccupiedTile();
             if (tryTile == null)
             {
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(1.0f);
                 continue;
             }
 

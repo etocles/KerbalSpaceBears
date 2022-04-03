@@ -85,7 +85,10 @@ public class RocketScript : MonoBehaviour {
         {
             NumFish -= FishPerBear;
             BearsOwned.Add(bear);
+            BearsBoarded.Add(bear);
             // TODO: Report to canvas
+            bear = UnboardBear();
+            GameStateController.instance.DepositBear(bear, GetUnOccupiedTile());
         }
     }
     public void BoardBear(GameObject bear)
@@ -106,9 +109,10 @@ public class RocketScript : MonoBehaviour {
     }
     public void LeaveBehind()
     {
+        // update our list of bears to only be the ones that made it on the ship
         BearsOwned.IntersectWith(BearsBoarded);
-        //bears owned gets changed but bears boarded doesn't
     }
+
     #endregion  
 
 
@@ -133,12 +137,21 @@ public class RocketScript : MonoBehaviour {
 
     public void FirstLanding(Tile tile) => StartCoroutine(FirstLandingCutscene(tile));
 
+    public Tile GetUnOccupiedTile()
+    {
+        foreach (Tile t in CurrentTile.neighborTiles)
+        {
+            if (!t.Occupied && t.GroupID != CurrentTile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
+                return t;
+        }
+        return null;
+    }
     #region Coroutines
     IEnumerator TipOver()
     {
         Vector3 startRot = transform.localEulerAngles;
         Vector3 endRot = transform.localEulerAngles;
-        endRot.y = 60.0f;
+        endRot.y = 100.0f;
 
         Vector3 startPos = transform.localPosition;
         Vector3 endPos = transform.localPosition;
