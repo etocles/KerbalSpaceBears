@@ -28,13 +28,11 @@ public class RocketScript : MonoBehaviour {
     [Tooltip("Minimum bears for takeoff")]
     public static int BearThreshold = 2;
     [Tooltip("Minimum oil for takeoff")]
-    public static int OilThreshold = 10;
+    public static int OilThreshold = 5;
     [Tooltip("How many fish to board the ship")]
     public static int AdmissionPrice = 1;
     [Tooltip("Starting Amount of Bears")]
     public static int StartingBears = 3;
-    [Tooltip("Starting Amount of Fish")]
-    public static int StartingFish = 3;
     [SerializeField]
     public GameObject SpaceBearPrefab;
 
@@ -207,7 +205,7 @@ public class RocketScript : MonoBehaviour {
     void StartLaunch() {
         // if we're already moving, bruh
         if (Traveling) return;
-        //if (!CanLaunch) return;
+        if (!CanLaunch) return;
         DestinationTile = GameManager.instance.SelectedTile;
         // see if we can land there
         if (!GameManager.ValidTileForLanding(DestinationTile)) return ;
