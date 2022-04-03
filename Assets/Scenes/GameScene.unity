@@ -161,9 +161,9 @@ MonoBehaviour:
   planetDefinitions:
   - orbitalRadius: 8
     polarBearCount: 12
-    iceWeight: 1
+    iceWeight: 2
     waterWeight: 5
-    oilWeight: 3
+    oilWeight: 1
     fishWeight: 1
     planetScale: 1
   - orbitalRadius: 15

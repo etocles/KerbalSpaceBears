@@ -87,12 +87,13 @@ public class MobileUnit : MonoBehaviour {
 			while(t < 1f)
             {
 				t += Time.deltaTime * moveSpeed;
-				Vector3 vSlerp = Vector3.Slerp(currentPos, next.FaceCenter, t);
+				Vector3 vSlerp = Vector3.Lerp(currentTile.FaceCenter, next.FaceCenter, t) + ((currentTile.transform.up + next.transform.up) / 2).normalized * 0.0025f;
 				transform.position = vSlerp;
                 Vector3 lookDir = transform.position - lastPos;
 				//Correct rotation to keep transform forward aligned with movement direction and transform up aligned with tile normal
 				//transform.rotation = Quaternion.LookRotation(lookDir, transform.position - parentPlanet.transform.position);
-				transform.localEulerAngles = new Vector3(0, 0, 0);
+				transform.LookAt(next.transform);
+				transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
                 lastPos = transform.position;
 				this.transform.parent = currentTile.transform;
 				yield return new WaitForSeconds(Time.deltaTime);
