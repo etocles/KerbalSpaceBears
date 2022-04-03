@@ -8,6 +8,6 @@ public class WorldSpaceUIIcon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameplayCanvas.instance.CreateIcon(sprite, gameObject);
+        if(GameplayCanvas.instance != null) GameplayCanvas.instance.CreateIcon(sprite, gameObject);
     }
 }

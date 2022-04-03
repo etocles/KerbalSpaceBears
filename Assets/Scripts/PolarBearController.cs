@@ -66,12 +66,13 @@ public class PolarBearController : Bear {
         if (tile.BiomeType == Hexsphere.BiomeType.Oil) ChangeState(BearState.OIL);
         bool gettingFish = state == BearState.FISH;
         Sprite icon = (gettingFish) ? GameplayCanvas.instance.FishIcon : GameplayCanvas.instance.OilIcon;
+        string txt = (gettingFish) ? "+1 Fish" : "+1 Oil";
         float timeToWait = (gettingFish) ? fishGatheringTime : oilGatheringTime;
 
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(icon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(timeToWait);
         yield return new WaitForSeconds(timeToWait);
-        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, txt, gameObject.transform.position);
         ConsumeResource(Unit.currentTile);
 
         switch (temp2)
