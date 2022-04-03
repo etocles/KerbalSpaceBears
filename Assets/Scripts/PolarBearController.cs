@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PolarBearController : MonoBehaviour {
 
@@ -18,9 +19,12 @@ public class PolarBearController : MonoBehaviour {
         state = BearState.DEFAULT;
         Unit = GetComponent<MobileUnit>();
         //Tile.OnTileClickedAction += OnTileClicked;
+        GameplayCanvas.instance.OnSearchForFish.AddListener(() => { if (gameObject.activeSelf) StartCoroutine(GetFish()); });
+        GameplayCanvas.instance.OnSearchForOil.AddListener(() => { if (gameObject.activeSelf) StartCoroutine(GetOil()); });
     }
 
-    void ChangeState(BearState newState){
+    public void ChangeState(BearState newState){
+        Debug.Log("Changing to: " + newState.ToString());
         if(state == newState)
             return;
         state = newState;
@@ -38,42 +42,75 @@ public class PolarBearController : MonoBehaviour {
         }
     }
 
-    public IEnumerator GetFish(Tile tile, Stack<Tile> fishPath){
+    public IEnumerator GetFish(){
+        // fires from context menu, so first have to check
+        // if we're the right bear
+        if (Unit.currentTile != GameManager.instance.SelectedTile) yield break;
         // tile (temp) = ship starting origin
         ChangeState(BearState.FISH);
-        yield return StartCoroutine(SearchForFish(fishPath));
+        yield return StartCoroutine(SearchForFish(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
         yield return new WaitForSeconds(gatheringTime);
-        ReturnToShip();
-
-        yield return null;
+        yield return StartCoroutine(ReturnToShip());
     }
 
-    public IEnumerator GetOil(Tile tile, Stack<Tile> oilPath){
+    public IEnumerator GetOil(){
+        // fires from context menu, so first have to check
+        // if we're the right bear
+        if (Unit.currentTile != GameManager.instance.SelectedTile) yield break;
         // tile (temp) = ship starting origin
         ChangeState(BearState.OIL);
-        yield return StartCoroutine(SearchForOil(oilPath));
+        yield return StartCoroutine(SearchForOil(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
         yield return new WaitForSeconds(gatheringTime);
-        ReturnToShip();
+        yield return StartCoroutine(ReturnToShip());
     }
 
+
+    private Tile ChooseBestAdjacentTile(Tile tile)
+    {
+        foreach (Tile t in tile.neighborTiles)
+        {
+            if (t.Occupied && t.GroupID != tile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
+            {
+                return t;
+            }
+        }
+        return null;
+    }
     public IEnumerator ReturnToShip(){
         state = BearState.SHIP;
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
-            if(Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, shipTile, out path)){
+            Tile dest = (ChooseBestAdjacentTile(shipTile) == null) ? Unit.currentTile : ChooseBestAdjacentTile(shipTile);
+            if (Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, dest, out path)){
                 yield return Unit.moveOnPathCoroutine(path);
             } else {
                 ChangeState(BearState.LOST);
             }
         }
-        if (state == BearState.LOST) yield break;
-        else
+
+        switch (state)
         {
-            // if voyage is complete, notify ship and deactivate self
-            GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
-            gameObject.SetActive(false);
+            // abrupt end to journey, report as lost 
+            case BearState.LOST:
+                break;
+            // completed journey, add a fish
+            case BearState.FISH:
+                print("Fish GET!");
+                GameManager.instance.Rocket.GetComponent<RocketScript>().AddFish(1);
+                break;
+            // completed journey, add an oil
+            case BearState.OIL:
+                print("Oil GET!");
+                GameManager.instance.Rocket.GetComponent<RocketScript>().AddOil(1);
+                break;
+            // completed journey, board the ship
+            case BearState.SHIP:
+                print("Bye!");
+                GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
+                gameObject.SetActive(false);
+                break;
         }
     }
 
