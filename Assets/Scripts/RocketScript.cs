@@ -76,7 +76,8 @@ public class RocketScript : MonoBehaviour {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnEnoughFuelAccumulated);
             firstEnoughFuel = false;
         }
-        NumOil += amt; // TODO: Report to canvas
+        NumOil += amt;
+        Debug.Log("CANVAS: +1 Oil!");
     }
 
     public void AddFish(int amt) {
@@ -85,7 +86,8 @@ public class RocketScript : MonoBehaviour {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstFishObtained);
             firstFishObtained = false;
         }
-        NumFish += amt; // TODO: Report to canvas
+        NumFish += amt;
+        Debug.Log("CANVAS: +1 Fish!");
     }
 
     public bool PayForBear(GameObject bear)
@@ -95,6 +97,8 @@ public class RocketScript : MonoBehaviour {
             //TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
             NumFish -= FishPerBear;
             bear.GetComponent<UntamedBear>().PaidFor = true;
+
+            Debug.Log("CANVAS: -"+FishPerBear+" Fish!");
             return true;
         }
         else
@@ -110,7 +114,7 @@ public class RocketScript : MonoBehaviour {
         GameObject temp = Instantiate(pfb);
         BearsOwned.Add(temp);
         BearsBoarded.Add(temp);
-        // TODO: Report to canvas
+        Debug.Log("CANVAS: +1 Bear!");
 
         // if there's still bears on board, that means the ship is full.
         // coroutine is still emptying themt out, so we don't have to

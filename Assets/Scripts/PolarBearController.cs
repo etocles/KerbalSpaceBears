@@ -25,7 +25,7 @@ public class PolarBearController : Bear {
     }
 
     public void ChangeState(BearState newState){
-        Debug.Log("Changing to: " + newState.ToString());
+        //Debug.Log("Changing to: " + newState.ToString());
         if(state == newState)
             return;
         state = newState;
@@ -35,6 +35,7 @@ public class PolarBearController : Bear {
             case BearState.OIL:
                 break;
             case BearState.LOST:
+                Debug.Log("CANVAS: Bear is confused!");
                 break;
             case BearState.SHIP:
                 break;
