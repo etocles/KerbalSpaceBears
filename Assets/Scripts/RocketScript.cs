@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class RocketScript : MonoBehaviour {
     public static RocketScript instance;
@@ -97,7 +98,7 @@ public class RocketScript : MonoBehaviour {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnEnoughFuelAccumulated);
             firstEnoughFuel = false;
         }
-        NumOil += amt;
+        Interlocked.Add(ref NumOil, amt);
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Oil", gameObject.transform.position);
         UpdateSliders();
     }
@@ -108,7 +109,7 @@ public class RocketScript : MonoBehaviour {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstFishObtained);
             firstFishObtained = false;
         }
-        NumFish += amt;
+        Interlocked.Add(ref NumFish, amt);
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Fish", gameObject.transform.position);
         UpdateSliders();
     }
@@ -118,7 +119,7 @@ public class RocketScript : MonoBehaviour {
         if (NumFish >= FishPerBear)
         {
             //TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
-            NumFish -= FishPerBear;
+            Interlocked.Add(ref NumFish, -FishPerBear);
             bear.GetComponent<UntamedBear>().PaidFor = true;
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "-" + FishPerBear.ToString() + " Fish", gameObject.transform.position);
             UpdateSliders();
@@ -156,8 +157,10 @@ public class RocketScript : MonoBehaviour {
         {
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.FishIcon, "-" + AdmissionPrice.ToString() + " Fish", gameObject.transform.position);
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear Boarded", gameObject.transform.position);
-            NumFish -= AdmissionPrice;
+
+            Interlocked.Add(ref NumFish, -AdmissionPrice);
             BearsBoarded.Add(bear);
+            UpdateSliders();
             return true;
         }
         else
