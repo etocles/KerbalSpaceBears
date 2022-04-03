@@ -35,6 +35,7 @@ public class RocketScript : MonoBehaviour
 
 
     private bool firstFishObtained = true;
+    private bool firstOilObtained = true;
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,11 @@ public class RocketScript : MonoBehaviour
 
     #region Resource Functions
     public void AddOil(float amt) {
+        if (firstOilObtained)
+        {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstOilObtained);
+            firstFishObtained = false;
+        }
         NumOil += amt; // TODO: Report to canvas
     }
 
