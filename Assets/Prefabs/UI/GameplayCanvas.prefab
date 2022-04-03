@@ -1656,6 +1656,7 @@ MonoBehaviour:
   ContextMenuButtonPrefab: {fileID: 2242350616243695108, guid: 07be3f179a8126a4497510fc65a370fe, type: 3}
   PopupPrefab: {fileID: 3369008334753620864, guid: 7aaa668c6c473594da0ebb95e681a833, type: 3}
   IconPrefab: {fileID: 1902394925594023240, guid: c5dd511fc17f95c4d942b1f3ece72567, type: 3}
+  ProgressPrefab: {fileID: 1902394925594023240, guid: e107eec9dbc467947a45dc4a8e3b4dc4, type: 3}
   ContextMenuVisible: 0
   FishIcon: {fileID: 21300000, guid: 445e09155db176645934c36f68d0fd2c, type: 3}
   OilIcon: {fileID: 21300000, guid: 8ce528e093c0a474483aaaeaf4b78c47, type: 3}
@@ -1667,6 +1668,7 @@ MonoBehaviour:
   BearSlider: {fileID: 4172444886676698873}
   OilSlider: {fileID: 5351750016596764995}
   HeatSlider: {fileID: 1288906760696781825}
+  messageText: {fileID: 4835785052014966279}
   OnNavigateWithShip:
     m_PersistentCalls:
       m_Calls: []

@@ -62,7 +62,10 @@ public class PolarBearController : Bear {
         ChangeState(BearState.FISH);
         yield return StartCoroutine(SearchForFish(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
+        GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.FishIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
+        spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(fishGatheringTime);
         yield return new WaitForSeconds(fishGatheringTime);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.FishIcon, "+1 Fish", gameObject.transform.position);
         yield return StartCoroutine(ReturnToShip());
     }
 
@@ -72,9 +75,13 @@ public class PolarBearController : Bear {
         if (Unit.currentTile != GameManager.instance.SelectedTile) yield break;
         // tile (temp) = ship starting origin
         ChangeState(BearState.OIL);
+        
         yield return StartCoroutine(SearchForOil(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
+        GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.OilIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
+        spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(oilGatheringTime);
         yield return new WaitForSeconds(oilGatheringTime);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.OilIcon, "+1 Oil", gameObject.transform.position);
         yield return StartCoroutine(ReturnToShip());
     }
 
