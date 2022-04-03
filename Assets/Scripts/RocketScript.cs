@@ -59,10 +59,10 @@ public class RocketScript : MonoBehaviour {
 
     public void UpdateSliders()
     {
-        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Fish, Mathf.Clamp01(NumFish / NumBears), NumFish.ToString());
-        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Oil, Mathf.Clamp01(NumOil / OilThreshold), NumOil.ToString());
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Fish, Mathf.Clamp01((float)NumFish / (float)NumBears), NumFish.ToString());
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Oil, Mathf.Clamp01((float)NumOil / (float)OilThreshold), NumOil.ToString());
         GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Bear, 1, NumBears.ToString());
-        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, Mathf.Clamp01(NumFish / NumBears), NumFish.ToString());
+        GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, Mathf.Clamp01((float)NumFish / (float)NumBears), NumFish.ToString());
     }
     // Update is called once per frame
     void Update()

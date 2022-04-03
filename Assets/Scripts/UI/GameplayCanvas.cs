@@ -223,9 +223,7 @@ public class GameplayCanvas : MonoBehaviour
                 break;
             case Resource.Heat:
                 HeatSlider.fillValue = sliderNormValue;
-                if (HeatSlider.text.text != textValue) HeatSlider.text.GetComponent<TransformCurves>().Run();
                 HeatSlider.text.text = textValue;
-
                 break;
         }
     }

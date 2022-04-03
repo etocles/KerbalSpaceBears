@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class RadialUIHandler : MonoBehaviour
 {
-    [Range(0, 100)]
+    [Range(0, 1)]
     public float fillValue = 0;
     public Image circleFillImage;
     public RectTransform handlerEdgeImage;
@@ -27,7 +27,7 @@ public class RadialUIHandler : MonoBehaviour
 
     void FillCircleValue(float value)
     {
-        float fillAmount = (value / 100.0f);
+        float fillAmount = value;
         circleFillImage.fillAmount = fillAmount;
         float angle = fillAmount * 360;
         fillHandler.localEulerAngles = new Vector3(0, 0, angle);
