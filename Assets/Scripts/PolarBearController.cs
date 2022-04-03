@@ -35,7 +35,8 @@ public class PolarBearController : Bear {
 
     public void ChangeState(BearState newState){
         //Debug.Log("Changing to: " + newState.ToString());
-        if(state == newState)
+        GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.GetIconByBearState(state), gameObject);
+        if (state == newState)
             return;
         state = newState;
         switch(newState){
@@ -86,9 +87,15 @@ public class PolarBearController : Bear {
         List<GameObject> temp = new List<GameObject>();
         foreach (GameObject obj in tile.PlacedObjects)
         {
-            // if it doesn't have a mobility unit, it's not a bear, keep going
-            if (obj.GetComponent<MobileUnit>() == null) temp.Add(obj);
-            else Destroy(obj);
+            // if it doesn't have a mobility unit, it's not a bear, delete it
+            if (obj.GetComponent<MobileUnit>() == null)
+            {
+                Destroy(obj);
+            }
+            else
+            {
+                temp.Add(obj);
+            }
         }
         // set our new List to be without the Fish/Oil model on top
         tile.PlacedObjects = temp;
@@ -98,6 +105,8 @@ public class PolarBearController : Bear {
         tile.parentPlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
         // change our BiomeType to Ice
         tile.BiomeType = Hexsphere.BiomeType.Ice;
+        // even if oil, give it a bit of ice to work with
+        if (tile.ExtrudedHeight <= 0.0000000001f) tile.ExtrudedHeight = 0.00001f;
     }
 
     public IEnumerator ReturnToShip(){
