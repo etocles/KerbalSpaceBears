@@ -31,7 +31,9 @@ public class UntamedBear : Bear {
             Stack<Tile> path = new Stack<Tile>();
             if(Hexsphere.planetInstances[0].navManager.findPath(
             Unit.currentTile, GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile, out path)){
+                GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile.Occupied = false;
                 yield return Unit.moveOnPathCoroutine(path);
+                GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile.Occupied = false;
             } else {
                 ableToReturn = false;
             }

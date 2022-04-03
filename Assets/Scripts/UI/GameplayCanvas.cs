@@ -103,7 +103,7 @@ public class GameplayCanvas : MonoBehaviour
                             AddContextButton(ContextAction.SearchForFish);
                             AddContextButton(ContextAction.SearchForOil);
                         }
-                        else
+                        else if (tileCtrl.activeBear == ActiveBear.Untamed)
                         {
                             AddContextButton(ContextAction.TameBear);
                         }
