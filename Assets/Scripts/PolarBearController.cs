@@ -68,23 +68,12 @@ public class PolarBearController : Bear {
     }
 
 
-    private Tile ChooseBestAdjacentTile(Tile tile)
-    {
-        foreach (Tile t in tile.neighborTiles)
-        {
-            if (!t.Occupied && t.GroupID != tile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
-            {
-                return t;
-            }
-        }
-        return null;
-    }
     public IEnumerator ReturnToShip(){
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
+            RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
 
-
-            Tile dest = (ChooseBestAdjacentTile(shipTile) == null) ? Unit.currentTile : ChooseBestAdjacentTile(shipTile);
+            Tile dest = (rocket.GetUnOccupiedTile() == null) ? Unit.currentTile : rocket.GetUnOccupiedTile();
 
             // if we are boarding ship, destination is the shipTile
             if (state == BearState.SHIP) {
