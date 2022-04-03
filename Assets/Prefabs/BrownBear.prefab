@@ -171,7 +171,7 @@ MonoBehaviour:
   parentPlanet: {fileID: 0}
   moveSpeed: 2
   currentTile: {fileID: 0}
-  polarBear: {fileID: 0}
+  polarBear: {fileID: 2236782185681638351}
   moving: 0
 --- !u!114 &4036733426149926542
 MonoBehaviour:
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02eabf27e2029b41aab174adff87374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  PaidFor: 0
 --- !u!1 &2289739711227604503
 GameObject:
   m_ObjectHideFlags: 0

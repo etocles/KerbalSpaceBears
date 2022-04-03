@@ -66,12 +66,24 @@ public class GameManager : MonoBehaviour
     public void InitGame()
     {
         // wait for tile to be selected
-        OnTileSelected.AddListener(FirstLanding);
+        OnRocketLanded.AddListener(SetActivePlanet);
         OnGameStart.AddListener(StartGame);
+        OnGameOver.AddListener(EndGame);
+        OnTileSelected.AddListener(FirstLanding);
     }
 
+    public static bool ValidTileForLanding(Tile tile)
+    {
+        if (instance.SelectedTile == null) return false;
+        // not occupied, is ice, not tameable bear on it (or old bear)
+        return !instance.SelectedTile.Occupied 
+            && instance.SelectedTile.BiomeType == Hexsphere.BiomeType.Ice
+            && instance.SelectedTile.activeBear == ActiveBear.None;
+    }
     public void FirstLanding()
     {
+        // make sure it is a valid tile to land on
+        if (!ValidTileForLanding(SelectedTile)) return;
         // only fire once
         OnTileSelected.RemoveListener(FirstLanding);
         // Instantiate the ship
@@ -99,8 +111,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InitGame();
-        OnRocketLanded.AddListener(SetActivePlanet);
-        OnGameOver.AddListener(EndGame);
     }
 
     // Update is called once per frame

@@ -24,8 +24,17 @@ public class PolarBearController : Bear {
         GameplayCanvas.instance.OnSearchForOil.AddListener(() => { if (gameObject.activeSelf) StartCoroutine(GetOil()); });
     }
 
+    public void Die()
+    {
+        // subtract self from the bears owned array in the Rocket script
+        GameManager.instance.Rocket.GetComponent<RocketScript>().BearsOwned.Remove(gameObject);
+        // after all ties are severed
+        // commit Die
+        Destroy(gameObject);
+    }
+
     public void ChangeState(BearState newState){
-        Debug.Log("Changing to: " + newState.ToString());
+        //Debug.Log("Changing to: " + newState.ToString());
         if(state == newState)
             return;
         state = newState;
@@ -35,6 +44,7 @@ public class PolarBearController : Bear {
             case BearState.OIL:
                 break;
             case BearState.LOST:
+                Debug.Log("CANVAS: Bear is confused!");
                 break;
             case BearState.SHIP:
                 break;

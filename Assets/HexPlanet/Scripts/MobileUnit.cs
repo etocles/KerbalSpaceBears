@@ -17,7 +17,28 @@ public class MobileUnit : MonoBehaviour {
 
 	public bool moving;
 
-	public void moveOnPath(Stack<Tile> path)
+	public void Start()
+	{
+		StartCoroutine("CheckIfDrowned");
+	}
+	IEnumerator CheckIfDrowned()
+	{
+        while (true)
+        {
+			if (currentTile.ExtrudedHeight <= 0)
+			{
+				// check type (Space vs Non-Space)
+				bool isSpace = (polarBear.GetComponent<PolarBearController>() != null);
+				// if non-space, just delete it, no one loved it
+				if (!isSpace) Destroy(polarBear);
+				// if space, call PolarBearController.Die
+				else polarBear.GetComponent<PolarBearController>().Die();
+			}
+			yield return new WaitForSeconds(5.0f);
+		}
+	}
+
+    public void moveOnPath(Stack<Tile> path)
     {
 		StartCoroutine ("move", path);
 	}
