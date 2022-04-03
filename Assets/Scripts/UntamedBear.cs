@@ -5,10 +5,20 @@ using UnityEngine;
 public class UntamedBear : Bear {
     
     private MobileUnit Unit;
+    public bool PaidFor = false;
 
     void Start(){
         Unit = GetComponent<MobileUnit>();
-        GameplayCanvas.instance.OnTameBear.AddListener(() => { if (gameObject.activeSelf) StartCoroutine(ReturnToShip()); });
+        GameplayCanvas.instance.OnTameBear.AddListener(() => {
+            // avoid null reference
+            if (gameObject.activeSelf)
+            {
+                if (GameManager.instance.Rocket.GetComponent<RocketScript>().PayForBear(gameObject))
+                {
+                    StartCoroutine(ReturnToShip()); 
+                }
+            }
+        });
     }
 
     public IEnumerator ReturnToShip(){

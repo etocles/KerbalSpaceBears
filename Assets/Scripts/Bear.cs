@@ -8,4 +8,5 @@ public class Bear : MonoBehaviour
         Brown, Polar
     }
     [SerializeField] private BearType type;
+    public BearType GetBearType() => type;
 }

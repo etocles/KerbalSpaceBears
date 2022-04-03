@@ -80,21 +80,35 @@ public class RocketScript : MonoBehaviour {
         NumFish += amt; // TODO: Report to canvas
     }
 
-    public void RecruitBear(GameObject bear) {
+    public bool PayForBear(GameObject bear)
+    {
         if (NumFish >= FishPerBear)
         {
             NumFish -= FishPerBear;
-            BearsOwned.Add(bear);
-            BearsBoarded.Add(bear);
-            // TODO: Report to canvas
+            bear.GetComponent<UntamedBear>().PaidFor = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void RecruitBear(GameObject bear) {
+        if (!bear.GetComponent<UntamedBear>().PaidFor) return;
+        GameObject pfb = (bear.GetComponent<UntamedBear>().GetBearType() == Bear.BearType.Brown) 
+                            ? GameStateController.instance.BearPrefabs[0] 
+                            : GameStateController.instance.BearPrefabs[1];
+        GameObject temp = Instantiate(pfb);
+        BearsOwned.Add(temp);
+        BearsBoarded.Add(temp);
+        // TODO: Report to canvas
 
-            // if there's still bears on board, that means the ship is full.
-            // coroutine is still emptying them out, so we don't have to
-            // if there's 0, do a manual refresh
-            if (BearsBoarded.Count == 0) {
-                bear = UnboardBear();
-                GameStateController.instance.DepositBear(bear, GetUnOccupiedTile());
-            }
+        // if there's still bears on board, that means the ship is full.
+        // coroutine is still emptying them out, so we don't have to
+        // if there's 0, do a manual refresh
+        if (BearsBoarded.Count == 0) {
+            bear = UnboardBear();
+            GameStateController.instance.DepositBear(bear, GetUnOccupiedTile());
         }
     }
     public void BoardBear(GameObject bear)
