@@ -12,7 +12,7 @@ public class RocketScript : MonoBehaviour {
     public HashSet<GameObject> BearsOwned;
     public HashSet<GameObject> BearsBoarded;
     public int NumBears => BearsOwned.Count;
-    public float NumOil = 0;
+    public int NumOil = 0;
     public int NumFish = 0;
     public bool CanLaunch => (NumBears >= BearThreshold) && (NumOil >= OilThreshold);
     public bool Traveling = false;
@@ -25,7 +25,7 @@ public class RocketScript : MonoBehaviour {
     [Tooltip("Minimum bears for takeoff")]
     public static int BearThreshold = 2;
     [Tooltip("Minimum oil for takeoff")]
-    public static float OilThreshold = 0.6f;
+    public static int OilThreshold = 10;
     [Tooltip("Starting Amount of Bears")]
     public static int StartingBears = 3;
     [Tooltip("Starting Amount of Fish")]
@@ -65,7 +65,7 @@ public class RocketScript : MonoBehaviour {
     }
 
     #region Resource Functions
-    public void AddOil(float amt) {
+    public void AddOil(int amt) {
         if (firstOilObtained)
         {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstOilObtained);
@@ -161,6 +161,7 @@ public class RocketScript : MonoBehaviour {
     }
     // leave atmosphere by incrementing 
     void StartLaunch() {
+        //if (!CanLaunch) return;
         DestinationTile = GameManager.instance.SelectedTile;
         if (firstPlanetTravel)
         {

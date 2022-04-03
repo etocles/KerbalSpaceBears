@@ -72,7 +72,7 @@ public class PolarBearController : Bear {
     {
         foreach (Tile t in tile.neighborTiles)
         {
-            if (t.Occupied && t.GroupID != tile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
+            if (!t.Occupied && t.GroupID != tile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
             {
                 return t;
             }
@@ -82,13 +82,36 @@ public class PolarBearController : Bear {
     public IEnumerator ReturnToShip(){
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
+
+
             Tile dest = (ChooseBestAdjacentTile(shipTile) == null) ? Unit.currentTile : ChooseBestAdjacentTile(shipTile);
-            dest.Occupied = true;
-            if (Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, dest, out path)){
+
+            // if we are boarding ship, destination is the shipTile
+            if (state == BearState.SHIP) {
+                dest = shipTile;
+                dest.activeBear = ActiveBear.None; // just in case
+            }
+            // otherwise reserve that position
+            else
+            {
+                dest.Occupied = true;
+                dest.activeBear = ActiveBear.Tamed; // just in case
+            }
+
+
+            // try to find a path, if exists, traverse it
+            if (Hexsphere.planetInstances[0].navManager.findPath(Unit.currentTile, dest, out path))
+            {
+                // we want others to be able to get to the ship
+                if (state == BearState.SHIP) dest.Occupied = false;
                 yield return Unit.moveOnPathCoroutine(path);
-            } else {
+            } 
+            // if there's no path, assume deserteds
+            else 
+            {
                 ChangeState(BearState.LOST);
             }
+
         }
 
         switch (state)
