@@ -11,6 +11,7 @@ public class GameplayCanvas : MonoBehaviour
     public GameObject ContextMenuButtonPrefab;
     public GameObject PopupPrefab;
     public GameObject IconPrefab;
+    public GameObject ProgressPrefab;
     [HideInInspector] public bool ContextMenuVisible = false;
     [Header("Icons")]
     public Sprite FishIcon;
@@ -59,9 +60,11 @@ public class GameplayCanvas : MonoBehaviour
     {
         
     }
-    public void CreateIcon(Sprite icon, GameObject objectToFollow)
+    public GameObject CreateIcon(Sprite icon, GameObject objectToFollow, GameObject customPrefab = null)
     {
-        GameObject spawnedIcon = Instantiate(IconPrefab);
+        GameObject prefab = IconPrefab;
+        if (customPrefab != null) prefab = customPrefab;
+        GameObject spawnedIcon = Instantiate(prefab);
         spawnedIcon.transform.SetParent(IconsParent);
         spawnedIcon.transform.localScale = Vector3.one;
         spawnedIcon.GetComponent<Image>().sprite = icon;
@@ -75,7 +78,7 @@ public class GameplayCanvas : MonoBehaviour
         {
             SpawnedIcons.Add(objectToFollow, spawnedIcon);
         }
-        
+        return spawnedIcon;
         
     }
     public void SpawnPopup(Sprite icon, string text, Vector3 location)
@@ -85,6 +88,8 @@ public class GameplayCanvas : MonoBehaviour
         spawnedPopup.transform.localScale = Vector3.one;
         spawnedPopup.transform.Find("IMG").GetComponent<Image>().sprite = icon;
         spawnedPopup.transform.Find("TXT").GetComponent<TMPro.TextMeshProUGUI>().text = text;
+        spawnedPopup.transform.position = Camera.main.WorldToScreenPoint(location) + new Vector3(0, 15, 0);
+        spawnedPopup.GetComponent<TransformCurves>().Run();
     }
     public void DisplayContextMenu(GameObject SelectedObject)
     {
@@ -154,29 +159,31 @@ public class GameplayCanvas : MonoBehaviour
         spawnedButton.transform.SetParent(ContextMenuParent);
         spawnedButton.transform.localScale = Vector3.one;
         Image img = spawnedButton.GetComponent<ContextMenuButton>().icon;
+        Button button = spawnedButton.GetComponent<Button>();
+        button.onClick.AddListener(HideContextMenu);
         switch (action)
         {
             case ContextAction.NavigateWithShip:
                 img.sprite = RocketIcon;
-                if (firstLanding) spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnNavigateWithShip?.Invoke());
+                if (firstLanding) button.onClick.AddListener(() => OnNavigateWithShip?.Invoke());
                 if (firstLanding) firstLanding = false;
-                else              spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnFirstLanding?.Invoke());
+                else              button.onClick.AddListener(() => OnFirstLanding?.Invoke());
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
-                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnSearchForFish?.Invoke());
+                button.onClick.AddListener(() => OnSearchForFish?.Invoke());
                 break;
             case ContextAction.SearchForOil:
                 img.sprite = OilIcon;
-                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnSearchForOil?.Invoke());
+                button.onClick.AddListener(() => OnSearchForOil?.Invoke());
                 break;
             case ContextAction.RecallAllBears:
                 img.sprite = BearIcon;
-                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnRecallAllBears?.Invoke());
+                button.onClick.AddListener(() => OnRecallAllBears?.Invoke());
                 break;
             case ContextAction.TameBear:
                 img.sprite = TameIcon;
-                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnTameBear?.Invoke());
+                button.onClick.AddListener(() => OnTameBear?.Invoke());
                 break;
         }
     }
