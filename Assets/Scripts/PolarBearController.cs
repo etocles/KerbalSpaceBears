@@ -27,6 +27,7 @@ public class PolarBearController : Bear {
     public void Die()
     {
         // subtract self from the bears owned array in the Rocket script
+        GameManager.instance.Rocket.GetComponent<RocketScript>().BearsOwned.Remove(gameObject);
         // after all ties are severed
         // commit Die
         Destroy(gameObject);
