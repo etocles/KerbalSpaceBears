@@ -61,7 +61,8 @@ public class PolarBearController : Bear {
         // tile (temp) = ship starting origin
         ChangeState(BearState.FISH);
         yield return StartCoroutine(SearchForFish(new Stack<Tile>()));
-        //if(path == null) -> lost state (?)
+        // If path to oil was not found, abandon execution
+        if (state == BearState.LOST) yield break;
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.FishIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(fishGatheringTime);
         yield return new WaitForSeconds(fishGatheringTime);
@@ -77,7 +78,8 @@ public class PolarBearController : Bear {
         ChangeState(BearState.OIL);
         
         yield return StartCoroutine(SearchForOil(new Stack<Tile>()));
-        //if(path == null) -> lost state (?)
+        // If path to oil was not found, abandon execution
+        if (state == BearState.LOST) yield break;
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.OilIcon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(oilGatheringTime);
         yield return new WaitForSeconds(oilGatheringTime);
@@ -113,7 +115,7 @@ public class PolarBearController : Bear {
         // change our BiomeType to Ice
         tile.BiomeType = Hexsphere.BiomeType.Ice;
         // even if oil, give it a bit of ice to work with
-        if (tile.ExtrudedHeight <= 0.0000000001f) tile.ExtrudedHeight = 0.00001f;
+        if (tile.ExtrudedHeight <= 0.0000000001f) tile.ExtrudedHeight = 0.0001f;
     }
 
     public IEnumerator ReturnToShip(){
