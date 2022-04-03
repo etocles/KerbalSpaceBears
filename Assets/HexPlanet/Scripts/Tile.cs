@@ -81,7 +81,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     [HideInInspector]
     public bool IsInverted;
-
+	[HideInInspector] public Bear currentBear;
     public List<GameObject> PlacedObjects = new List<GameObject>();
 
     [HideInInspector]
@@ -193,6 +193,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 		obj.transform.position = FaceCenter;
 		obj.transform.up = transform.up;
         obj.transform.SetParent(transform);
+		if (obj.GetComponent<Bear>() != null) currentBear = obj.GetComponent<Bear>();
         PlacedObjects.Add(obj);
 	}
 

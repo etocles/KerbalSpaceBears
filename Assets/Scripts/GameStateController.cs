@@ -9,9 +9,14 @@ public class GameStateController : MonoBehaviour
     {
         public float orbitalRadius; // determines heat;
         public int polarBearCount = 5;
-        public int oilCount = 5;
+        [Range(1, 5)]
+        public int iceWeight = 1;
         [Range(1,5)]
         public int waterWeight = 1;
+        [Range(1, 5)]
+        public int oilWeight = 1;
+        [Range(1, 5)]
+        public int fishWeight = 1;
         [Range(0.5f, 2.5f)]
         public float planetScale;
     }
@@ -63,7 +68,10 @@ public class GameStateController : MonoBehaviour
             GameObject spawnedPlanet = Instantiate(HexspherePrefab);
             Hexsphere sphereCtrl = spawnedPlanet.GetComponent<Hexsphere>();
             planets.Add(sphereCtrl);
+            sphereCtrl.GroupBiomes[1].weight = definition.iceWeight;
             sphereCtrl.GroupBiomes[2].weight = definition.waterWeight;
+            sphereCtrl.GroupBiomes[3].weight = definition.fishWeight;
+            sphereCtrl.GroupBiomes[4].weight = definition.oilWeight;
             sphereCtrl.planetScale = definition.planetScale;
             sphereCtrl.BuildPlanet();
             sphereCtrl.GenerateRandom();

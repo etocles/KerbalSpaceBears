@@ -903,6 +903,63 @@ MonoBehaviour:
   - icon: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
     text: Choose a spot to land!
     activationEvent: 1
+    duration: 5
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3554697549815797466}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: InitiateTutorialPromptByIndex
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - icon: {fileID: 21300000, guid: d4ae96f8dafa29042a7650c6670fa779, type: 3}
+    text: Right click to pan
+    activationEvent: 0
+    duration: 2
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3554697549815797466}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: InitiateTutorialPromptByIndex
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - icon: {fileID: 21300000, guid: d4ae96f8dafa29042a7650c6670fa779, type: 3}
+    text: Left click to select a tile
+    activationEvent: 0
+    duration: 2
+    OnPromptDisappear:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3554697549815797466}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: InitiateTutorialPromptByIndex
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - icon: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
+    text: Choose a spot to land!
+    activationEvent: 0
     duration: -1
     OnPromptDisappear:
       m_PersistentCalls:
@@ -921,7 +978,7 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
+            m_IntArgument: 5
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -940,7 +997,7 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
+            m_IntArgument: 6
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -966,7 +1023,7 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 5
+            m_IntArgument: 8
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -982,20 +1039,6 @@ MonoBehaviour:
     text: You need 10 oil before you can travel between planets.
     activationEvent: 4
     duration: -1
-    OnPromptDisappear:
-      m_PersistentCalls:
-        m_Calls: []
-  - icon: {fileID: 21300000, guid: 6d04e3e4df7630847b4a3194a293175c, type: 3}
-    text: Select a new planet to travel to!
-    activationEvent: 7
-    duration: -1
-    OnPromptDisappear:
-      m_PersistentCalls:
-        m_Calls: []
-  - icon: {fileID: 21300000, guid: 8292e0370767eab40a3918f1fb0e7428, type: 3}
-    text: There's more bears here to save!
-    activationEvent: 8
-    duration: 3
     OnPromptDisappear:
       m_PersistentCalls:
         m_Calls: []
@@ -1670,6 +1713,9 @@ MonoBehaviour:
   HeatSlider: {fileID: 1288906760696781825}
   messageText: {fileID: 4835785052014966279}
   OnNavigateWithShip:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFirstLanding:
     m_PersistentCalls:
       m_Calls: []
   OnSearchForFish:

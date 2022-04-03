@@ -187,6 +187,8 @@ public class PolarBearController : Bear {
             FindClosestIDTiles(Hexsphere.BiomeType.Oil, Unit.currentTile, out path)){
                 Unit.currentTile.Occupied = false;
                 Unit.currentTile.activeBear = ActiveBear.None;
+                Unit.currentTile.currentBear = null;
+                GetComponent<Outline>().enabled = false;
                 yield return Unit.moveOnPathCoroutine(path);
             } else {
                 ChangeState(BearState.LOST);
@@ -202,6 +204,8 @@ public class PolarBearController : Bear {
             FindClosestIDTiles(Hexsphere.BiomeType.Fish, Unit.currentTile, out path)){
                 Unit.currentTile.Occupied = false;
                 Unit.currentTile.activeBear = ActiveBear.None;
+                Unit.currentTile.currentBear = null;
+                GetComponent<Outline>().enabled = false;
                 yield return Unit.moveOnPathCoroutine(path);
             } else {
                 ChangeState(BearState.LOST);

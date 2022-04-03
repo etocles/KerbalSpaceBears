@@ -19,6 +19,9 @@ public class UntamedBear : Bear {
 
                 if (GameManager.instance.Rocket.GetComponent<RocketScript>().PayForBear(gameObject))
                 {
+                    GetComponent<Outline>().enabled = false;
+                    Unit.currentTile.currentBear = null;
+                    
                     StartCoroutine(ReturnToShip()); 
                 }
             }

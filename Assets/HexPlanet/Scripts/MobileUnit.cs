@@ -98,8 +98,10 @@ public class MobileUnit : MonoBehaviour {
 				yield return new WaitForSeconds(Time.deltaTime);
 			}
 			//Assign the unit's current tile when it has finished interpolating to it.
+			currentTile.currentBear = null;
 			currentTile = next;
 		}
 		moving = false;
+		currentTile.currentBear = GetComponent<Bear>();
 	}
 }
