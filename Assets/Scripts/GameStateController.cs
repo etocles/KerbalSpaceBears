@@ -129,6 +129,8 @@ public class GameStateController : MonoBehaviour
         bear.SetActive(true);
         bear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         bear.GetComponent<MobileUnit>().currentTile = location;
+        RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
+        bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
         location.placeObject(bear);
         location.Occupied = true;
     }
@@ -139,6 +141,7 @@ public class GameStateController : MonoBehaviour
         // request return and let PolarBear controller take care of it
         foreach (GameObject bear in rocket.BearsOwned)
         {
+            bear.GetComponent<PolarBearController>().ChangeState(PolarBearController.BearState.SHIP);
             bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
             StartCoroutine(bear.GetComponent<PolarBearController>().ReturnToShip());
         }
