@@ -14,7 +14,7 @@ public class PolarBearController : Bear {
 
     private Tile shipTile;
     private MobileUnit Unit;
-    private BearState state;
+    public BearState state;
     // Start is called before the first frame update
     void Start(){
         state = BearState.DEFAULT;
