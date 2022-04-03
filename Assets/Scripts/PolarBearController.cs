@@ -79,7 +79,6 @@ public class PolarBearController : MonoBehaviour {
         return null;
     }
     public IEnumerator ReturnToShip(){
-        state = BearState.SHIP;
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
             Tile dest = (ChooseBestAdjacentTile(shipTile) == null) ? Unit.currentTile : ChooseBestAdjacentTile(shipTile);
@@ -97,17 +96,14 @@ public class PolarBearController : MonoBehaviour {
                 break;
             // completed journey, add a fish
             case BearState.FISH:
-                print("Fish GET!");
                 GameManager.instance.Rocket.GetComponent<RocketScript>().AddFish(1);
                 break;
             // completed journey, add an oil
             case BearState.OIL:
-                print("Oil GET!");
                 GameManager.instance.Rocket.GetComponent<RocketScript>().AddOil(1);
                 break;
             // completed journey, board the ship
             case BearState.SHIP:
-                print("Bye!");
                 GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
                 gameObject.SetActive(false);
                 break;

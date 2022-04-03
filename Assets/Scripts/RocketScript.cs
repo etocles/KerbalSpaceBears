@@ -55,7 +55,7 @@ public class RocketScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (!Traveling)
+        if (!Traveling && !Sank)
         {
             TrySink();
         }

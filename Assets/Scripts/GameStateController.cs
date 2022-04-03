@@ -157,7 +157,7 @@ public class GameStateController : MonoBehaviour
         Tile GetUnOccupiedTile()
         {
             foreach (Tile t in rocket.CurrentTile.neighborTiles) {
-                if (!t.Occupied)
+                if (!t.Occupied && t.GroupID != rocket.CurrentTile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Water))
                     return t;
             }
             return null;
