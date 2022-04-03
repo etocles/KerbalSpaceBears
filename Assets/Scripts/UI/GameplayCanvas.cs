@@ -24,6 +24,7 @@ public class GameplayCanvas : MonoBehaviour
     public RadialUIHandler BearSlider;
     public RadialUIHandler OilSlider;
     public RadialUIHandler HeatSlider;
+    public TMPro.TextMeshProUGUI messageText;
 
     private Transform PopupsParent;
     private Transform IconsParent;
@@ -190,22 +191,39 @@ public class GameplayCanvas : MonoBehaviour
         return null;
     }
     public enum Resource { Fish, Bear, Oil, Heat }
-    public void SetResourceSliderValue(Resource resourceType, float value)
+    public void SetResourceSliderValue(Resource resourceType, float sliderNormValue, string textValue)
     {
         switch (resourceType)
         {
             case Resource.Fish:
-                FishSlider.fillValue = value;
+                FishSlider.fillValue = sliderNormValue;
+                FishSlider.text.text = textValue;
                 break;
             case Resource.Bear:
-                BearSlider.fillValue = value;
+                BearSlider.fillValue = sliderNormValue;
+                BearSlider.text.text = textValue;
                 break;
             case Resource.Oil:
-                OilSlider.fillValue = value;
+                OilSlider.fillValue = sliderNormValue;
+                OilSlider.text.text = textValue;
                 break;
             case Resource.Heat:
-                HeatSlider.fillValue = value;
+                HeatSlider.fillValue = sliderNormValue;
+                HeatSlider.text.text = textValue;
                 break;
         }
+    }
+
+    public void SendMessage(string message, float duration)
+    {
+        StartCoroutine(SendMessage_Coroutine(message, duration));
+    }
+    public IEnumerator SendMessage_Coroutine(string message, float duration)
+    {
+        AnimatedPanel animPanelCtrl = messageText.GetComponent<AnimatedPanel>();
+        messageText.text = message;
+        animPanelCtrl.FadeIn();
+        yield return new WaitForSeconds(animPanelCtrl.timeToFade + duration);
+        animPanelCtrl.FadeOut();
     }
 }
