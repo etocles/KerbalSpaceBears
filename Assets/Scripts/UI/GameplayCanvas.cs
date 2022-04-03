@@ -30,7 +30,7 @@ public class GameplayCanvas : MonoBehaviour
     private Transform PopupsParent;
     private Transform IconsParent;
     private Transform ContextMenuParent;
-                       // Obj      // Icon
+    // Obj      // Icon
     private Dictionary<GameObject, GameObject> SpawnedIcons = new Dictionary<GameObject, GameObject>();
 
 
@@ -52,13 +52,13 @@ public class GameplayCanvas : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public GameObject CreateIcon(Sprite icon, GameObject objectToFollow, GameObject customPrefab = null)
     {
@@ -69,7 +69,7 @@ public class GameplayCanvas : MonoBehaviour
         spawnedIcon.transform.localScale = Vector3.one;
         spawnedIcon.GetComponent<Image>().sprite = icon;
         spawnedIcon.GetComponent<WorldUIObject>().Initialize(objectToFollow);
-        if(SpawnedIcons.ContainsKey(objectToFollow))
+        if (SpawnedIcons.ContainsKey(objectToFollow))
         {
             Destroy(SpawnedIcons[objectToFollow]); // Destroy existing icon
             SpawnedIcons[objectToFollow] = spawnedIcon; // Replace with new icon
@@ -79,7 +79,7 @@ public class GameplayCanvas : MonoBehaviour
             SpawnedIcons.Add(objectToFollow, spawnedIcon);
         }
         return spawnedIcon;
-        
+
     }
     public void SpawnPopup(Sprite icon, string text, Vector3 location)
     {
@@ -95,12 +95,12 @@ public class GameplayCanvas : MonoBehaviour
     {
         if (ContextMenuVisible) HideContextMenu();
         Tile tileCtrl = SelectedObject.GetComponent<Tile>();
-        if(tileCtrl != null)
+        if (tileCtrl != null)
         {
-            
+
             if (tileCtrl.parentPlanet == GameManager.instance.ActivePlanet) // Clicking tile on active planet
             {
-                if(tileCtrl.BiomeType == Hexsphere.BiomeType.Ice)
+                if (tileCtrl.BiomeType == Hexsphere.BiomeType.Ice)
                 {
                     if (tileCtrl.Occupied)
                     {
@@ -115,17 +115,17 @@ public class GameplayCanvas : MonoBehaviour
                             AddContextButton(ContextAction.TameBear);
                         }
                     }
-                    else if(GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile == tileCtrl)
+                    else if (GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile == tileCtrl)
                     {
                         AddContextButton(ContextAction.RecallAllBears);
                         ContextMenuVisible = true;
                     }
-                    
+
                 }
             }
             else if (tileCtrl.parentPlanet != GameManager.instance.ActivePlanet) // Clicking tile on another planet
             {
-                if(GameManager.ValidTileForLanding(tileCtrl))
+                if (GameManager.ValidTileForLanding(tileCtrl))
                 {
                     AddContextButton(ContextAction.NavigateWithShip);
                     ContextMenuVisible = true;
@@ -151,7 +151,6 @@ public class GameplayCanvas : MonoBehaviour
             Destroy(ContextMenuParent.GetChild(i).gameObject);
         }
     }
-
     public bool firstLanding = false;
     public void AddContextButton(ContextAction action)
     {
@@ -167,7 +166,7 @@ public class GameplayCanvas : MonoBehaviour
                 img.sprite = RocketIcon;
                 if (firstLanding) button.onClick.AddListener(() => OnNavigateWithShip?.Invoke());
                 if (firstLanding) firstLanding = false;
-                else              button.onClick.AddListener(() => OnFirstLanding?.Invoke());
+                else button.onClick.AddListener(() => OnFirstLanding?.Invoke());
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
@@ -209,24 +208,29 @@ public class GameplayCanvas : MonoBehaviour
         {
             case Resource.Fish:
                 FishSlider.fillValue = sliderNormValue;
+                if (FishSlider.text.text != textValue) FishSlider.text.GetComponent<TransformCurves>().Run();
                 FishSlider.text.text = textValue;
                 break;
             case Resource.Bear:
                 BearSlider.fillValue = sliderNormValue;
+                if (BearSlider.text.text != textValue) BearSlider.text.GetComponent<TransformCurves>().Run();
                 BearSlider.text.text = textValue;
                 break;
             case Resource.Oil:
                 OilSlider.fillValue = sliderNormValue;
+                if (OilSlider.text.text != textValue) OilSlider.text.GetComponent<TransformCurves>().Run();
                 OilSlider.text.text = textValue;
                 break;
             case Resource.Heat:
                 HeatSlider.fillValue = sliderNormValue;
+                if (HeatSlider.text.text != textValue) HeatSlider.text.GetComponent<TransformCurves>().Run();
                 HeatSlider.text.text = textValue;
+
                 break;
         }
     }
 
-    public void SendMessage(string message, float duration)
+    public void PushMessage(string message, float duration)
     {
         StartCoroutine(SendMessage_Coroutine(message, duration));
     }
