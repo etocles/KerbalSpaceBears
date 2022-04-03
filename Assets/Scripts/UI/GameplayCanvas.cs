@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
-public enum ContextAction { NavigateWithShip, NavigateWithRover, SearchForFish, SearchForOil, RecallAllBears };
+public enum ContextAction { NavigateWithShip, NavigateWithRover, SearchForFish, SearchForOil, RecallAllBears, TameBear };
 public class GameplayCanvas : MonoBehaviour
 {
     public static GameplayCanvas instance;
@@ -13,7 +14,6 @@ public class GameplayCanvas : MonoBehaviour
     public Sprite FishIcon;
     public Sprite OilIcon;
     public Sprite RocketIcon;
-    public Sprite RoverIcon;
     public Sprite BearIcon;
     public Sprite QuestionMarkIcon;
 
@@ -22,6 +22,14 @@ public class GameplayCanvas : MonoBehaviour
     private Transform ContextMenuParent;
                        // Obj      // Icon
     private Dictionary<GameObject, GameObject> SpawnedIcons = new Dictionary<GameObject, GameObject>();
+
+
+    public UnityEvent OnNavigateWithShip;
+    public UnityEvent OnSearchForFish;
+    public UnityEvent OnSearchForOil;
+    public UnityEvent OnRecallAllBears;
+    public UnityEvent OnTameBear;
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -83,16 +91,14 @@ public class GameplayCanvas : MonoBehaviour
                     {
                         AddContextButton(ContextAction.SearchForFish);
                         AddContextButton(ContextAction.SearchForOil);
+                        ContextMenuVisible = true;
                     }
                     else if(GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile == tileCtrl)
                     {
                         AddContextButton(ContextAction.RecallAllBears);
+                        ContextMenuVisible = true;
                     }
-                    else
-                    {
-                        AddContextButton(ContextAction.NavigateWithRover);
-                    }
-                    ContextMenuVisible = true;
+                    
                 }
             }
             else if (tileCtrl.parentPlanet != GameManager.instance.ActivePlanet) // Clicking tile on another planet
@@ -129,19 +135,23 @@ public class GameplayCanvas : MonoBehaviour
         {
             case ContextAction.NavigateWithShip:
                 img.sprite = RocketIcon;
-                break;
-            case ContextAction.NavigateWithRover:
-                img.sprite = RoverIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnNavigateWithShip?.Invoke());
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnSearchForFish?.Invoke());
                 break;
             case ContextAction.SearchForOil:
                 img.sprite = OilIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnSearchForOil?.Invoke());
                 break;
             case ContextAction.RecallAllBears:
                 img.sprite = BearIcon;
-                
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnRecallAllBears?.Invoke());
+                break;
+            case ContextAction.TameBear:
+                img.sprite = FishIcon;
+                spawnedButton.GetComponent<Button>().onClick.AddListener(() => OnTameBear?.Invoke());
                 break;
         }
     }

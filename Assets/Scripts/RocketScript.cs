@@ -17,7 +17,7 @@ public class RocketScript : MonoBehaviour {
     public bool CanLaunch => (NumBears >= BearThreshold) && (NumOil >= OilThreshold);
     public bool Traveling = false;
     public bool Sank = false;
-    
+
 
 
     [Tooltip("How many fish per bear")]
@@ -33,6 +33,10 @@ public class RocketScript : MonoBehaviour {
     [SerializeField]
     public GameObject SpaceBearPrefab;
 
+
+    private bool firstFishObtained = true;
+    private bool firstOilObtained = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,17 +48,13 @@ public class RocketScript : MonoBehaviour {
             BearsOwned.Add(bear);
         }
         BearsBoarded = new HashSet<GameObject>(BearsOwned);
+        // TODO: Subscribe to canvas's events
+        GameplayCanvas.instance.OnNavigateWithShip.AddListener(StartLaunch);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (/* TODO: CLICKED CONTEXT MENU TO MOVE PLANETS &&*/
-            !Traveling // traveling can be removed when Context Functionality is added
-            && DestinationTile.parentPlanet != CurrentTile.parentPlanet)
-        {
-            StartLaunch();
-        }
         if (!Traveling)
         {
             TrySink();
@@ -62,8 +62,24 @@ public class RocketScript : MonoBehaviour {
     }
 
     #region Resource Functions
-    public void AddOil(float amt) => NumOil += amt; // TODO: Report to canvas
-    public void AddFish(int amt) => NumFish += amt; // TODO: Report to canvas
+    public void AddOil(float amt) {
+        if (firstOilObtained)
+        {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstOilObtained);
+            firstFishObtained = false;
+        }
+        NumOil += amt; // TODO: Report to canvas
+    }
+
+    public void AddFish(int amt) {
+        if (firstFishObtained)
+        {
+            TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstFishObtained);
+            firstFishObtained = false;
+        }
+        NumFish += amt; // TODO: Report to canvas
+    }
+
     public void RecruitBear(GameObject bear) {
         if (NumFish >= FishPerBear)
         {
@@ -110,7 +126,11 @@ public class RocketScript : MonoBehaviour {
         }
     }
     // leave atmosphere by incrementing 
-    void StartLaunch() => StartCoroutine(Launch());
+    void StartLaunch() {
+        DestinationTile = GameManager.instance.SelectedTile; 
+        StartCoroutine(Launch()); 
+    }
+
     public void FirstLanding(Tile tile) => StartCoroutine(FirstLandingCutscene(tile));
 
     #region Coroutines
