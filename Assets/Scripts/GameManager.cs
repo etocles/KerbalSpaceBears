@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public Tile SelectedTile;
 
+    // meltRate per second
+    [SerializeField] float meltRate = 0.1f;
+
 
 
     private void OnValidate()
@@ -83,8 +86,18 @@ public class GameManager : MonoBehaviour
         Rocket.GetComponent<RocketScript>().FirstLanding(SelectedTile);
     }
 
+    private IEnumerator MeltingCoroutine(){
+        yield return new WaitForSeconds(1.0f);
+        ActivePlanet.Melt(meltRate);
+        StartCoroutine("MeltingCoroutine");
+    }
+
     private void StartGame() { GameStarted = true; }
-    private void SetActivePlanet(Hexsphere planet) { ActivePlanet = planet; }
+    private void SetActivePlanet(Hexsphere planet) { 
+        // assume set active planet is where we start with the planet
+        ActivePlanet = planet;
+        StartCoroutine("MeltingCoroutine");
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -96,6 +109,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ActivePlanet != null && GameStarted) ActivePlanet.Melt(Time.deltaTime);
+        //if(ActivePlanet != null && GameStarted) ActivePlanet.Melt(Time.deltaTime);
     }
 }
