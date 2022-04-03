@@ -12,6 +12,8 @@ public class MobileUnit : MonoBehaviour {
 	public float moveSpeed;
 	[Tooltip("The reference to the tile on which this unit currently resides")]
 	public Tile currentTile;
+	[Tooltip("Reference to the GameObject Polar Bear")]
+	public GameObject polarBear;
 
 	public bool moving;
 
@@ -51,6 +53,7 @@ public class MobileUnit : MonoBehaviour {
                 //Correct rotation to keep transform forward aligned with movement direction and transform up aligned with tile normal
                 transform.rotation = Quaternion.LookRotation(lookDir, transform.position - parentPlanet.transform.position);
                 lastPos = transform.position;
+				this.transform.parent = currentTile.transform;
 				yield return new WaitForSeconds(Time.deltaTime);
 			}
 			//Assign the unit's current tile when it has finished interpolating to it.
