@@ -132,7 +132,7 @@ public class GameplayCanvas : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("CANVAS: Can't Land Here!");
+                    PushMessage("Can't Land Here! Try choosing a harder surface.", 1.0f);
                 }
             }
             if (ContextMenuVisible)
