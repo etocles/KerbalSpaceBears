@@ -151,7 +151,7 @@ public class GameplayCanvas : MonoBehaviour
             Destroy(ContextMenuParent.GetChild(i).gameObject);
         }
     }
-    public bool firstLanding = false;
+    private bool firstLanding = true;
     public void AddContextButton(ContextAction action)
     {
         GameObject spawnedButton = Instantiate(ContextMenuButtonPrefab);
@@ -163,10 +163,14 @@ public class GameplayCanvas : MonoBehaviour
         switch (action)
         {
             case ContextAction.NavigateWithShip:
+                // if traveling, don't display anything (Ask Andrew how do)
+                //if (GameManager.instance.Rocket.GetComponent<RocketScript>().Traveling)
                 img.sprite = RocketIcon;
-                if (firstLanding) button.onClick.AddListener(() => OnNavigateWithShip?.Invoke());
-                if (firstLanding) firstLanding = false;
-                else button.onClick.AddListener(() => OnFirstLanding?.Invoke());
+                if (firstLanding) button.onClick.AddListener(() => { 
+                    firstLanding = false;
+                    OnFirstLanding?.Invoke(); 
+                });
+                else button.onClick.AddListener(() => OnNavigateWithShip?.Invoke());
                 break;
             case ContextAction.SearchForFish:
                 img.sprite = FishIcon;

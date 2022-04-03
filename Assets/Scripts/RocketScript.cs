@@ -194,6 +194,8 @@ public class RocketScript : MonoBehaviour {
     }
     // leave atmosphere by incrementing 
     void StartLaunch() {
+        // if we're already moving, bruh
+        if (Traveling) return;
         //if (!CanLaunch) return;
         DestinationTile = GameManager.instance.SelectedTile;
         // see if we can land there
@@ -344,6 +346,7 @@ public class RocketScript : MonoBehaviour {
     }
     IEnumerator FirstLandingCutscene(Tile tile)
     {
+        if (Traveling) yield break;
         CurrentTile = tile;
         Traveling = true;
 
