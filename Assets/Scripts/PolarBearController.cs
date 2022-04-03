@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PolarBearController : MonoBehaviour {
+public class PolarBearController : Bear {
 
     public enum BearState {
         DEFAULT, FISH, OIL, LOST, SHIP
     }
-
-    [SerializeField] float gatheringTime = 5.0f;
+    
+    [SerializeField] private float oilGatheringTime;
+    [SerializeField] private float fishGatheringTime;
 
     private Tile shipTile;
     private MobileUnit Unit;
@@ -50,7 +51,7 @@ public class PolarBearController : MonoBehaviour {
         ChangeState(BearState.FISH);
         yield return StartCoroutine(SearchForFish(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
-        yield return new WaitForSeconds(gatheringTime);
+        yield return new WaitForSeconds(fishGatheringTime);
         yield return StartCoroutine(ReturnToShip());
     }
 
@@ -62,7 +63,7 @@ public class PolarBearController : MonoBehaviour {
         ChangeState(BearState.OIL);
         yield return StartCoroutine(SearchForOil(new Stack<Tile>()));
         //if(path == null) -> lost state (?)
-        yield return new WaitForSeconds(gatheringTime);
+        yield return new WaitForSeconds(oilGatheringTime);
         yield return StartCoroutine(ReturnToShip());
     }
 

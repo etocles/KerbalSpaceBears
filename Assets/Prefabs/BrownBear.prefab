@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: -2716061540069171243}
   - component: {fileID: 4036733426149926542}
   m_Layer: 0
-  m_Name: PolarBear
+  m_Name: BrownBear
   m_TagString: Bear
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,7 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02eabf27e2029b41aab174adff87374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
 --- !u!1 &2289739711227604503
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +326,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8748892135801146194, guid: 841e4d5b65ec0ca409b6b2ffd560a4c8, type: 3}
+  - {fileID: 2100000, guid: 9d10cf419dc31c244804d50c3dbbfe0a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

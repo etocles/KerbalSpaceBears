@@ -15,7 +15,9 @@ public class GameStateController : MonoBehaviour
         [Range(0.5f, 2.5f)]
         public float planetScale;
     }
-    public GameObject PolarBearPrefab;
+    public List<GameObject> BearPrefabs;
+    public List<GameObject> UntamedBearPrefabs;
+
     public List<PlanetDefinition> planetDefinitions = new List<PlanetDefinition>();
     [HideInInspector] public List<Hexsphere> planets = new List<Hexsphere>();
     public GameObject HexspherePrefab;
@@ -73,7 +75,7 @@ public class GameStateController : MonoBehaviour
             if (Random.value > 0.5f) orbitRotCtrl.speed *= -1f;
             Rotate planetRotCtrl = spawnedPlanet.AddComponent<Rotate>();
             planetRotCtrl.speed = 2;
-            SpawnPolarBears(sphereCtrl, definition.polarBearCount);
+            SpawnBears(sphereCtrl, definition.polarBearCount);
             
         }
     }
@@ -101,7 +103,7 @@ public class GameStateController : MonoBehaviour
         ActiveHexsphere.transform.Find("Atmosphere").GetComponent<SphereCollider>().enabled = false;
     }
 
-    public void SpawnPolarBears(Hexsphere planet, int count)
+    public void SpawnBears(Hexsphere planet, int count)
     {
         HashSet<int> randomTiles = new HashSet<int>();
         for (int i = 0; i < count; i++)
@@ -111,12 +113,24 @@ public class GameStateController : MonoBehaviour
         }
         foreach (int spawnLoc in randomTiles)
         {
-            PlacePolarBear(planet.GetTilesByBiome(Hexsphere.BiomeType.Ice)[spawnLoc]);
+            PlaceUntamedBear(planet.GetTilesByBiome(Hexsphere.BiomeType.Ice)[spawnLoc]);
         }
     }
-    public GameObject PlacePolarBear(Tile location)
+
+    public GameObject PlaceUntamedBear(Tile location){
+        
+        GameObject spawnedBear = Instantiate(UntamedBearPrefabs[(int) Random.Range(0.0f, UntamedBearPrefabs.Count)]);
+        spawnedBear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
+        spawnedBear.GetComponent<MobileUnit>().currentTile = location;
+        location.placeObject(spawnedBear);
+        spawnedPolarBears.Add(spawnedBear);
+        return spawnedBear;
+    }
+
+    public GameObject PlaceBear(Tile location)
     {
-        GameObject spawnedBear = Instantiate(PolarBearPrefab);
+        
+        GameObject spawnedBear = Instantiate(BearPrefabs[(int) Random.Range(0.0f, BearPrefabs.Count)]);
         spawnedBear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         spawnedBear.GetComponent<MobileUnit>().currentTile = location;
         location.placeObject(spawnedBear);

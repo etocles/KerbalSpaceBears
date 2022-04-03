@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UntamedBear : MonoBehaviour
-{
+public class UntamedBear : Bear {
+    
     private MobileUnit Unit;
 
     void Start(){
