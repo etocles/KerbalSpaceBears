@@ -30,6 +30,22 @@ public class AnimatedPanel : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
     }
+    public void ForceState(PanelState state)
+    {
+        currentState = state;
+        timer = 0.0f;
+        switch (state)
+        {
+            case PanelState.Visible:
+                canvasGroup.blocksRaycasts = true;
+                canvasGroup.alpha = fullOpacity;
+                break;
+            case PanelState.Hidden:
+                if (AlwaysBlocksRaycasts == false) canvasGroup.blocksRaycasts = false;
+                canvasGroup.alpha = 0.0f;
+                break;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -53,11 +69,11 @@ public class AnimatedPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(currentState == PanelState.FadingIn)
+        if (currentState == PanelState.FadingIn)
         {
             timer += Time.deltaTime;
             canvasGroup.alpha = Mathf.Lerp(0.0f, fullOpacity, timer / timeToFade);
-            if(timer > timeToFade)
+            if (timer > timeToFade)
             {
                 currentState = PanelState.Visible;
                 timer = 0.0f;
@@ -65,15 +81,15 @@ public class AnimatedPanel : MonoBehaviour
                 InvokeFadeEvent();
             }
         }
-        else if(currentState == PanelState.FadingOut)
+        else if (currentState == PanelState.FadingOut)
         {
             timer += Time.deltaTime;
             canvasGroup.alpha = Mathf.Lerp(fullOpacity, 0.0f, timer / timeToFade);
-            if(timer > timeToFade)
+            if (timer > timeToFade)
             {
                 currentState = PanelState.Hidden;
                 timer = 0.0f;
-                if(AlwaysBlocksRaycasts == false) canvasGroup.blocksRaycasts = false;
+                if (AlwaysBlocksRaycasts == false) canvasGroup.blocksRaycasts = false;
                 InvokeFadeEvent();
             }
         }
@@ -82,6 +98,12 @@ public class AnimatedPanel : MonoBehaviour
     {
         // Only fade out if currently visible.
         if (currentState != PanelState.Visible) return;
+        canvasGroup.interactable = false;
+        timer = 0.0f;
+        currentState = PanelState.FadingOut;
+    }
+    public void ForceFadeOut()
+    {
         canvasGroup.interactable = false;
         timer = 0.0f;
         currentState = PanelState.FadingOut;
@@ -95,13 +117,19 @@ public class AnimatedPanel : MonoBehaviour
         timer = 0.0f;
         currentState = PanelState.FadingIn;
     }
+    public void ForceFadeIn()
+    {
+        canvasGroup.interactable = true;
+        timer = 0.0f;
+        currentState = PanelState.FadingIn;
+    }
 
     public void InvokeFadeEvent()
     {
         if (currentFadeEventID == string.Empty) return;
-        foreach(FadeEvent fadeEvent in fadeEvents)
+        foreach (FadeEvent fadeEvent in fadeEvents)
         {
-            if(fadeEvent.ID == currentFadeEventID)
+            if (fadeEvent.ID == currentFadeEventID)
             {
                 fadeEvent.Event.Invoke();
             }

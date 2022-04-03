@@ -552,7 +552,7 @@ public class Hexsphere : MonoBehaviour {
         int UnassignedBiomeID = FindBiomeIDByType(BiomeType.Unassigned);
         int IceBiomeID = FindBiomeIDByType(BiomeType.Ice);
         int FishBiomeID = FindBiomeIDByType(BiomeType.Fish);
-        // Generate grassland around colony centers
+        // Generate islands arounds pentagons
         for(int i = 0; i < unAssignedTiles.Count; i++)
         {
             unAssignedTiles[i].SetExtrusionHeight(0.0f);
@@ -656,7 +656,7 @@ public class Hexsphere : MonoBehaviour {
         {
             if(tile.gameObject.GetComponent<MeshCollider>() != null) DestroyImmediate(tile.GetComponent<MeshCollider>());
             // EXTRUDE ICE BASED ON NEIGHBORS
-            if (tile.GroupID == FindBiomeIDByType(BiomeType.Ice) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
+            if (tile.GroupID == FindBiomeIDByType(BiomeType.Ice) || tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned) || tile.GroupID == FindBiomeIDByType(BiomeType.Fish))
             {
                 if (tile.GroupID == FindBiomeIDByType(BiomeType.Unassigned))
                 {
@@ -665,7 +665,7 @@ public class Hexsphere : MonoBehaviour {
                 int neighborIceCount = 0;
                 foreach (Tile neighbor in tile.neighborTiles)
                 {
-                    if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice)) neighborIceCount++;
+                    if (neighbor.GroupID == FindBiomeIDByType(BiomeType.Ice) || neighbor.GroupID == FindBiomeIDByType(BiomeType.Fish)) neighborIceCount++;
                 }
                 tile.Extrude(neighborIceCount * 0.01f);
             }

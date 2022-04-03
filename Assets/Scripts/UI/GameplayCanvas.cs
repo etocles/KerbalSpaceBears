@@ -7,15 +7,22 @@ public enum ContextAction { NavigateWithShip, NavigateWithRover, SearchForFish, 
 public class GameplayCanvas : MonoBehaviour
 {
     public static GameplayCanvas instance;
+    [Header("Prefabs")]
     public GameObject ContextMenuButtonPrefab;
     public GameObject PopupPrefab;
     public GameObject IconPrefab;
     [HideInInspector] public bool ContextMenuVisible = false;
+    [Header("Icons")]
     public Sprite FishIcon;
     public Sprite OilIcon;
     public Sprite RocketIcon;
     public Sprite BearIcon;
     public Sprite QuestionMarkIcon;
+    [Header("References")]
+    public RadialUIHandler FishSlider;
+    public RadialUIHandler BearSlider;
+    public RadialUIHandler OilSlider;
+    public RadialUIHandler HeatSlider;
 
     private Transform PopupsParent;
     private Transform IconsParent;
@@ -24,11 +31,11 @@ public class GameplayCanvas : MonoBehaviour
     private Dictionary<GameObject, GameObject> SpawnedIcons = new Dictionary<GameObject, GameObject>();
 
 
-    public UnityEvent OnNavigateWithShip;
-    public UnityEvent OnSearchForFish;
-    public UnityEvent OnSearchForOil;
-    public UnityEvent OnRecallAllBears;
-    public UnityEvent OnTameBear;
+    [HideInInspector] public UnityEvent OnNavigateWithShip;
+    [HideInInspector] public UnityEvent OnSearchForFish;
+    [HideInInspector] public UnityEvent OnSearchForOil;
+    [HideInInspector] public UnityEvent OnRecallAllBears;
+    [HideInInspector] public UnityEvent OnTameBear;
 
     private void Awake()
     {
@@ -169,5 +176,20 @@ public class GameplayCanvas : MonoBehaviour
                 return QuestionMarkIcon;
         }
         return null;
+    }
+    public enum Resource { Fish, Bear, Oil, Heat }
+    public void SetResourceSliderValue(Resource resourceType, float value)
+    {
+        switch (resourceType)
+        {
+            case Resource.Fish:
+                break;
+            case Resource.Bear:
+                break;
+            case Resource.Oil:
+                break;
+            case Resource.Heat:
+                break;
+        }
     }
 }

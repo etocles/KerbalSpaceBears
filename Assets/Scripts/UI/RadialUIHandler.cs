@@ -11,6 +11,8 @@ public class RadialUIHandler : MonoBehaviour
     public RectTransform handlerEdgeImage;
     public RectTransform fillHandler;
 
+    public TMPro.TextMeshProUGUI text;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -18,11 +18,11 @@ public enum Sides
 	ONE, TWO, THREE, FOUR, FIVE, SIX, NONE
 }
 
-
+public enum ActiveBear { None, Tamed, Untamed }
 [Serializable]
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-
+	public ActiveBear activeBear = ActiveBear.None;
 	public bool Occupied;
 	public bool Selected;
 	public static float planetScale;
