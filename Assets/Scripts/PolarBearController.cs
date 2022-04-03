@@ -168,6 +168,8 @@ public class PolarBearController : Bear {
     }
 
     private IEnumerator SearchForOil(Stack<Tile> path){
+        if(Unit.currentTile.BiomeType == Hexsphere.BiomeType.Oil)
+            yield break;
         if(!Unit.moving){
             if(GameManager.instance.ActivePlanet.navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Oil, Unit.currentTile, out path)){
@@ -181,6 +183,8 @@ public class PolarBearController : Bear {
     }
 
     private IEnumerator SearchForFish(Stack<Tile> path){
+        if(Unit.currentTile.BiomeType == Hexsphere.BiomeType.Fish)
+            yield break;
         if(!Unit.moving){
             if(GameManager.instance.ActivePlanet.navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Fish, Unit.currentTile, out path)){
