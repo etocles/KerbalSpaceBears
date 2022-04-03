@@ -88,7 +88,7 @@ public class Hexsphere : MonoBehaviour {
     public bool TileMeshesRestored;
 
     private PlanetVertexData[] VertexData;
-    private Dictionary<BiomeType, List<Tile>> TilesByBiome = new Dictionary<BiomeType, List<Tile>>();
+    public Dictionary<BiomeType, List<Tile>> TilesByBiome = new Dictionary<BiomeType, List<Tile>>();
 	void Start()
     {
 		planetID = Planet_ID;

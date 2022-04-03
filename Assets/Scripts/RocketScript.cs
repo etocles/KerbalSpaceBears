@@ -103,6 +103,7 @@ public class RocketScript : MonoBehaviour {
         }
         else
         {
+            Debug.Log("CANVAS: Need at least "+FishPerBear+" fish to recruit a bear!");
             return false;
         }
     }
