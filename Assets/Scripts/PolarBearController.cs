@@ -116,6 +116,7 @@ public class PolarBearController : Bear {
             if(Hexsphere.planetInstances[0].navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Oil, Unit.currentTile, out path)){
                 Unit.currentTile.Occupied = false;
+                Unit.currentTile.activeBear = ActiveBear.None;
                 yield return Unit.moveOnPathCoroutine(path);
             } else {
                 ChangeState(BearState.LOST);
@@ -128,6 +129,7 @@ public class PolarBearController : Bear {
             if(Hexsphere.planetInstances[0].navManager.
             FindClosestIDTiles(Hexsphere.BiomeType.Fish, Unit.currentTile, out path)){
                 Unit.currentTile.Occupied = false;
+                Unit.currentTile.activeBear = ActiveBear.None;
                 yield return Unit.moveOnPathCoroutine(path);
             } else {
                 ChangeState(BearState.LOST);

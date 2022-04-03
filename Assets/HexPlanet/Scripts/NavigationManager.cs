@@ -36,6 +36,8 @@ public class NavigationManager : MonoBehaviour {
 			return false;
 			
 		end.Occupied = true;
+		// clicking on an oil or fish pool shouldn't do anything
+		end.activeBear = ActiveBear.None;
 
 		//Find the shortest path between two tiles using Dijkstra's algorithm
 		List<Tile> unvisited = new List<Tile>();
@@ -106,6 +108,9 @@ public class NavigationManager : MonoBehaviour {
 		}
 
 		end.Occupied = true;
+		// clicking on the places around the ship
+		// TODO: determine if this is needed to be updated
+		//end.activeBear = ActiveBear.None; 
 
 		//Find the shortest path between two tiles using Dijkstra's algorithm
 		List<Tile> unvisited = new List<Tile> ();

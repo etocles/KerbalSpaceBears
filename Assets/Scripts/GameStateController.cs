@@ -123,6 +123,7 @@ public class GameStateController : MonoBehaviour
         spawnedBear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         spawnedBear.GetComponent<MobileUnit>().currentTile = location;
         location.placeObject(spawnedBear);
+        location.activeBear = ActiveBear.Untamed;
         spawnedPolarBears.Add(spawnedBear);
         return spawnedBear;
     }
@@ -134,6 +135,7 @@ public class GameStateController : MonoBehaviour
         spawnedBear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         spawnedBear.GetComponent<MobileUnit>().currentTile = location;
         location.placeObject(spawnedBear);
+        location.activeBear = ActiveBear.Tamed;
         spawnedPolarBears.Add(spawnedBear);
         return spawnedBear;
     }
@@ -147,6 +149,7 @@ public class GameStateController : MonoBehaviour
         bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
         location.placeObject(bear);
         location.Occupied = true;
+        location.activeBear = ActiveBear.Tamed;
     }
 
     public void BoardBears()

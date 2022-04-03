@@ -96,9 +96,16 @@ public class GameplayCanvas : MonoBehaviour
                 {
                     if (tileCtrl.Occupied)
                     {
-                        AddContextButton(ContextAction.SearchForFish);
-                        AddContextButton(ContextAction.SearchForOil);
                         ContextMenuVisible = true;
+                        if (tileCtrl.activeBear == ActiveBear.Tamed)
+                        {
+                            AddContextButton(ContextAction.SearchForFish);
+                            AddContextButton(ContextAction.SearchForOil);
+                        }
+                        else
+                        {
+                            AddContextButton(ContextAction.TameBear);
+                        }
                     }
                     else if(GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile == tileCtrl)
                     {
