@@ -96,7 +96,6 @@ public class RocketScript : MonoBehaviour {
             firstEnoughFuel = false;
         }
         NumOil += amt;
-        Debug.Log("CANVAS: +1 Oil!");
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Oil", gameObject.transform.position);
         UpdateSliders();
     }
@@ -108,7 +107,6 @@ public class RocketScript : MonoBehaviour {
             firstFishObtained = false;
         }
         NumFish += amt;
-        Debug.Log("CANVAS: +1 Fish!");
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "+" + amt.ToString() + " Fish", gameObject.transform.position);
         UpdateSliders();
     }
@@ -120,8 +118,6 @@ public class RocketScript : MonoBehaviour {
             //TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstBearObtained);
             NumFish -= FishPerBear;
             bear.GetComponent<UntamedBear>().PaidFor = true;
-
-            Debug.Log("CANVAS: -"+FishPerBear+" Fish!");
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.RocketIcon, "-" + FishPerBear.ToString() + " Fish", gameObject.transform.position);
             UpdateSliders();
             return true;
@@ -129,7 +125,6 @@ public class RocketScript : MonoBehaviour {
         else
         {
             GameplayCanvas.instance.PushMessage("You need at least " + FishPerBear + " fish to recruit a bear!", 3);
-            Debug.Log("CANVAS: Need at least "+FishPerBear+" fish to recruit a bear!");
             return false;
         }
     }
@@ -141,7 +136,6 @@ public class RocketScript : MonoBehaviour {
         GameObject temp = Instantiate(pfb);
         BearsOwned.Add(temp);
         BearsBoarded.Add(temp);
-        Debug.Log("CANVAS: +1 Bear!");
         UpdateSliders();
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear", gameObject.transform.position);
         // if there's still bears on board, that means the ship is full.
