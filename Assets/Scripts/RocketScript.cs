@@ -87,8 +87,14 @@ public class RocketScript : MonoBehaviour {
             BearsOwned.Add(bear);
             BearsBoarded.Add(bear);
             // TODO: Report to canvas
-            bear = UnboardBear();
-            GameStateController.instance.DepositBear(bear, GetUnOccupiedTile());
+
+            // if there's still bears on board, that means the ship is full.
+            // coroutine is still emptying them out, so we don't have to
+            // if there's 0, do a manual refresh
+            if (BearsBoarded.Count == 0) {
+                bear = UnboardBear();
+                GameStateController.instance.DepositBear(bear, GetUnOccupiedTile());
+            }
         }
     }
     public void BoardBear(GameObject bear)
