@@ -63,6 +63,7 @@ public class FinalResult : MonoBehaviour
 
     public IEnumerator timer(){
         float t = 0.0f;
+        time_text.text = string.Format("{0:00}:{1:00}", 0.0f, 0.0f);
         while(t < time){
             t += 1.0f;
             float minutes = Mathf.FloorToInt(t / 60); 
