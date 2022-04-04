@@ -98,26 +98,33 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator MeltingCoroutine(){
-        yield return new WaitForSeconds(1.0f);
-        ActivePlanet.Melt(meltRate);
-        StartCoroutine("MeltingCoroutine");
+        while (true)
+        {
+            ActivePlanet.Melt(meltRate);
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 
     private void StartGame() { GameStarted = true; }
     private void EndGame() {
         RocketScript.Stats temp = GameManager.instance.Rocket.GetComponent<RocketScript>().MyStats;
 
-        PlayerPrefs.SetFloat("_start_time", temp.start_time - Time.time);
+        PlayerPrefs.SetFloat("_start_time", Mathf.Abs(temp.start_time - Time.time));
         PlayerPrefs.SetInt("_num_tamed_bears", temp.num_tamed_bears);
         PlayerPrefs.SetInt("_planets_traveled", temp.planets_traveled.Count);
         PlayerPrefs.SetInt("_num_fish_obtained", temp.num_fish_obtained);
         PlayerPrefs.SetInt("_num_oil_obtained", temp.num_oil_obtained);
         SceneManager.LoadScene("GameOver"); 
     }
-    private void SetActivePlanet(Hexsphere planet) { 
+    private void SetActivePlanet(Hexsphere planet) {
         // assume set active planet is where we start with the planet
+        //try
+        //{
+        //    StopCoroutine("MelingCoroutine");
+        //}
+        //catch (System.Exception e) { }
         ActivePlanet = planet;
-        StartCoroutine("MeltingCoroutine");
+        //StartCoroutine("MeltingCoroutine");
     }
 
     // Start is called before the first frame update
@@ -129,6 +136,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(ActivePlanet != null && GameStarted) ActivePlanet.Melt(Time.deltaTime);
+        if(ActivePlanet != null && GameStarted) ActivePlanet.Melt(Time.deltaTime);
     }
 }

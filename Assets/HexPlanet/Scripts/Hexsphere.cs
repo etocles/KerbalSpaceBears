@@ -128,8 +128,9 @@ public class Hexsphere : MonoBehaviour {
             }
         }
         TilesByBiome[BiomeType.Ice] = NewIceTiles;
-        NewIceTiles.Clear();
+        //NewIceTiles.Clear();
         // do the same for fish tiles
+        List<Tile> NewFishTiles = new List<Tile>();
         foreach (Tile tile in TilesByBiome[BiomeType.Fish])
         {
             tile.Extrude(-amt * dt);
@@ -140,10 +141,10 @@ public class Hexsphere : MonoBehaviour {
             }
             else
             {
-                NewIceTiles.Add(tile);
+                NewFishTiles.Add(tile);
             }
         }
-        TilesByBiome[BiomeType.Fish] = NewIceTiles;
+        TilesByBiome[BiomeType.Fish] = NewFishTiles;
         GameplayCanvas.instance.SetResourceSliderValue(GameplayCanvas.Resource.Heat, currentMelt / maxMelt, ((currentMelt / maxMelt) * 100f).ToString("F0") + "%");
         if (currentMelt / maxMelt >= 0.5f && !firstHalfMelt)
         {

@@ -327,10 +327,10 @@ public class RocketScript : MonoBehaviour {
 
         Traveling = false;
         CurrentTile = DestinationTile;
-        DestinationTile = null;
-        GameManager.instance.OnRocketLanded?.Invoke(CurrentTile.parentPlanet);
-        GameStateController.instance.UnboardBears();
         MyStats.planets_traveled.Add(DestinationTile.parentPlanet);
+        GameManager.instance.OnRocketLanded?.Invoke(DestinationTile.parentPlanet);
+        GameStateController.instance.UnboardBears();
+        DestinationTile = null;
     }
     IEnumerator Travel()
     {
