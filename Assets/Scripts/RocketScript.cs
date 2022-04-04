@@ -27,7 +27,7 @@ public class RocketScript : MonoBehaviour {
     public int NumBears => BearsOwned.Count;
     public int NumOil = 0;
     public int NumFish = 0;
-    public bool CanLaunch => (NumBears >= BearThreshold) && (NumOil >= OilThreshold);
+    public bool CanLaunch => (BearsBoarded.Count >= BearThreshold) && (NumOil >= (OilThreshold));
     public bool Traveling = false;
     public bool Sank = false;
 
@@ -36,7 +36,7 @@ public class RocketScript : MonoBehaviour {
     [Tooltip("How many fish per bear")]
     public static int FishPerBear = 2;
     [Tooltip("Minimum bears for takeoff")]
-    public static int BearThreshold = 2;
+    public static int BearThreshold = 1;
     [Tooltip("Minimum oil for takeoff")]
     public static int OilThreshold = 5;
     [Tooltip("How many fish to board the ship")]
@@ -195,7 +195,15 @@ public class RocketScript : MonoBehaviour {
     public void LeaveBehind()
     {
         // update our list of bears to only be the ones that made it on the ship
+        GameObject[] arr = new GameObject[BearsOwned.Count];
+        BearsOwned.CopyTo(arr);
+        HashSet<GameObject> BearsOwnedCopy = new HashSet<GameObject>(arr);
         BearsOwned.IntersectWith(BearsBoarded);
+        BearsOwnedCopy.ExceptWith(BearsBoarded);
+        foreach (GameObject obj in BearsOwnedCopy)
+        {
+            Destroy(obj);
+        }
     }
 
     #endregion  
@@ -218,7 +226,21 @@ public class RocketScript : MonoBehaviour {
     void StartLaunch() {
         // if we're already moving, bruh
         if (Traveling) return;
-        if (!CanLaunch) return;
+        if (!CanLaunch)
+        {
+            string res = "";
+            if (BearsBoarded.Count < BearThreshold)
+            {
+                 res += "at least "+BearThreshold+" Bears";
+            }
+            if (NumOil < OilThreshold)
+            {
+                if (!res.Equals("")) res += " and ";
+                res += OilThreshold + " Oil!";
+            }
+            GameplayCanvas.instance.PushMessage("Not enough fuel to launch! Need " + res, 1.0f);
+            return;
+        }
         DestinationTile = GameManager.instance.SelectedTile;
         // see if we can land there
         if (!GameManager.ValidTileForLanding(DestinationTile)) return ;
@@ -227,7 +249,7 @@ public class RocketScript : MonoBehaviour {
             TutorialManager.instance.InitiateTutorialEvent(TutorialEvent.OnFirstPlanetTraveledTo);
             firstPlanetTravel = false;
         }
-        StartCoroutine(Launch()); 
+        StartCoroutine(Launch());
     }
 
     public void FirstLanding(Tile tile) => StartCoroutine(FirstLandingCutscene(tile));
@@ -265,6 +287,9 @@ public class RocketScript : MonoBehaviour {
     {
         // leave behind any bears we didn't pick up
         LeaveBehind();
+        Interlocked.Add(ref NumOil, -(OilThreshold));
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.OilIcon, "- " + (OilThreshold + BearsBoarded.Count), gameObject.transform.position);
+        UpdateSliders();
 
         Traveling = true;
 
@@ -295,6 +320,7 @@ public class RocketScript : MonoBehaviour {
     IEnumerator Land()
     {
         transform.SetParent(DestinationTile.transform);
+        UpdateSliders();
 
         // rotate to properly land
         Vector3 startRot = transform.localEulerAngles;
