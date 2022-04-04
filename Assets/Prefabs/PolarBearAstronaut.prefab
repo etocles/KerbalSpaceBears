@@ -662,9 +662,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc15c7c876e02ca4c9395558b465e813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   oilGatheringTime: 10
   fishGatheringTime: 5
+  Unit: {fileID: 0}
+  state: 0
+  currentIcon: {fileID: 0}
 --- !u!114 &5019465469566535973
 MonoBehaviour:
   m_ObjectHideFlags: 0
