@@ -33,13 +33,14 @@ public class PolarBearController : Bear {
         Destroy(gameObject);
     }
 
+    public GameObject currentIcon = null;
     public void ChangeState(BearState newState){
         //Debug.Log("Changing to: " + newState.ToString());
         
         if (state == newState)
             return;
         state = newState;
-        GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.GetIconByBearState(state), gameObject);
+        currentIcon = GameplayCanvas.instance.CreateIcon(GameplayCanvas.instance.GetIconByBearState(state), gameObject);
         switch (newState){
             case BearState.FISH:
                 break;

@@ -61,6 +61,7 @@ public class MobileUnit : MonoBehaviour {
             {
 				bool success =  GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(polarBear);
 				gameObject.SetActive(!success);
+				if (success) Destroy(temp.currentIcon);
 				return success;
             }
 			// if UnTamed, do nothing
