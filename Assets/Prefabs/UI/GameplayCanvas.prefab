@@ -2705,7 +2705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visibleOnAwake: 1
-  timeToFade: 2
+  timeToFade: 1
   fullOpacity: 1
   currentState: 3
   AlwaysBlocksRaycasts: 0
