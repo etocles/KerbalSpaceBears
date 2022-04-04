@@ -63,7 +63,8 @@ public class MenuTileSelector : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void SetHighlight(bool hilighted)
     {
-        outline.enabled = hilighted;
+        if(outline != null)
+            outline.enabled = hilighted;
         if (hilighted)
         {
             this.GetComponent<Renderer>().material = hoverMat;
