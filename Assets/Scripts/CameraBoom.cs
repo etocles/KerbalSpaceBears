@@ -269,7 +269,7 @@ public class CameraBoom : MonoBehaviour
     private void Update()
 	{
 		float scrollDelta = Input.mouseScrollDelta.y;
-
+		if (GameplayCanvas.instance.Paused) return;
 		//Reset camera rotation on peek release
 		if (camPeekActive && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetMouseButtonUp(1)))
 		{
