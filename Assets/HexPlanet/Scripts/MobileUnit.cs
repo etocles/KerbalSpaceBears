@@ -53,16 +53,29 @@ public class MobileUnit : MonoBehaviour {
     {
 		// if next tile is ship, board if tamed
 		PolarBearController temp = polarBear.GetComponent<PolarBearController>();
+		// we have to check this here instead of in the end of ReturnToShip
+		// because if we don't, they clump up under the ship
+		if (temp != null)
+		{
+			if (temp.state == PolarBearController.BearState.SHIP && tile == temp.GetShipTile())
+            {
+				bool success = GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(polarBear);
+				gameObject.SetActive(!success);
+				if (success) Destroy(temp.currentIcon);
+				return success;
+			}
+        }
 		// check if environment is traversible
 		if (!tile.navigable || tile.BiomeType == Hexsphere.BiomeType.Water){
 			return false;
         }
-        // if spacebear, otw to board ship but received stop message, quit moving
+        //// if spacebear, otw to board ship but received stop message, quit moving
         if (temp != null)
         {
-            if (temp.state == PolarBearController.BearState.SHIP
-                && !GameStateController.GoingToShip) return false;
-        }
+			//if (temp.state == PolarBearController.BearState.SHIP
+			//    && !GameStateController.GoingToShip) return false;
+			StopCoroutine("move");
+		}
         return true;
     }
 

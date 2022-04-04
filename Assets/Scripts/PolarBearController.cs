@@ -125,11 +125,13 @@ public class PolarBearController : Bear {
 
     private void ConsumeResource(Tile tile)
     {
-        // make sure we can get there
-        tile.Occupied = false;
 
         // don't consume any resources if you're coming back from an ice tile
         if (tile.BiomeType == Hexsphere.BiomeType.Ice) return;
+
+
+        // make sure we can get there
+        tile.Occupied = false;
 
         // remove the placed object that's NOT a bear
         List<GameObject> temp = new List<GameObject>();
@@ -221,7 +223,6 @@ public class PolarBearController : Bear {
             ChangeState(BearState.LOST);
         }
 
-        bool success = false;
         switch (state)
         {
             // abrupt end to journey, report as lost 
@@ -237,13 +238,12 @@ public class PolarBearController : Bear {
                 break;
             // completed journey, board the ship
             case BearState.SHIP:
-                success = GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
-                gameObject.SetActive(!success);
-                if (success) Destroy(currentIcon);
+                // board taken care of in can continue
                 break;
         }
 
         // if returning to ship but neighbors are full, board for free and delete self
+        bool success = false; 
         if (tilesFull)
         {
             success = GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject, true);
