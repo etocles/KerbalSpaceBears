@@ -192,7 +192,7 @@ public class GameStateController : MonoBehaviour
             if (!bear.activeSelf) continue; // not sure if needed
             bear.GetComponent<PolarBearController>().ChangeState(PolarBearController.BearState.SHIP);
             bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
-            bear.GetComponent<PolarBearController>().StopAllCoroutines(); // abort everything you're doing, and return to ship
+            //bear.GetComponent<PolarBearController>().StopAllCoroutines(); // abort everything you're doing, and return to ship
             StartCoroutine(bear.GetComponent<PolarBearController>().ReturnToShip());
         }
     }

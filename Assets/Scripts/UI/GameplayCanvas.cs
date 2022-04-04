@@ -146,7 +146,6 @@ public class GameplayCanvas : MonoBehaviour
         Tile tileCtrl = SelectedObject.GetComponent<Tile>();
         if (tileCtrl != null)
         {
-
             if (tileCtrl.parentPlanet == GameManager.instance.ActivePlanet) // Clicking tile on active planet
             {
                 if (tileCtrl.BiomeType != Hexsphere.BiomeType.Water)
@@ -280,7 +279,7 @@ public class GameplayCanvas : MonoBehaviour
                 break;
             case Resource.Bear:
                 BearSlider.fillValue = sliderNormValue;
-                if (!!BearSlider.text.text.Equals(textValue))) BearSlider.text.GetComponent<TransformCurves>().Run();
+                if (!!BearSlider.text.text.Equals(textValue)) BearSlider.text.GetComponent<TransformCurves>().Run();
                 BearSlider.text.text = textValue;
                 break;
             case Resource.Oil:

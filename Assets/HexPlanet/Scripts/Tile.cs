@@ -193,7 +193,10 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 		obj.transform.position = FaceCenter;
 		obj.transform.up = transform.up;
         obj.transform.SetParent(transform);
-		if (obj.GetComponent<Bear>() != null) currentBear = obj.GetComponent<Bear>();
+		if (obj.GetComponent<Bear>() != null)
+		{
+			currentBear = obj.GetComponent<Bear>();
+		}
         PlacedObjects.Add(obj);
 	}
 

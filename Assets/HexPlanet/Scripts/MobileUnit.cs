@@ -87,6 +87,8 @@ public class MobileUnit : MonoBehaviour {
 			if (!CanContinue(next))
             {
 				polarBear.GetComponent<PolarBearController>().ChangeState(PolarBearController.BearState.LOST);
+				moving = false;
+				currentTile.currentBear = GetComponent<Bear>();
 				break;
             }
 
