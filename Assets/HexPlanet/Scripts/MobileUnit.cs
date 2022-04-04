@@ -69,13 +69,7 @@ public class MobileUnit : MonoBehaviour {
 		if (!tile.navigable || tile.BiomeType == Hexsphere.BiomeType.Water){
 			return false;
         }
-        //// if spacebear, otw to board ship but received stop message, quit moving
-        if (temp != null)
-        {
-			//if (temp.state == PolarBearController.BearState.SHIP
-			//    && !GameStateController.GoingToShip) return false;
-			StopCoroutine("move");
-		}
+		// if have to switch direction, it is handled elsewhere
         return true;
     }
 
