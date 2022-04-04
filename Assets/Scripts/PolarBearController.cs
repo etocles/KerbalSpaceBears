@@ -66,12 +66,13 @@ public class PolarBearController : Bear {
         if (tile.BiomeType == Hexsphere.BiomeType.Oil) ChangeState(BearState.OIL);
         bool gettingFish = state == BearState.FISH;
         Sprite icon = (gettingFish) ? GameplayCanvas.instance.FishIcon : GameplayCanvas.instance.OilIcon;
+        string txt = (gettingFish) ? "+1 Fish" : "+1 Oil";
         float timeToWait = (gettingFish) ? fishGatheringTime : oilGatheringTime;
 
         GameObject spawnedProgressUI = GameplayCanvas.instance.CreateIcon(icon, gameObject, GameplayCanvas.instance.ProgressPrefab);
         spawnedProgressUI.GetComponent<ProgressIcon>().StartTimer(timeToWait);
         yield return new WaitForSeconds(timeToWait);
-        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Fish", gameObject.transform.position);
+        GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, txt, gameObject.transform.position);
         ConsumeResource(Unit.currentTile);
 
         switch (temp2)
@@ -155,11 +156,21 @@ public class PolarBearController : Bear {
         // set our new List to be without the Fish/Oil model on top
         tile.PlacedObjects = temp;
 
-        // necessary upkeep for TilesByBiome
-        tile.parentPlanet.TilesByBiome[tile.BiomeType].Remove(tile);
-        tile.parentPlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
-        // change our BiomeType to Ice
-        tile.BiomeType = Hexsphere.BiomeType.Ice;
+        if (tile.BiomeType == Hexsphere.BiomeType.Oil)
+        {
+            // necessary upkeep for TilesByBiome
+            GameManager.instance.ActivePlanet.TilesByBiome[tile.BiomeType].Remove(tile);
+        }
+        
+        else if (tile.BiomeType == Hexsphere.BiomeType.Fish)
+        {
+            // necessary upkeep for TilesByBiome
+            GameManager.instance.ActivePlanet.TilesByBiome[tile.BiomeType].Remove(tile);
+            //GameManager.instance.ActivePlanet.TilesByBiome[Hexsphere.BiomeType.Ice].Add(tile);
+            // change our BiomeType to Ice
+            tile.BiomeType = Hexsphere.BiomeType.Ice;
+            tile.SetGroupID(tile.parentPlanet.FindBiomeIDByType(Hexsphere.BiomeType.Ice));
+        }
         if (tile.ExtrudedHeight <= 0.0000000001f) tile.ExtrudedHeight = 0.0001f;
     }
 

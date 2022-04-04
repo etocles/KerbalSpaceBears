@@ -213,6 +213,7 @@ public class GameStateController : MonoBehaviour
             GameObject bear = rocket.UnboardBear();
             DepositBear(bear, tryTile);
         }
+        GoingToShip = true;
     }
 
 }

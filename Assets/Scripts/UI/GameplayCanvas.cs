@@ -101,7 +101,7 @@ public class GameplayCanvas : MonoBehaviour
 
             if (tileCtrl.parentPlanet == GameManager.instance.ActivePlanet) // Clicking tile on active planet
             {
-                if (tileCtrl.BiomeType == Hexsphere.BiomeType.Ice)
+                if (tileCtrl.BiomeType != Hexsphere.BiomeType.Water)
                 {
                     if (tileCtrl.Occupied)
                     {
