@@ -42,7 +42,7 @@ public class RocketScript : MonoBehaviour {
     [Tooltip("How many fish to board the ship")]
     public static int AdmissionPrice = 1;
     [Tooltip("Starting Amount of Bears")]
-    public static int StartingBears = 6;
+    public static int StartingBears = 3;
     [SerializeField]
     public GameObject SpaceBearPrefab;
 
@@ -62,6 +62,7 @@ public class RocketScript : MonoBehaviour {
         MyStats = new Stats();
         MyStats.planets_traveled = new HashSet<Hexsphere>();
         MyStats.start_time = Time.time;
+        MyStats.num_tamed_bears = StartingBears;
     }
 
     // Start is called before the first frame update
@@ -70,7 +71,7 @@ public class RocketScript : MonoBehaviour {
         BearsOwned = new HashSet<GameObject>();
         for (int i = 0; i < StartingBears; i++)
         {
-            GameObject bear = Instantiate(SpaceBearPrefab);
+            GameObject bear = Instantiate(GameStateController.instance.BearPrefabs[Random.Range(0,2)]);
             bear.SetActive(false);
             BearsOwned.Add(bear);
         }
