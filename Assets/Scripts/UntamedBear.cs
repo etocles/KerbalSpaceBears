@@ -45,6 +45,7 @@ public class UntamedBear : Bear {
         else
         {
             // if voyage is complete, notify ship and deactivate self
-            GameManager.instance.Rocket.GetComponent<RocketScript>().RecruitBear(this.gameObject);        }
+            GameManager.instance.Rocket.GetComponent<RocketScript>().RecruitBear(this.gameObject);        
+        }
     }
 }

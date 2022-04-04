@@ -42,7 +42,7 @@ public class RocketScript : MonoBehaviour {
     [Tooltip("How many fish to board the ship")]
     public static int AdmissionPrice = 1;
     [Tooltip("Starting Amount of Bears")]
-    public static int StartingBears = 3;
+    public static int StartingBears = 6;
     [SerializeField]
     public GameObject SpaceBearPrefab;
 
@@ -165,9 +165,17 @@ public class RocketScript : MonoBehaviour {
         }
         Destroy(bear);
     }
-    public bool BoardBear(GameObject bear)
+    public bool BoardBear(GameObject bear, bool free = false)
     {
-        if (NumFish >= AdmissionPrice)
+        // free boarding for bears that can't get to the ship because of occluded neighbors
+        if (free)
+        {
+            GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear Boarded", gameObject.transform.position);
+            BearsBoarded.Add(bear);
+            UpdateSliders();
+            return true;
+        }
+        else if (NumFish >= AdmissionPrice)
         {
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.FishIcon, "-" + AdmissionPrice.ToString() + " Fish", gameObject.transform.position);
             GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear Boarded", gameObject.transform.position);
