@@ -69,7 +69,6 @@ public class MobileUnit : MonoBehaviour {
 		if (!tile.navigable || tile.BiomeType == Hexsphere.BiomeType.Water){
 			return false;
         }
-		// if have to switch direction, it is handled elsewhere
         return true;
     }
 
