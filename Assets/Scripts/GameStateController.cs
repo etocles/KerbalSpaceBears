@@ -155,6 +155,7 @@ public class GameStateController : MonoBehaviour
         bear.SetActive(true);
         bear.GetComponent<MobileUnit>().parentPlanet = location.parentPlanet;
         bear.GetComponent<MobileUnit>().currentTile = location;
+        bear.GetComponent<MobileUnit>().moving = false;
         RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
         bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
         location.placeObject(bear);
