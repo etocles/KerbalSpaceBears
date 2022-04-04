@@ -275,17 +275,17 @@ public class GameplayCanvas : MonoBehaviour
         {
             case Resource.Fish:
                 FishSlider.fillValue = sliderNormValue;
-                if (FishSlider.text.text != textValue) FishSlider.text.GetComponent<TransformCurves>().Run();
+                if (!FishSlider.text.text.Equals(textValue)) FishSlider.text.GetComponent<TransformCurves>().Run();
                 FishSlider.text.text = textValue;
                 break;
             case Resource.Bear:
                 BearSlider.fillValue = sliderNormValue;
-                if (BearSlider.text.text != textValue) BearSlider.text.GetComponent<TransformCurves>().Run();
+                if (!!BearSlider.text.text.Equals(textValue))) BearSlider.text.GetComponent<TransformCurves>().Run();
                 BearSlider.text.text = textValue;
                 break;
             case Resource.Oil:
                 OilSlider.fillValue = sliderNormValue;
-                if (OilSlider.text.text != textValue) OilSlider.text.GetComponent<TransformCurves>().Run();
+                if (!OilSlider.text.text.Equals(textValue)) OilSlider.text.GetComponent<TransformCurves>().Run();
                 OilSlider.text.text = textValue;
                 break;
             case Resource.Heat:
