@@ -150,19 +150,12 @@ public class RocketScript : MonoBehaviour {
                             ? GameStateController.instance.BearPrefabs[0] // 0 is brown
                             : GameStateController.instance.BearPrefabs[1]; // 1 is polar
         GameObject temp = Instantiate(pfb);
+        temp.SetActive(false);
         BearsOwned.Add(temp);
         BearsBoarded.Add(temp);
         Interlocked.Add(ref MyStats.num_tamed_bears, 1);
         UpdateSliders();
         GameplayCanvas.instance.SpawnPopup(GameplayCanvas.instance.BearIcon, "+1 Bear", gameObject.transform.position);
-        // if there's still bears on board, that means the ship is full.
-        // coroutine is still emptying themt out, so we don't have to
-        // if there's 1 (the one we just added), do a manual refresh
-        if (BearsBoarded.Count == 1) {
-            temp = UnboardBear();
-            GameStateController.instance.DepositBear(temp, GetUnOccupiedTile());
-            
-        }
         Destroy(bear);
     }
     public bool BoardBear(GameObject bear, bool free = false)
@@ -190,10 +183,6 @@ public class RocketScript : MonoBehaviour {
             GameplayCanvas.instance.PushMessage("Out of fish! Ship is at capacity!", 0.5f);
             return false;
         }
-    }
-    public void BoardUntamedBear(){
-        GameObject fake_bear = Instantiate(fakeBear, Vector3.zero, Quaternion.identity);
-        BearsBoarded.Add(fake_bear);
     }
     public GameObject UnboardBear()
     {

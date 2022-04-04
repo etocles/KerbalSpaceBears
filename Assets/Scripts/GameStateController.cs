@@ -173,10 +173,11 @@ public class GameStateController : MonoBehaviour
         {
             // stop anyone that is still trying to get in 
             GoingToShip = false; // will cause moving coroutine to stop abruptly (PolarBearController->Return To Ship->moveonPath->CanContinue)
-            UnboardBears();
+            StartCoroutine("UnBoarding");
         }
         else
         {
+            StopCoroutine("UnBoarding");
             // stop unboarding
             GoingToShip = true;  // will cause UnBoarding() coroutine to stop abruptly (lIne 204)
             BoardBears();
@@ -188,6 +189,7 @@ public class GameStateController : MonoBehaviour
         // request return and let PolarBear controller take care of it
         foreach (GameObject bear in rocket.BearsOwned)
         {
+            if (!bear.activeSelf) continue; // not sure if needed
             bear.GetComponent<PolarBearController>().ChangeState(PolarBearController.BearState.SHIP);
             bear.GetComponent<PolarBearController>().SetShipTile(rocket.CurrentTile);
             StartCoroutine(bear.GetComponent<PolarBearController>().ReturnToShip());
@@ -197,12 +199,19 @@ public class GameStateController : MonoBehaviour
     {
         StartCoroutine(UnBoarding());
     }
-
+    
+    // continuously unload bears, even if there's none to unload
     IEnumerator UnBoarding()
     {
         RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
-        while (rocket.BearsBoarded.Count > 0 && !GoingToShip)
+        while (!GoingToShip)
         {
+            if (rocket.BearsBoarded.Count == 0)
+            {
+                yield return new WaitForSeconds(1.0f);
+                continue;
+            }
+
             Tile tryTile = rocket.GetUnOccupiedTile();
             if (tryTile == null)
             {
@@ -213,7 +222,6 @@ public class GameStateController : MonoBehaviour
             GameObject bear = rocket.UnboardBear();
             DepositBear(bear, tryTile);
         }
-        //GoingToShip = true;
     }
 
 }

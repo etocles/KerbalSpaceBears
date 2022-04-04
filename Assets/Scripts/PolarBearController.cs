@@ -13,7 +13,7 @@ public class PolarBearController : Bear {
     [SerializeField] private float fishGatheringTime;
 
     private Tile shipTile;
-    private MobileUnit Unit;
+    public MobileUnit Unit;
     public BearState state;
     // Start is called before the first frame update
     void Start(){
@@ -176,42 +176,52 @@ public class PolarBearController : Bear {
     }
 
     public IEnumerator ReturnToShip(){
-        if(!Unit.moving){
-            Stack<Tile> path = new Stack<Tile>();
-            RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
+        if (Unit.moving) yield break;
+        Stack<Tile> path = new Stack<Tile>();
+        RocketScript rocket = GameManager.instance.Rocket.GetComponent<RocketScript>();
 
-            Tile dest = (rocket.GetUnOccupiedTile() == null) ? Unit.currentTile : rocket.GetUnOccupiedTile();
+        Tile dest = rocket.GetUnOccupiedTile();
 
-            // if we are boarding ship, destination is the shipTile
-            if (state == BearState.SHIP) {
-                dest = shipTile;
-                dest.activeBear = ActiveBear.None; // just in case
-            }
-            // otherwise reserve that position (around the ship)
-            else
-            {
-                dest.Occupied = true;
-                dest.activeBear = ActiveBear.Tamed; // just in case
-            }
-
-
-            // try to find a path, if exists, traverse it
-            if (GameManager.instance.ActivePlanet.navManager.findPath(Unit.currentTile, dest, out path))
-            {
-                // consume the resource
-                ConsumeResource(Unit.currentTile);
-                // we want others to be able to get to the ship
-                if (state == BearState.SHIP) dest.Occupied = false;
-                yield return Unit.moveOnPathCoroutine(path);
-            } 
-            // if there's no path, assume deserteds
-            else 
-            {
-                ChangeState(BearState.LOST);
-            }
-
+        bool tilesFull = false;
+        // if we are boarding ship, destination is the shipTile
+        if (state == BearState.SHIP) {
+            dest = shipTile;
+            dest.activeBear = ActiveBear.None; // just in case
+        }
+        // if there's no adjacent spot empty next to the ship, route to ship
+        else if (dest == null)
+        {
+            dest = shipTile;
+            dest.activeBear = ActiveBear.None; // just in case
+            tilesFull = true;
+        }
+        // otherwise reserve that position (around the ship)
+        else
+        {
+            dest.Occupied = true;
+            dest.activeBear = ActiveBear.Tamed; // just in case
         }
 
+
+        // try to find a path, if exists, traverse it
+        if (GameManager.instance.ActivePlanet.navManager.findPath(
+            Unit.currentTile, 
+            dest,
+            out path))
+        {
+            // consume the resource (if on ice, nothing happens)
+            ConsumeResource(Unit.currentTile);
+            // we want others to be able to get to the ship
+            if (dest == shipTile) dest.Occupied = false;
+            yield return Unit.moveOnPathCoroutine(path);
+        } 
+        // if there's no path, assume deserteds
+        else 
+        {
+            ChangeState(BearState.LOST);
+        }
+
+        bool success = false;
         switch (state)
         {
             // abrupt end to journey, report as lost 
@@ -227,9 +237,18 @@ public class PolarBearController : Bear {
                 break;
             // completed journey, board the ship
             case BearState.SHIP:
-                //GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
-                //gameObject.SetActive(false);
+                success = GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
+                gameObject.SetActive(!success);
+                if (success) Destroy(currentIcon);
                 break;
+        }
+
+        // if returning to ship but neighbors are full, board for free and delete self
+        if (tilesFull)
+        {
+            success = GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject, true);
+            gameObject.SetActive(!success);
+            if (success) Destroy(currentIcon);
         }
     }
 

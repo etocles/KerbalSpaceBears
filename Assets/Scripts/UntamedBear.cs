@@ -33,7 +33,9 @@ public class UntamedBear : Bear {
         if(!Unit.moving){
             Stack<Tile> path = new Stack<Tile>();
             if(GameManager.instance.ActivePlanet.navManager.findPath(
-            Unit.currentTile, GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile, out path)){
+            Unit.currentTile, 
+            GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile, 
+            out path)){
                 GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile.Occupied = false;
                 yield return Unit.moveOnPathCoroutine(path);
                 GameManager.instance.Rocket.GetComponent<RocketScript>().CurrentTile.Occupied = false;
