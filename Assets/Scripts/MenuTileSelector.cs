@@ -10,6 +10,7 @@ public class MenuTileSelector : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public Material iceMat;
     public Material hoverMat;
     public RocketMenu rocket;
+    public Outline outline;
     public enum Buttons{
         Game, Exit
     }
@@ -62,9 +63,11 @@ public class MenuTileSelector : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void SetHighlight(bool hilighted)
     {
-        if(hilighted)
+        outline.enabled = hilighted;
+        if (hilighted)
         {
             this.GetComponent<Renderer>().material = hoverMat;
+            
         }
         else
         {

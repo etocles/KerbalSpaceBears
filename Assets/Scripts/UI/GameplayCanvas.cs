@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public enum ContextAction { NavigateWithShip, NavigateWithRover, SearchForFish, SearchForOil, RecallAllBears, TameBear };
 public class GameplayCanvas : MonoBehaviour
 {
     public static GameplayCanvas instance;
+    [Header("Panels")]
+    public AnimatedPanel PausePanel;
+    public AnimatedPanel SceneTransitionPanel;
     [Header("Prefabs")]
     public GameObject ContextMenuButtonPrefab;
     public GameObject PopupPrefab;
@@ -30,6 +34,7 @@ public class GameplayCanvas : MonoBehaviour
     private Transform PopupsParent;
     private Transform IconsParent;
     private Transform ContextMenuParent;
+    [HideInInspector] public bool Paused = false;
     // Obj      // Icon
     private Dictionary<GameObject, GameObject> SpawnedIcons = new Dictionary<GameObject, GameObject>();
 
@@ -58,7 +63,50 @@ public class GameplayCanvas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            SetPauseMenu(!Paused);
+        }
+    }
+    public void SetPauseMenu(bool cond)
+    {
+        Paused = cond;
+        if(cond)
+        {
+            PausePanel.SetFadeEventID("Pausing");
+            PausePanel.FadeIn();
+            
+        }
+        else
+        {
+            PausePanel.SetFadeEventID("Resuming");
+            PausePanel.FadeOut();
+            Time.timeScale = 1f;
+        }
 
+    }
+
+    public void OnPauseComplete()
+    {
+        Time.timeScale = 0f;
+    }
+    public void OnResumeComplete()
+    {
+        Time.timeScale = 1f;
+    }
+    public void InitiateMainMenuTransition()
+    {
+        Time.timeScale = 1f;
+        SceneTransitionPanel.FadeIn();
+        SceneTransitionPanel.SetFadeEventID("MainMenu");
+    }
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void Quit()
+    {
+        Application.Quit();
     }
     public GameObject CreateIcon(Sprite icon, GameObject objectToFollow, GameObject customPrefab = null)
     {
@@ -259,4 +307,5 @@ public class GameplayCanvas : MonoBehaviour
         yield return new WaitForSeconds(animPanelCtrl.timeToFade + duration);
         animPanelCtrl.FadeOut();
     }
+
 }

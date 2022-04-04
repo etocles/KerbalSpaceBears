@@ -598,6 +598,7 @@ GameObject:
   - component: {fileID: 6889138120225603092}
   - component: {fileID: 6889138120225603093}
   - component: {fileID: 6889138120225603094}
+  - component: {fileID: 712420764003801149}
   m_Layer: 5
   m_Name: OilMeter
   m_TagString: Untagged
@@ -660,6 +661,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &712420764003801149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6889138120225603091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413aab13b6ebfed4588dcb6b9f1c8769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  eventType: 1
+  timeToAppear: 0.25
+  CustomString: 5 Oil Required for Interplanetary Travel
+  customSprite: {fileID: 21300000, guid: 8ce528e093c0a474483aaaeaf4b78c47, type: 3}
+  hovering: 0
 --- !u!1 &6889138120712393526
 GameObject:
   m_ObjectHideFlags: 0
