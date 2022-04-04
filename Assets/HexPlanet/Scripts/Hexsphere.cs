@@ -138,6 +138,11 @@ public class Hexsphere : MonoBehaviour {
             {
                 tile.SetExtrusionHeight(0.0f);
                 tile.SetGroupID(FindBiomeIDByType(BiomeType.Water));
+                // destroy any bears or ice that's on the tile
+                foreach (GameObject obj in tile.PlacedObjects)
+                {
+                    Destroy(obj);
+                }
             }
             else
             {
