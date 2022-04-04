@@ -39,11 +39,7 @@ public class FinalResult : MonoBehaviour
     }
 
     void Start(){
-        time = 94.0f;
-        bears = 5;
-        planets = 10;
-        fish = 19;
-        oil = 23;
+        UpdateAll();
         StartCoroutine("end");
     }
 
