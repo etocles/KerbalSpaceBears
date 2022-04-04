@@ -27,6 +27,8 @@ public class FinalResult : MonoBehaviour
     public GameObject fish_icon;
     public GameObject oil_icon;
 
+    public AudioSource audio;
+
 
     void UpdateAll(){
         time = PlayerPrefs.GetFloat("_start_time", 0.0f);
@@ -56,11 +58,10 @@ public class FinalResult : MonoBehaviour
     public IEnumerator addTo(GameObject icon, Transform location, int total){
         yield return new WaitForSeconds(1.0f);
         for(int x = 0; x < total; x++){
-            //Debug.Log(x);
             GameObject i = Instantiate(icon, transform.position, Quaternion.identity);
-            i.transform.parent = location;
-            //i.transform.SetParent(location);
-            yield return new WaitForSeconds(0.5f);
+            i.transform.SetParent(location);
+            yield return new WaitForSeconds(0.1f);
+            audio.Play();
         }
     }
 
@@ -71,6 +72,7 @@ public class FinalResult : MonoBehaviour
             float minutes = Mathf.FloorToInt(t / 60); 
             float seconds = Mathf.FloorToInt(t % 60);
             time_text.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            audio.Play();
             yield return new WaitForSeconds(0.01f);
         }
     }
