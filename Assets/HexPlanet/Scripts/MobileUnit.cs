@@ -59,7 +59,9 @@ public class MobileUnit : MonoBehaviour {
 			// if Tamed and returning to ship, then try to pay admission
 			if (isTamed && temp.state == PolarBearController.BearState.SHIP)
             {
-				return GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(polarBear);
+				bool success =  GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(polarBear);
+				gameObject.SetActive(!success);
+				return success;
             }
 			// if UnTamed, do nothing
 			// if Tamed and not returning to ship, chill tf out

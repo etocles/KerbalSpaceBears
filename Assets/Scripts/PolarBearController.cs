@@ -226,8 +226,8 @@ public class PolarBearController : Bear {
                 break;
             // completed journey, board the ship
             case BearState.SHIP:
-                GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
-                gameObject.SetActive(false);
+                //GameManager.instance.Rocket.GetComponent<RocketScript>().BoardBear(gameObject);
+                //gameObject.SetActive(false);
                 break;
         }
     }
