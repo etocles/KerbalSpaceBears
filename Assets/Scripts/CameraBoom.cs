@@ -37,11 +37,14 @@ public class CameraBoom : MonoBehaviour
 {
 	public static CameraBoom instance;
 	[Header("Sensitivity")]
-    public float mouseSensitivityX = 5.0f;
-	public float mouseSensitivityY = 5.0f;
+    public float sensitivityX = 5.0f;
+	public float sensitivityY = 5.0f;
 	[Tooltip("How quickly mouse sensitivity grows to max value"), Range(0, 1)]
 	public float sensitivityGrowthRate = 0.01f;
 	public float zoomSensitivity = 0.1f;
+
+	[Header("The sensitivity of rotation based on mouse")]
+	public float mouseSensitivtyAdjuster = 10.0f;
 
 	[Header("References")]
 	public Hexsphere hexsphere;
@@ -268,6 +271,8 @@ public class CameraBoom : MonoBehaviour
 
     private void Update()
 	{
+		float horAxis = Input.GetAxis("Horizontal");
+		float vertAxis = Input.GetAxis("Vertical");
 		float scrollDelta = Input.mouseScrollDelta.y;
 		if (GameplayCanvas.instance.Paused) return;
 		//Reset camera rotation on peek release
@@ -278,56 +283,49 @@ public class CameraBoom : MonoBehaviour
 			camRotX = 0.0f; camRotY = 0.0f;
 			StartCoroutine(ResetCam());
 		}
-		/*
-		//Pan and tilt camera in place. Clamp becomes more constrained when very close
-		else if(Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl) && !pauseMovement) {
-			camPeekActive = true;
-			float clampTolerance = 0.4f;
-			float clampVal = 25 * Mathf.Min(
-				((playerCamera.transform.localPosition.z / minZoom) + (1 - maxZoom / minZoom)) * clampTolerance, 1);
 
-			camRotX += Input.GetAxis("Mouse X") * mouseSensitivityX / 2;
-			camRotY += Input.GetAxis("Mouse Y") * mouseSensitivityY / 2;
-
-			camRotX = Mathf.Clamp(camRotX, -clampVal, clampVal);
-			camRotY = Mathf.Clamp(camRotY, -clampVal, clampVal);
-			playerCamera.transform.localEulerAngles = new Vector3(-camRotY, camRotX, 0);
-
-
-		}
-		*/
-		// press O to rotate a bit
-		else if (Input.GetKeyDown(KeyCode.O))
-		{
-			playerCamera.transform.Rotate(1, 1, 0, Space.World);
-		}
 
 		// rotation around HexSphere 
 		//Speed modified based of of current zoom and average sensitivity
 		else if (Input.GetMouseButton(1) && !pauseMovement && switchingPlanets == false)
 		{
-			//Debug.Log(transform.localEulerAngles);
-			//Debug.Log(rotX + " " + rotY);
-			sensitivityTimeMod += Mathf.Pow(sensitivityGrowthRate, 1.55f);
-			sensitivityTimeMod = Mathf.Clamp01(sensitivityTimeMod);
 			//Modify rotation speed 
 			Vector3 localPos = playerCamera.transform.localPosition;
 			float absZoom = Mathf.Abs(minZoom - maxZoom);
 			float zoomDiff = Mathf.Abs(absZoom - localPos.z);
 
-			float zoomSpeedModifier = Mathf.Abs(zoomDiff / absZoom * ((mouseSensitivityX + mouseSensitivityY) / 2));
+			float zoomSpeedModifier = Mathf.Abs(zoomDiff / absZoom * ((sensitivityX + sensitivityY) / 2));
 
-			rotX += Input.GetAxis("Mouse X") * mouseSensitivityX * zoomSpeedModifier * sensitivityTimeMod;
-			rotY -= Input.GetAxis("Mouse Y") * mouseSensitivityY * zoomSpeedModifier * sensitivityTimeMod;
+			rotX += Input.GetAxis("Mouse X") * sensitivityX * zoomSpeedModifier * mouseSensitivtyAdjuster;
+			rotY -= Input.GetAxis("Mouse Y") * sensitivityY * zoomSpeedModifier * mouseSensitivtyAdjuster;
 			rotY = Mathf.Clamp(rotY, -89.5f, 89.5f);
 			transform.localEulerAngles = new Vector3(rotY, rotX, 0.0f);
 			if (GameplayCanvas.instance.ContextMenuVisible) GameplayCanvas.instance.HideContextMenu();
 		}
 
+		else if((horAxis != 0.0f || vertAxis != 0.0f) && !pauseMovement && switchingPlanets == false ){
+			//Modify rotation speed 
+			Vector3 localPos = playerCamera.transform.localPosition;
+			float absZoom = Mathf.Abs(minZoom - maxZoom);
+			float zoomDiff = Mathf.Abs(absZoom - localPos.z);
+
+			float zoomSpeedModifier = Mathf.Abs(zoomDiff / absZoom * ((sensitivityX + sensitivityY) / 2));
+
+			rotX += horAxis * sensitivityX * zoomSpeedModifier;
+			rotY -= vertAxis * sensitivityY * zoomSpeedModifier;
+			rotY = Mathf.Clamp(rotY, -89.5f, 89.5f);
+			transform.localEulerAngles = new Vector3(rotY, rotX, 0.0f);
+			if (GameplayCanvas.instance.ContextMenuVisible) GameplayCanvas.instance.HideContextMenu();
+		}
+		else
+		{
+			sensitivityTimeMod = 0.0f;
+		}
+
 
 		//Zoom with scroll wheel
 		//Slower when close to the globe and faster when far
-		else if (Mathf.Abs(scrollDelta) >= 0.1 && !pauseMovement)
+		if (Mathf.Abs(scrollDelta) >= 0.1 && !pauseMovement)
 		{
 			Vector3 localPos = playerCamera.transform.localPosition;
 			float absZoom = Mathf.Abs(minZoom - maxZoom);
@@ -340,23 +338,6 @@ public class CameraBoom : MonoBehaviour
 
 			playerCamera.transform.localPosition = new Vector3(localPos.x, localPos.y, zoom);
 
-		}
-
-		//Return to neutral (default) position as determined at the beginning of a turn
-		else if (Input.GetKeyDown(KeyCode.F) && !pauseMovement)
-		{
-			MoveToLocation(defaultRot, defaultZoom);
-		}
-
-		// Press S to switch view between angled cam and main cam 
-		else if (Input.GetKeyDown(KeyCode.S) && !pauseMovement)
-		{
-			//StartCoroutine("SwitchView");
-		}
-
-		else
-		{
-			sensitivityTimeMod = 0.0f;
 		}
 
 		if(switchingPlanets)
