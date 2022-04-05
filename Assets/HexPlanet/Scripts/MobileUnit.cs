@@ -96,19 +96,25 @@ public class MobileUnit : MonoBehaviour {
 			Vector3 currentPos = transform.position;
 			float t = 0f;
 			//Spherically Interpolate current position to the next position
-
+			Vector3 save = new Vector3(0, transform.localEulerAngles.y, 0);
 			while(t < 1f)
             {
+				transform.LookAt(next.transform);
+				save = new Vector3(0, transform.localEulerAngles.y, 0);
+				transform.localEulerAngles = save;
 				t += Time.deltaTime * moveSpeed;
 				Vector3 vSlerp = Vector3.Lerp(currentTile.FaceCenter, next.FaceCenter, t) + ((currentTile.transform.up + next.transform.up) / 2).normalized * 0.0025f;
 				transform.position = vSlerp;
                 Vector3 lookDir = transform.position - lastPos;
 				//Correct rotation to keep transform forward aligned with movement direction and transform up aligned with tile normal
 				//transform.rotation = Quaternion.LookRotation(lookDir, transform.position - parentPlanet.transform.position);
-				transform.LookAt(next.transform);
-				transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
+				//transform.LookAt(next.transform);
+				//save = new Vector3(0, transform.localEulerAngles.y, 0);
+				//transform.localEulerAngles = save;
                 lastPos = transform.position;
 				this.transform.parent = currentTile.transform;
+				//transform.LookAt(next.transform);
+				//transform.localEulerAngles = save;
 				yield return new WaitForSeconds(Time.deltaTime);
 			}
 			//Assign the unit's current tile when it has finished interpolating to it.
